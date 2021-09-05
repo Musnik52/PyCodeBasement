@@ -1,2 +1,0 @@
-# pyCodeBasement
-Simple python programs
