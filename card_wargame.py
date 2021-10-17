@@ -39,4 +39,3 @@ if my_score < computer_score: print("Computer wins!")
 elif my_score > computer_score: print("User wins!")
 else: print("It's a draw")
 print("="*50)
-    
