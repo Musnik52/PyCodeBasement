@@ -1,5 +1,4 @@
 i = 0
-temp = None
 while i<10:
     temp = int(input(f'Enter {i+1} temp: '))
     if 40<temp or temp<-5:
