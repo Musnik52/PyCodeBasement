@@ -15,6 +15,5 @@ def game(round):
 y = 0
 for i in range(3):
     x = game(i)
-    if y == 0: y = x
-    if x < y: y = x
+    if x < y or y == 0: y = x
 print(f'The least number of guesses was: {y}')
