@@ -1,0 +1,17 @@
+name = input('Enter your 1st and last name, separated by a single space: ')
+name = name.lstrip()
+name = name.rstrip()
+for i in range(-5,0):
+    print(name[i],end="")
+print(" ")
+for i in range(len(name)//3):
+    print(name[i],end="")
+print(" ")
+print(f"The letter 'a' is present {name.count('a')} times in your name")
+if name.count('b') == 0: print('False - no b in your input')
+if name.count('b') > 0: print('True - there is at least one b in your input')
+namelist = name.split()
+print(namelist)
+print(namelist[::-1])
+print(namelist[1].upper())
+fname,lname = name.split()

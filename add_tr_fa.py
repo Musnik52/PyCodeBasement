@@ -1,0 +1,6 @@
+x = input('Enter an ADD statment. Use one space after each character: ').split()
+a1 = int(x[0])
+a2 = int(x[2])
+a3 = int(x[4])
+if a1+a2 == a3: print('True')
+else: print ("False")
