@@ -1,2 +1,2 @@
 fruits = ['apple', 'banana', 'cherry', 'kiwi', 'mango']
-print([fruits[i] for i in range(len(fruits)) if 'a' in fruits[i]])
+print([i for i in fruits if 'a' in i])
