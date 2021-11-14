@@ -3,7 +3,7 @@ lh = h = rh = b = ll = rl = " "
 ans = ['c','C','o','f','f','i','n']
 answer = ['C','_','_','_','i','_']
 wl = []
-while rl != "\ ":
+while rl != "\\":
     print('\nHe who makes me - does not want me.')
     print('He who wants me - does not need me.')
     print('He who needs me - does not know it.')
@@ -24,11 +24,11 @@ while rl != "\ ":
         if h == "O":
             if b == '|':
                 if rh == "/":
-                    if lh == '\ ':
+                    if lh == '\\':
                         if ll == '/':
-                            rl = '\ '
+                            rl = '\\'
                         ll = '/'
-                    lh = '\ '
+                    lh = '\\'
                 rh = '/'
             b = '|'
         h = 'O'
@@ -42,7 +42,7 @@ while rl != "\ ":
     if answer == ans:
         print('You Win!')
         break
-if rl == '\ ': 
+if rl == '\\': 
     print('He who makes me - does not want me.')
     print('He who wants me - does not need me.')
     print('He who needs me - does not know it.')

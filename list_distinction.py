@@ -1,3 +1,4 @@
+'''
 a = "i wake up at 6:00 am"
 l = [a[i] for i in range(len(a)) if a[i].isalpha()]
 n = [a[i] for i in range(len(a)) if a[i].isdigit()]
@@ -25,3 +26,5 @@ print([[j for j in range(i)] for i in range(1,6)])
 m = [[1,2,3],[4,5,6],[7,8,9]]
 mp = [i for j in m for i in j]
 print(mp)
+'''
+print([[j for j in range(i, 10)] for i in range(3)])
