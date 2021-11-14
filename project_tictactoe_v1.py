@@ -1,13 +1,11 @@
 import random
-import time
 
 def players(pchoice =""): #Choose who are the players
-    while pchoice != 1 or 2 or 3: 
+    pchoice = input('Enter wanted players:\n1-human V human\n2-human V com\n3-com V com\n')
+    while pchoice not in ['1', '2', '3']: #input loop
+        print('Invalid input ...')
         pchoice = input('Enter wanted players:\n1-human V human\n2-human V com\n3-com V com\n')
-        while pchoice != '1' and pchoice !='2' and pchoice !='3': #correct input loop
-            pchoice = ('Invalid input, try again: ')
-            time.sleep(1)
-        return pchoice #returns players indication
+    return pchoice #returns players indication
             
 def p_turn(p): #switch X/O player
     return 'X' if p == 'O' else 'O'
