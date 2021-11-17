@@ -28,7 +28,7 @@ class Circle():
         return self.r > other.r
 
     def __repr__(self):
-        return f'Circle Radius: {self.r}'
+        return f'Circle({self.r})'
 
     def __str__(self):
         return f'Circle Radius: {self.r}'
