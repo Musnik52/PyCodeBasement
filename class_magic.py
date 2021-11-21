@@ -11,6 +11,9 @@ class BankAccount():
         if type(self) != type(other): return False
         return self.balance == other.balance
 
+    def __ne__(self, other):
+        return not self.__eq__
+
     def __add__(self, other):
         if type(other) == int or type(other) == float: return self.balance + other
         if type(self) != type(other): return self.balance
