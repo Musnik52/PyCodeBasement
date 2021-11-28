@@ -16,10 +16,9 @@ class Employee:
 
 conn = sqlite3.connect('C:\git\pyCodeBasement\SQL\\1test.db')
 print('connection to db opened')
-
-cursor = conn.execute('SELECT*FROM COMPANY')
+cur = conn.execute('SELECT*FROM COMPANY')
 _emp = []
-for row in cursor:
+for row in cur:
     e = Employee(row[0], row[1], row[2], row[3], row[4])
     _emp.append(e)
 print(_emp)
