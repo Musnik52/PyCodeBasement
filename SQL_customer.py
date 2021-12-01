@@ -14,7 +14,7 @@ class Customer:
     def __str__(self):
         return str(self.__dict__)
 
-conn = sqlite3.connect('C:\git\pyCodeBasement\SQL\\cusomer.db')
+conn = sqlite3.connect('C:\git\pyCodeBasement\SQL\customer.db')
 print('connection to db opened')
 cur = conn.execute('SELECT*FROM customer')
 
@@ -26,17 +26,17 @@ def delete_customer(cur, table, id):
     cur.execute(f"DELETE FROM {table} WHERE id = {id}")
 
 def update_customer(cur, table, id, address, mobile):
-    cur.execute(f"UPDATE {table} SET address = '{address}' WHERE id = {id}")
+    cur.execute(f"UPDATE {table} SET address = {address} WHERE id = {id}")
     cur.execute(f"UPDATE {table} SET mobile = {mobile} WHERE id = {id}")
 
 def print_all_customers(cur):
     cur.execute('SELECT*FROM customer')
-    print([f'{row[1]} {row[2]}' for row in cur])
+    print([row for row in cur])
 
-insert_customer(cur, "customer", 3, 'Ana', 'Musnikov', 'Makor 12', 507859986)
-update_customer(cur, "customer", 3, 'Eilat 2', 86424431)
+#insert_customer(cur, "customer", 3, 'Ana', 'Musnikov', 'Makor 12', 507859986)
+#update_customer(cur, "customer", 3, 'Eilat 2', 86424431)
 print_all_customers(cur)
-delete_customer(cur, "customer", 3)
+#delete_customer(cur, "customer", 3)
 
 print('connection to db closed')
 
