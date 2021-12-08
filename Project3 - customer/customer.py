@@ -1,5 +1,3 @@
-import sqlite3
-
 class Customer:
     def __init__(self, id, fname, lname, address, mobile):
         self.id = id
@@ -9,7 +7,7 @@ class Customer:
         self.mobile = mobile
     
     def __repr__(self):
-        return f'Customer: {self.id, self.fname, self.lname, self.address, self.mobile}'
+        return f'Customer: ({self.id, self.fname, self.lname, self.address, self.mobile})'
 
     def __str__(self):
-        return str(self.__dict__)
+        return f'Customer: id: {self.id}, First Name: {self.fname}, Last Name: {self.lname}, Address: {self.address}, Mobile: {self.mobile}'
