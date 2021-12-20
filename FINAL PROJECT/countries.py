@@ -1,12 +1,12 @@
 from sqlalchemy.sql.expression import text
 from sqlalchemy.sql.sqltypes import Text
 from flights_db import Base
-from sqlalchemy import Column, Integer
+from sqlalchemy import Column, BigInteger
 
 class Countries(Base):
     __tablename__ = 'countries'
 
-    id = Column(Integer(), primary_key=True, autoincrement=True)
+    id = Column(BigInteger(), primary_key=True, autoincrement=True)
     name = Column(Text(), nullable=False, unique=True)
 
     def __repr__(self):

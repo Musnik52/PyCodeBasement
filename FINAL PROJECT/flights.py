@@ -1,3 +1,4 @@
+from sqlalchemy.sql.schema import ForeignKey
 from sqlalchemy.sql.sqltypes import BigInteger
 from flights_db import Base
 from sqlalchemy import Column, Integer, DateTime
@@ -6,7 +7,7 @@ class Flights(Base):
     __tablename__ = 'flights'
 
     id = Column(BigInteger(), primary_key=True, autoincrement=True)
-    airline_company_id = Column(BigInteger(), nullable=False)
+    airline_company_id = Column(BigInteger(), ForeignKey('airline_companies.id'), nullable=False)
     origin_country_id = Column(Integer(), nullable=False)
     desitnation_country_id = Column(Integer(), nullable=False)
     departure_time = Column(DateTime(), nullable=False)

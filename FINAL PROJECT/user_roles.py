@@ -1,11 +1,11 @@
-from sqlalchemy.sql.sqltypes import Integer, Text
+from sqlalchemy.sql.sqltypes import BigInteger, Text
 from flights_db import Base
 from sqlalchemy import Column
 
 class UserRoles(Base):
     __tablename__ = 'user_roles'
 
-    id = Column(Integer(), primary_key=True, autoincrement=True)
+    id = Column(BigInteger(), primary_key=True, autoincrement=True)
     role_name = Column(Text(), unique=True)
 
     def __repr__(self):

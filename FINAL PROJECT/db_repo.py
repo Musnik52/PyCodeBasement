@@ -1,4 +1,5 @@
 from sqlalchemy import asc, text, desc
+from sqlalchemy.sql.expression import table
 
 class DbRepo:
     def __init__(self, local_session):
@@ -15,6 +16,15 @@ class DbRepo:
 
     def get_by_column_value(self, table_class, column_name, value):
         return self.local_session.query(table_class).filter(column_name == value).all()
+
+    def get_by_id(self, table_class, id):
+        return self.local_session.query(table_class).get(id)
+
+    def get_by_condition(self, table_class, cond):
+        return cond(self.local_session.query(table_class)).all()
+    
+    def get_by_ilike(self,table_class, column_name, exp):
+        return self.local_session.query(table_class).filter(column_name.ilike(exp)).all()
 
     def add(self, one_row):
         self.local_session.add(one_row)
@@ -35,3 +45,6 @@ class DbRepo:
         self.local_session.query(table_class).filter(id_column_name == id).update(data)
         self.local_session.commit()
         print('Updated')
+
+    def reset_auto_inc(self, table_class):
+        self.local_session.execute(f'TRUNCATE TABLE {table_class.__tablename__} RESTART IDENTITY')
