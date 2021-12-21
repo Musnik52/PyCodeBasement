@@ -7,7 +7,7 @@ class Tickets(Base):
     __tablename__ = 'tickets'
 
     id = Column(BigInteger(), primary_key=True, autoincrement=True)
-    flight_id = Column(BigInteger(), ForeignKey('customers.id'), nullable=False)
+    flight_id = Column(BigInteger(), ForeignKey('flights.id'), nullable=False)
     customer_id = Column(BigInteger(), ForeignKey('customers.id'), nullable=False)
 
     def __repr__(self):
