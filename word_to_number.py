@@ -1,7 +1,0 @@
-wor = input ('write a word of a number between 1 and 5: ')
-if wor == 'one': print (1)
-elif wor == 'two': print (2)
-elif wor == 'three': print (3)
-elif wor == 'four': print (4)
-elif wor == 'five': print (5)
-else: print ('out of scope')

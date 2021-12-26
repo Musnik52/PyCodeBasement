@@ -8,7 +8,7 @@ class AirlineCompanies(Base):
 
     id = Column(BigInteger(), primary_key=True, autoincrement=True)
     name = Column(Text(), nullable=False, unique=True)
-    country_id = Column(BigInteger(), ForeignKey('countries.id'), nullable=False)
+    country_id = Column(BigInteger(), ForeignKey('countries.id'), unique=False, nullable=False)
     user_id = Column(BigInteger(), ForeignKey('users.id'), unique=True)
 
     def __repr__(self):

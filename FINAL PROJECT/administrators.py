@@ -1,15 +1,17 @@
 from sqlalchemy.sql.schema import ForeignKey
 from sqlalchemy.sql.sqltypes import BigInteger, Integer, Text
 from flights_db import Base
-from sqlalchemy import Column
+from sqlalchemy import Column, UniqueConstraint
 
 class Administrators(Base):
     __tablename__ = 'administrators'
 
     id = Column(BigInteger(), primary_key=True, autoincrement=True)
-    first_name = Column(Text(), nullable=False, unique=True)
-    last_name = Column(Text(), nullable=False, unique=True)
+    first_name = Column(Text(), nullable=False)
+    last_name = Column(Text(), nullable=False)
     user_id = Column(BigInteger(), ForeignKey('users.id'), unique=True)
+
+    __table_args__= (UniqueConstraint('first_name', 'last_name', name='una_1'),)
 
     def __repr__(self):
         return f'\n<Administrator id={self.id} First name={self.first_name} Last name={self.last_name} User id={self.user_id}>'

@@ -8,10 +8,10 @@ class Flights(Base):
 
     id = Column(BigInteger(), primary_key=True, autoincrement=True)
     airline_company_id = Column(BigInteger(), ForeignKey('airline_companies.id'), nullable=False)
-    origin_country_id = Column(Integer(), nullable=False)
-    desitnation_country_id = Column(Integer(), nullable=False)
-    departure_time = Column(DateTime(), nullable=False)
-    landing_time = Column(DateTime(), nullable=False)
+    origin_country_id = Column(Integer(), ForeignKey('countries.id'), unique=False, nullable=False)
+    desitnation_country_id = Column(Integer(), ForeignKey('countries.id'), unique=False, nullable=False)
+    departure_time = Column(DateTime(), unique=False, nullable=False)
+    landing_time = Column(DateTime(), unique=False, nullable=False)
     remaining_tickets= Column(Integer())
 
     def __repr__(self):

@@ -10,7 +10,7 @@ class Users(Base):
     username = Column(Text(), nullable=False, unique=True)
     password = Column(Text(), nullable=False)
     email = Column(Text(), nullable=False, unique=True)
-    user_role = Column(Integer(), ForeignKey('user_roles.id'), nullable=False)
+    user_role = Column(Integer(), ForeignKey('user_roles.id'), unique=False, nullable=False)
 
     def __repr__(self):
         return f'\n<User id={self.id} Username={self.username} Password={self.password} Email={self.email} User role={self.user_role}>'

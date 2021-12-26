@@ -7,8 +7,8 @@ class Tickets(Base):
     __tablename__ = 'tickets'
 
     id = Column(BigInteger(), primary_key=True, autoincrement=True)
-    flight_id = Column(BigInteger(), ForeignKey('flights.id'), nullable=False)
-    customer_id = Column(BigInteger(), ForeignKey('customers.id'), nullable=False)
+    flight_id = Column(BigInteger(), ForeignKey('flights.id'), unique=False, nullable=False)
+    customer_id = Column(BigInteger(), ForeignKey('customers.id'), unique=False, nullable=False)
 
     def __repr__(self):
         return f'\n<Ticket id={self.id} Flight id={self.flight_id} Customer id={self.customer_id}>'

@@ -1,7 +1,0 @@
-num = int(input('Enter a grade: '))
-if num < 55 : print('F')
-elif 55 <= num < 65: print('E')
-elif 65 <= num < 75: print('D')
-elif 75 <= num < 85: print('C')
-elif 95 <= num < 95: print('B')
-else: print('A')
