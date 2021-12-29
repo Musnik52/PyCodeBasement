@@ -12,10 +12,10 @@ class Student(Base):
     last_name = Column(Text(), nullable=False)
     grade_avg = Column(REAL())
     kita_id = Column(BigInteger(), ForeignKey('kita.id'))
-
+    kitot = relationship('Kita', backref=backref('students', uselist=True))
+    
     __table_args__= (UniqueConstraint('first_name', 'last_name', name='una_1'),)
 
-    kitot = relationship('Kita', backref=backref('students', uselist=True))
 
     def __repr__(self):
         return f'\n<Student id={self.id} First name={self.first_name} Last name={self.last_name} Grade average={self.grade_avg} Kita idr={self.kita_id}>'

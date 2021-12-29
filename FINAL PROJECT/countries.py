@@ -1,6 +1,6 @@
 from sqlalchemy.sql.expression import text
 from sqlalchemy.sql.sqltypes import Text
-from flights_db import Base
+from db_config import Base
 from sqlalchemy import Column, BigInteger
 
 class Countries(Base):

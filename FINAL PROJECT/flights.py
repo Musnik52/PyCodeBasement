@@ -1,6 +1,6 @@
 from sqlalchemy.sql.schema import ForeignKey
 from sqlalchemy.sql.sqltypes import BigInteger
-from flights_db import Base
+from db_config import Base
 from sqlalchemy import Column, Integer, DateTime
 
 class Flights(Base):

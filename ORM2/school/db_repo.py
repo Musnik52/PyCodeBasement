@@ -21,7 +21,7 @@ class DbRepo:
         return self.local_session.query(table_class).get(id)
 
     def get_by_condition(self, table_class, cond):
-        return cond(self.local_session.query(table_class)).all()
+        return cond(self.local_session.query(table_class))
     
     def get_by_ilike(self,table_class, column_name, exp):
         return self.local_session.query(table_class).filter(column_name.ilike(exp)).all()
