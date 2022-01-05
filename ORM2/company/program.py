@@ -1,8 +1,10 @@
+# main.py
 import sys
 from datetime import datetime
 from user import User
 from dbrepo import DbRepo
 from sqlalchemy import asc, text, desc
+from sqlalchemy import text
 from company import Company
 from db_config import local_session, create_all_entities
 
@@ -11,29 +13,60 @@ create_all_entities()
 
 repo = DbRepo(local_session)
 
-#get_all
-print(users := repo.get_all(User))
-print(companies := repo.get_all_limit(Company, 3))
+repo.reset_auto_inc(User)
+repo.reset_auto_inc(Company)
 
-#get_all_asc/desc
-print('asc', users := repo.get_all_order_by(User, User.username, asc))
-print('desc', users := repo.get_all_order_by(User, User.username, desc))
-print('asc', companies := repo.get_all_order_by(Company, Company.name, asc))
-print('desc', companies := repo.get_all_order_by(Company, Company.name, desc))
+# get_all
+#users = local_session.query(User).all()
+users = repo.get_all(User)
+print(users)
+companies = repo.get_all_limit(Company, 3)
+print(companies)
 
-#Insert
-repo.add(moshe := User(username='moshe', email='moshe@jb.com'))
-repo.add_all(users_list := [User(username='sivan', email='sivan@jb.com'), User(username='shachar', email='shachar@jb.com')] )
-repo.add(bioboris := Company(name='bioboris', age=3, address='rashi 31', salary=69000))
-repo.add_all(users_list := [musnitech := Company(name='musnitech', age=10, address='here 31', salary=42000), boricosmetix := Company(name='boricosmetix', age=17, address="there 31", salary=66600)])
+users = repo.get_all_order_by(Company, Company.name, asc)
+print('asc', users)
 
-#delete
-repo.delete_by_id(User, User.id, 2)
-repo.delete_by_id(Company, Company.id, 2)
+users = repo.get_all_order_by(Company, Company.name, desc)
+print('desc', users)
 
-#update
-repo.update_by_id(User, User.id, 3,{'username': 'shawshaw'}) #update({User.username: 'new moshe', 'email':'moshe@walla.com'}, synchronize_session=False)
-repo.update_by_id(Company, Company.id, 3,{'name': 'borincasmetics', 'address': 'somewhere 31'})
+# select * from users where username like '%moshe%'
+#if len(local_session.query(User).filter(User.username.ilike('%moshe%')).all()) > 0:
+#    local_session.query(User).filter(User.id >= 1).delete(synchronize_session=False)
+#    local_session.commit()
 
-#get_by_colname
-repo.get_by_column_value
+# Insert
+#moshe = User(username='moshe', email='moshe@jb.com')
+#local_session.add(moshe)
+#local_session.add(User(username='moshe', email='moshe@jb.com'))
+moshe = User(username='moshe', email='moshe@jb.com')
+repo.add(moshe)
+
+users_list = [User(username='rob', email='rob@rob.com'), User(username='job', email='job@job.com')]
+#local_session.add_all(users_list)
+#local_session.commit()
+repo.add_all(users_list)
+
+#local_session.query(User).filter(User.username == 'moshe').update({User.username: 'new moshe', 'email':'moshe@walla.com'},\
+#                                                                  synchronize_session=False)
+#local_session.commit()
+repo.update_by_column_value(User, User.username, 'moshe', {User.username: 'new moshe', 'email':'moshe@walla.com'})
+
+#local_session.query(Company).filter(Company.id >= 1).delete(synchronize_session=False)
+
+#local_session.add(Company(name='Elad23', age=22, address='Sokolov 11', salary='60000'))
+#local_session.commit()
+repo.add(Company(name='Elad23', age=22, address='Sokolov 11', salary='60000'))
+
+com1 = Company(name='Yishay13', age=22, address='Sokolov 11', salary='60000')
+com2 = Company(name='Uri13', age=22, address='Sokolov 11', salary='70000')
+com_ls = [com1, com2]
+#local_session.add_all(com_ls)
+#local_session.commit()
+repo.add_all(com_ls)
+
+print(repo.get_by_ilike(User, User.username, '%moshe%'))
+print(repo.get_by_id(User, 2))
+#local_session.execute('select * from Company where salary > 60000')
+print('> 60,000', repo.get_by_condition(Company, lambda query: query.filter(Company.salary > 60000).all()))
+print('> 20, first', repo.get_by_condition(Company, lambda query: query.filter(Company.age > 20).first()))
+print('> 20, first', repo.get_by_condition(Company, lambda query: query.filter(Company.age > 20 and Company.salary > 60000).first()))
