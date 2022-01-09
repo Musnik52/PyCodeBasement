@@ -1,8 +1,6 @@
 from sqlalchemy.orm import backref, relationship
-from sqlalchemy.sql.schema import ForeignKey
-from sqlalchemy.sql.sqltypes import BigInteger
 from db_config import Base
-from sqlalchemy import Column, Integer, DateTime
+from sqlalchemy import Column, Integer, DateTime, BigInteger, ForeignKey
 
 class Flights(Base):
     __tablename__ = 'flights'

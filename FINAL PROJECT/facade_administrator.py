@@ -1,5 +1,5 @@
 from facade_base import FacadeBase
-from db_config import local_session, create_all_entities
+from db_config import local_session
 from db_repo import DbRepo
 from customers import Customers
 from airline_companies import AirlineCompanies

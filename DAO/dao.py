@@ -3,7 +3,7 @@ from class_dao import Dao
 import time
 
 #Run once before all tests
-@pytest.fixture(scope='session', autouse=True)
+@pytest.fixture(scope='session', autouse=True) #רץ בהתחלה לפני/אחרי כל הבדיקות
 def dao_init():
     time.sleep(3)
     print('setting up stuff')
@@ -18,7 +18,7 @@ def dao_connection():
     return Dao()
 
 #Run before EACH test
-@pytest.fixture(scope='function', autouse=True)
+@pytest.fixture(scope='function', autouse=True) #רץ  לפני כל הבדיקות
 def dao_init_before_each_test():
     print('initialize before each function')
 

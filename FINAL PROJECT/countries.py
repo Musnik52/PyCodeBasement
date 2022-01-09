@@ -1,7 +1,5 @@
-from sqlalchemy.sql.expression import text
-from sqlalchemy.sql.sqltypes import Text
 from db_config import Base
-from sqlalchemy import Column, BigInteger
+from sqlalchemy import Column, BigInteger, Text
 
 class Countries(Base):
     __tablename__ = 'countries'

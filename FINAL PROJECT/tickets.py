@@ -1,7 +1,5 @@
-from sqlalchemy.sql.schema import ForeignKey
-from sqlalchemy.sql.sqltypes import BigInteger
 from db_config import Base
-from sqlalchemy import Column, UniqueConstraint
+from sqlalchemy import Column, UniqueConstraint, ForeignKey, BigInteger
 from sqlalchemy.orm import relationship, backref
 
 class Tickets(Base):
@@ -10,6 +8,8 @@ class Tickets(Base):
     id = Column(BigInteger(), primary_key=True, autoincrement=True)
     flight_id = Column(BigInteger(), ForeignKey('flights.id'), nullable=False)
     customer_id = Column(BigInteger(), ForeignKey('customers.id'), nullable=False)
+
+    __table_args__= (UniqueConstraint('flight_id', 'customer_id', name='una_3'),)
     
     flights = relationship('Flights', backref=backref('tickets', uselist=True))
     customers = relationship('Customers', backref=backref('tickets', uselist=True))

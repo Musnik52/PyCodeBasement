@@ -1,7 +1,5 @@
-from sqlalchemy.sql.schema import ForeignKey
-from sqlalchemy.sql.sqltypes import BigInteger, Text
 from db_config import Base
-from sqlalchemy import Column, UniqueConstraint
+from sqlalchemy import Column, UniqueConstraint, BigInteger, Text, ForeignKey
 
 class Customers(Base):
     __tablename__ = 'customers'

@@ -1,8 +1,6 @@
-from sqlalchemy.sql.schema import ForeignKey
-from sqlalchemy.sql.sqltypes import BigInteger, Text
 from sqlalchemy.orm import backref, relationship
 from db_config import Base
-from sqlalchemy import Column, Integer
+from sqlalchemy import Column, Integer, BigInteger, Text, ForeignKey
 
 class Users(Base):
     __tablename__ = 'users'
