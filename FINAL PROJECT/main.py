@@ -8,7 +8,8 @@ from airline_companies import AirlineCompanies
 from customers import Customers
 from users import Users
 from user_roles import UserRoles
-from administrators import Administrators                                                                     
+from administrators import Administrators   
+from facade_administrator import AdministratorFacade                                                                  
 
 repo = DbRepo(local_session)
 
@@ -33,3 +34,5 @@ repo.add_all(administrators_list := [Administrators(first_name='boris', last_nam
 repo.add_all(customers_list := [Customers(first_name='shachar', last_name='harush', address='rashi 31', phone_number='0507897765', credit_card_number='13323432', user_id=1), Customers(first_name='max', last_name='gendalev', address='amsterdam 32', phone_number='0523452231', credit_card_number='13245678', user_id=2)])
 repo.add_all(flights_list := [Flights(airline_company_id=1, origin_country_id=1, desitnation_country_id=2, departure_time=datetime.now(), landing_time=datetime(2022, 10, 4, 14, 29, 1), remaining_tickets=3), Flights(airline_company_id=2, origin_country_id=2, desitnation_country_id=1, departure_time=datetime.now(), landing_time=datetime(2022, 12, 4, 23, 29, 1), remaining_tickets=3)])
 repo.add_all(tickets_list := [Tickets(flight_id=1, customer_id=1), Tickets(flight_id=2, customer_id=2)])
+
+avi = AdministratorFacade()

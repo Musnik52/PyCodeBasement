@@ -16,7 +16,7 @@ class FacadeBase(ABC):
         self.repo.get_by_id(Flights, id)
 
     def flights_by_parameters(self, origin_country_id, destination_country_id, date):
-        pass
+        self.repo.get_by_column_value(Flights, Flights.origin_country_id, origin_country_id).filter((Flights.desitnation_country_id == destination_country_id) and (Flights.departure_time == date)).all()
 
     def get_all_airlines(self):
         print(self.repo.get_all(AirlineCompanies))

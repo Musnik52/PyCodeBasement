@@ -11,7 +11,7 @@ repo = DbRepo(local_session)
 class AdministratorFacade(FacadeBase):
 
     def __init__(self):
-        super().__init__
+        super().__init__(repo)
 
     def get_all_customers(self):
         print(repo.get_all(Customers))
