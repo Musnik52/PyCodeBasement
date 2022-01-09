@@ -10,6 +10,7 @@ class Tickets(Base):
     id = Column(BigInteger(), primary_key=True, autoincrement=True)
     flight_id = Column(BigInteger(), ForeignKey('flights.id'), nullable=False)
     customer_id = Column(BigInteger(), ForeignKey('customers.id'), nullable=False)
+    
     flights = relationship('Flights', backref=backref('tickets', uselist=True))
     customers = relationship('Customers', backref=backref('tickets', uselist=True))
 

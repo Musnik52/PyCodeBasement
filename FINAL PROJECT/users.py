@@ -1,5 +1,6 @@
 from sqlalchemy.sql.schema import ForeignKey
 from sqlalchemy.sql.sqltypes import BigInteger, Text
+from sqlalchemy.orm import backref, relationship
 from db_config import Base
 from sqlalchemy import Column, Integer
 
@@ -11,6 +12,8 @@ class Users(Base):
     password = Column(Text(), nullable=False)
     email = Column(Text(), nullable=False, unique=True)
     user_role = Column(Integer(), ForeignKey('user_roles.id'), unique=False, nullable=False)
+
+    userrole = relationship("UserRoles", backref=backref("users", uselist=True))
 
     def __repr__(self):
         return f'\n<User id={self.id} Username={self.username} Password={self.password} Email={self.email} User role={self.user_role}>'
