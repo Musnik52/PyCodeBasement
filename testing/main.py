@@ -40,8 +40,7 @@ def test_div_by_zero_expect_error():
 
 def test_sal_correct():
     salary = SalaryInputs()
-    inp = 19990.0
-    amount = salary.get_salary(inp)
-    assert inp * 2 == amount
+    amount = 19990.0
+    assert salary.get_salary(amount) == amount * 2
 
 #to test: C:\git\pyCodeBasement\testing> python -m pytest main.py
