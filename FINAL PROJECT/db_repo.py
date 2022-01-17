@@ -1,5 +1,4 @@
 from sqlalchemy import asc, text, desc
-from sqlalchemy.sql.expression import table
 
 class DbRepo:
     def __init__(self, local_session):

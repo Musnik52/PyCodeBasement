@@ -7,7 +7,7 @@ class Administrators(Base):
     id = Column(BigInteger(), primary_key=True, autoincrement=True)
     first_name = Column(Text(), nullable=False)
     last_name = Column(Text(), nullable=False)
-    user_id = Column(BigInteger(), ForeignKey('users.id'), unique=True)
+    user_id = Column(BigInteger(), ForeignKey('users.id'), nullable=False, unique=True)
 
     __table_args__= (UniqueConstraint('first_name', 'last_name', name='una_1'),)
 
