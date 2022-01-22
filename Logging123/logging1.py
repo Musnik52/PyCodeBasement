@@ -1,6 +1,5 @@
 import datetime
 import logging
-import datetime as dt
 
 for handler in logging.root.handlers:
     logging.root.removeHandler(handler)
@@ -32,5 +31,4 @@ def repo_add_ticket(obj_ticket):
     try:
         pass
     except BaseException as e:
-        print_to_log.log(logging.ERROR, f'error during adding ticket : {obj_ticket},'\
-                         f'error: {e}')
+        print_to_log.log(logging.ERROR, f'error during adding ticket : {obj_ticket}, error: {e}')

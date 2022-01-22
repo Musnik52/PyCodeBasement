@@ -1,6 +1,11 @@
 from facade_base import FacadeBase
 from customers import Customers
 from tickets import Tickets
+from flights import Flights
+from error_ticket_not_found import TicketNotFound
+from error_customer_not_found import CustomerNotFound
+from error_no_more_tickets import NoMoreTicketsLeft
+from error_flight_not_found import FlightNotFound
 
 class CustomerFacade(FacadeBase):
 
@@ -8,16 +13,37 @@ class CustomerFacade(FacadeBase):
         super().__init__(repo)
 
     def update_customer(self, customer):
-        self.repo.update_by_id(Customers, Customers.id, customer.id, customer)
+        customer_id = int(input('Please enter customer ID: '))
+        if self.repo.get_by_id(Customers, customer_id) == None: raise CustomerNotFound
+        else: self.repo.update_by_id(Customers, Customers.id, customer_id, customer)
+
+    def add_customer(self, customer):
+        self.repo.add_all(customer)
+        #self.repo.add(user)
 
     def add_ticket(self, ticket):
-        self.repo.add(ticket)
+        try:
+            flight = super().get_flight_by_id(ticket.flight_id)
+            if flight == None: raise FlightNotFound
+            self.repo.add(ticket)
+            self.repo.update_by_id(Flights, Flights.id, ticket.flight_id, {'remaining_tickets': flight.remaining_tickets - 1})
+            flight = super().get_flight_by_id(ticket.flight_id)
+            if flight.remaining_tickets < 0: raise NoMoreTicketsLeft
+        except FlightNotFound as q: print(q, 'Flight not found. Check again!')
+        except NoMoreTicketsLeft as e:
+            print(e, 'No more tickets available.')
+            self.repo.update_by_id(Flights, Flights.id, ticket.flight_id, {'remaining_tickets': 0})
+            self.repo.delete_by_id(Tickets, Tickets.id, ticket.id)
+            print(f'{flight.remaining_tickets} tickets remain on flight {flight.id}')
+        except: print('Customer ID invalid. Please check again!')
 
     def remove_ticket(self, ticket):
-        self.repo.delete_by_id(Tickets, Tickets.id, ticket.id)
+        if self.repo.get_by_id(Tickets, ticket) == None: raise TicketNotFound
+        else: self.repo.delete_by_id(Tickets, Tickets.id, ticket)
 
     def get_ticket_by_customer(self, customer):
-        return self.repo.get_by_column_value(Tickets, Tickets.customer_id, customer.id)
+        if self.repo.get_by_id(Tickets, customer) == None: raise TicketNotFound
+        else: return self.repo.get_by_column_value(Tickets, Tickets.customer_id, customer)
 
     def __str__(self):
         return f'{super().__init__}'

@@ -1,4 +1,4 @@
-from sqlalchemy import asc, text, desc
+from sqlalchemy import asc, desc
 
 class DbRepo:
     def __init__(self, local_session):
@@ -17,7 +17,7 @@ class DbRepo:
         return self.local_session.query(table_class).filter(column_name == value).all()
 
     def get_by_id(self, table_class, id):
-        return self.local_session.query(table_class).get(id)
+        return self.local_session.get(table_class,id)
 
     def get_by_condition(self, table_class, cond):
         return cond(self.local_session.query(table_class)).all()
@@ -46,7 +46,7 @@ class DbRepo:
         print(f'{table_name} Deleted')
 
     def update_by_id(self, table_class, id_column_name, id, data):
-        self.local_session.query(table_class).filter(id_column_name == id).update(data)
+        self.local_session.query(table_class).filter(id_column_name == id).update(data)#data must be dict.
         self.local_session.commit()
         print('Updated')
 

@@ -1,7 +1,10 @@
 from sqlalchemy import create_engine
 from sqlalchemy.orm import declarative_base, sessionmaker
+from configparser import ConfigParser
 
-connection_string = 'postgresql+psycopg2://postgres:admin@localhost/Airlock'
+config = ConfigParser()
+config.read("c:/git/pyCodeBasement/FINAL PROJECT/config.conf")
+connection_string = config["db"]["conn_string"]
 Base = declarative_base()
 engine = create_engine(connection_string, echo=True)
 

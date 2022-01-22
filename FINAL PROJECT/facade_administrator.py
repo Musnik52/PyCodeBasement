@@ -2,7 +2,9 @@ from facade_base import FacadeBase
 from customers import Customers
 from airline_companies import AirlineCompanies
 from administrators import Administrators
-from flights import Flights
+from error_airline_not_found import AirlineNotFound
+from error_admin_not_found import AdminNotFound
+from error_customer_not_found import CustomerNotFound
 
 class AdministratorFacade(FacadeBase):
 
@@ -13,19 +15,22 @@ class AdministratorFacade(FacadeBase):
         return self.repo.get_all(Customers)
 
     def add_administrator(self, administrator):
-        self.repo.add(administrator)
-    
-    def add_all_administrators(self, admin_list):
-        self.repo.add_all(admin_list)
+        self.repo.add_all(administrator) #administrator must be list
 
+    def add_airline(self, airline):
+        self.repo.add_all(airline) #airline must be list
+    
     def remove_administrator(self, administrator):
-        self.repo.delete_by_id(Administrators, Administrators.id, administrator.id)
+        if self.repo.get_by_id(AdministratorFacade, administrator) == None: raise AdminNotFound
+        else: self.repo.delete_by_id(Administrators, Administrators.id, administrator)
 
     def remove_airline(self, airline):
-        self.repo.delete_by_id(AirlineCompanies, AirlineCompanies.id, airline.id)
+        if self.repo.get_by_id(AirlineCompanies, airline) == None: raise AirlineNotFound
+        else: self.repo.delete_by_id(AirlineCompanies, AirlineCompanies.id, airline)
 
     def remove_customer(self, customer):
-        self.repo.delete_by_id(Customers, Customers.id, customer.id)
+        if self.repo.get_by_id(Customers, customer) == None: raise CustomerNotFound
+        else: self.repo.delete_by_id(Customers, Customers.id, customer)
 
     def __str__(self):
         return f'{super().__init__}'

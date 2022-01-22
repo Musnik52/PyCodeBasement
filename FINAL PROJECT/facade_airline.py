@@ -1,10 +1,9 @@
 from facade_base import FacadeBase
-from db_config import local_session, create_all_entities
-from db_repo import DbRepo
 from airline_companies import AirlineCompanies
 from flights import Flights
-
-repo = DbRepo(local_session)
+from error_no_more_tickets import NoMoreTicketsLeft
+from error_airline_not_found import AirlineNotFound
+from error_flight_not_found import FlightNotFound
 
 class AirlineFacade(FacadeBase):
 
@@ -12,13 +11,25 @@ class AirlineFacade(FacadeBase):
         super().__init__(repo)
 
     def get_flights_by_airline(self, airline):
-        return self.repo.get_by_column_value(Flights, Flights.airline_company_id, airline.id)
+        if self.repo.get_by_id(AirlineCompanies, airline) == None: raise AirlineNotFound
+        else: return self.repo.get_by_column_value(Flights, Flights.airline_company_id, airline)
+
+    def add_flight(self, flight):
+        self.repo.add_all(flight) #flight must be list
 
     def update_airline(self, airline):
-        self.repo.update_by_id(AirlineCompanies, AirlineCompanies.id, airline.id, airline)
+        airline_id = int(input('Please enter the airline ID number: '))
+        if super().get_airline_by_id(airline_id) == None: raise AirlineNotFound
+        else: self.repo.update_by_id(AirlineCompanies, AirlineCompanies.id, airline_id, airline)
 
     def update_flight(self, flight):
-        self.repo.update_by_id(Flights, Flights.id, flight.id, flight)
+        if flight['remaining_tickets'] < 0: raise NoMoreTicketsLeft
+        else:
+            flight_id = int(input('Please enter the flight ID: '))
+            if super().get_flight_by_id(flight_id) == None: raise FlightNotFound 
+            else: 
+                self.repo.update_by_id(Flights, Flights.id, flight_id, flight) #flight must be dictionary
+                print(f'{flight["remaining_tickets"]} remaining ticket(s) on flight #{flight_id}')
 
     def __str__(self):
         return f'{super().__init__}'

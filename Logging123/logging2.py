@@ -2,11 +2,12 @@ import datetime as dt
 from configparser import ConfigParser
 import logging
 
-#for handler in logging.root.handlers:
-#    logging.root.removeHandler(handler)
+for handler in logging.root.handlers:
+    logging.root.removeHandler(handler)
 config = ConfigParser()
-config.read("config.conf")
-LOG_LEVEL = config["logging"]["level"]
+config.read("c:/git/pyCodeBasement/Logging123/config.conf")
+LOG_LEVEL = config["lo"]["level"]
+print(LOG_LEVEL)
 LOG_FILE_NAME_PREFIX = config["logging"]["logfile_name_prefix"]
 LOG_FILE_NAME_EXT = config["logging"]["logfile_name_ext"]
 
@@ -23,7 +24,7 @@ logger = logging.getLogger("-admin facade-")
 logging.info('info message')
 
 def print_to_log(level, msg):
-    logger.log(level, f'{datetime.datetime.now()} {logging.getLevelName(level)} {msg}')
+    logger.log(level, f'{dt.datetime.now()} {logging.getLevelName(level)} {msg}')
 
 file_handler = logging.FileHandler(filename)
 file_handler.setLevel(logging.DEBUG)
