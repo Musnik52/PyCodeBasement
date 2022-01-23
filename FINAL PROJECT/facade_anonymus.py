@@ -18,10 +18,10 @@ class AnonymusFacade(FacadeBase):
             if user.user_role == 1: return AdministratorFacade()
             elif user.user_role == 2: return AirlineCompanies()
             elif user.user_role == 3: return CustomerFacade()
-            else: print('Invalid user - role') 
+            else: print('Invalid user role!') 
 
     def create_user(self, user):
-        self.repo.add_all(user) #user must be list
+        self.repo.add(user)
 
     def __str__(self):
         return f'{super().__init__}'

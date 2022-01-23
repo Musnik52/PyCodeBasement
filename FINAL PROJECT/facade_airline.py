@@ -4,6 +4,8 @@ from flights import Flights
 from error_no_more_tickets import NoMoreTicketsLeft
 from error_airline_not_found import AirlineNotFound
 from error_flight_not_found import FlightNotFound
+from error_invalid_time import InvalidTime
+from error_invalid_location import InvalidLocation
 
 class AirlineFacade(FacadeBase):
 
@@ -15,7 +17,9 @@ class AirlineFacade(FacadeBase):
         else: return self.repo.get_by_column_value(Flights, Flights.airline_company_id, airline)
 
     def add_flight(self, flight):
-        self.repo.add_all(flight) #flight must be list
+        if flight.departure_time > flight.landing_time: raise InvalidTime
+        elif flight.origin_country_id == flight.destination_country_id: raise InvalidLocation
+        else: self.repo.add(flight)
 
     def update_airline(self, airline):
         airline_id = int(input('Please enter the airline ID number: '))

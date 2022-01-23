@@ -19,6 +19,9 @@ class AdministratorFacade(FacadeBase):
 
     def add_airline(self, airline):
         self.repo.add_all(airline) #airline must be list
+
+    def add_user_roles(self, user_roles):
+        self.repo.add_all(user_roles)
     
     def remove_administrator(self, administrator):
         if self.repo.get_by_id(AdministratorFacade, administrator) == None: raise AdminNotFound

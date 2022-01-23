@@ -31,10 +31,9 @@ class CustomerFacade(FacadeBase):
             if flight.remaining_tickets < 0: raise NoMoreTicketsLeft
         except FlightNotFound as q: print(q, 'Flight not found. Check again!')
         except NoMoreTicketsLeft as e:
-            print(e, 'No more tickets available.')
             self.repo.update_by_id(Flights, Flights.id, ticket.flight_id, {'remaining_tickets': 0})
             self.repo.delete_by_id(Tickets, Tickets.id, ticket.id)
-            print(f'{flight.remaining_tickets} tickets remain on flight {flight.id}')
+            print(e, 'No more tickets available.')
         except: print('Customer ID invalid. Please check again!')
 
     def remove_ticket(self, ticket):
@@ -42,7 +41,7 @@ class CustomerFacade(FacadeBase):
         else: self.repo.delete_by_id(Tickets, Tickets.id, ticket)
 
     def get_ticket_by_customer(self, customer):
-        if self.repo.get_by_id(Tickets, customer) == None: raise TicketNotFound
+        if self.repo.get_by_column_value(Tickets, Tickets.customer_id, customer) == None: raise TicketNotFound
         else: return self.repo.get_by_column_value(Tickets, Tickets.customer_id, customer)
 
     def __str__(self):

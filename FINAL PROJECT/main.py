@@ -36,18 +36,25 @@ create_all_entities()
 #insert data - initial
 repo.add_all([  Countries(name='israel'), 
                 Countries(name='russia')])
-repo.add_all([  UserRoles(role_name='administrator'),
-                UserRoles(role_name='airline company'), 
-                UserRoles(role_name='customer')])
-anonymus_facade.create_user([   Users(username='lior420', password='lior1999', email='lior@jb.com', user_role=1), 
-                                Users(username='boris52', password='boris1992', email='boris@jb.com', user_role=2)])
-admin_facade.add_airline([      AirlineCompanies(name='bazooka air', country_id=1, user_id=1), 
-                                AirlineCompanies(name='sky high', country_id=2, user_id=2)])
+admin_facade.add_user_roles([   UserRoles(role_name='administrator'),
+                                UserRoles(role_name='airline company'), 
+                                UserRoles(role_name='customer')])
+anonymus_facade.create_user(    Users(username='l10r', password='lior1999', email='lior@jb.com', user_role=1))
+anonymus_facade.create_user(    Users(username='sh4ch4r', password='18031991', email='shachar@jb.com', user_role=1)) 
+anonymus_facade.create_user(    Users(username='b0r15', password='boris1992', email='boris@jb.com', user_role=2))
+anonymus_facade.create_user(    Users(username='m4x1m', password='2themax', email='max@jb.com', user_role=2))
+anonymus_facade.create_user(    Users(username='k0sta', password='1kosta1', email='kosta@jb.com', user_role=3))
+anonymus_facade.create_user(    Users(username='em1l', password='e0m1i2l', email='emil@jb.com', user_role=3))
+admin_facade.add_airline([      AirlineCompanies(name='bazooka air', country_id=1, user_id=3), 
+                                AirlineCompanies(name='sky high', country_id=2, user_id=4)])
 admin_facade.add_administrator([Administrators(first_name='lior', last_name='musnik', user_id=2),
-                                Administrators(first_name='boris', last_name='musnikov', user_id=1)]) 
-customer_facade.add_customer([  Customers(first_name='shachar', last_name='harush', address='rashi 31', phone_number='0507897765', credit_card_number='13323432', user_id=1), 
-                                Customers(first_name='max', last_name='gendalev', address='amsterdam 32', phone_number='0523452231', credit_card_number='13245678', user_id=2)])
-airline_facade.add_flight([     Flights(airline_company_id=1, origin_country_id=1, desitnation_country_id=2, departure_time=datetime.now(), landing_time=datetime(2022, 10, 4, 14, 29, 1), remaining_tickets=3),
-                                Flights(airline_company_id=2, origin_country_id=2, desitnation_country_id=1, departure_time=datetime.now(), landing_time=datetime(2022, 12, 4, 23, 29, 1), remaining_tickets=432)])
+                                Administrators(first_name='shachar', last_name='harush', user_id=1)]) 
+customer_facade.add_customer([  Customers(first_name='kosta', last_name='makarkov', address='rashi 31', phone_number='0507897765', credit_card_number='13323432', user_id=5), 
+                                Customers(first_name='emil', last_name='tayeb', address='amsterdam 32', phone_number='0523452231', credit_card_number='13245678', user_id=6)])
+airline_facade.add_flight(      Flights(airline_company_id=1, origin_country_id=1, destination_country_id=2, departure_time=datetime(2022, 3, 1, 10, 10, 10), landing_time=datetime(2022, 10, 4, 14, 29, 1), remaining_tickets=3))
+airline_facade.add_flight(      Flights(airline_company_id=2, origin_country_id=2, destination_country_id=1, departure_time=datetime(2022, 3, 18, 10, 12, 10), landing_time=datetime(2022, 12, 4, 23, 29, 1), remaining_tickets=432))
 customer_facade.add_ticket(     Tickets(flight_id=1, customer_id=1))
 customer_facade.add_ticket(     Tickets(flight_id=2, customer_id=2))
+
+print('DONE')
+#print(customer_facade.get_flights_by_parameters(1, 2, datetime.now()))
