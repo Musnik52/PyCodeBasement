@@ -2,10 +2,12 @@ from facade_base import FacadeBase
 from customers import Customers
 from tickets import Tickets
 from flights import Flights
+from users import Users
 from error_ticket_not_found import TicketNotFound
 from error_customer_not_found import CustomerNotFound
 from error_no_more_tickets import NoMoreTicketsLeft
 from error_flight_not_found import FlightNotFound
+from error_unauthorized_user_id import UnauthorizedUserID
 
 class CustomerFacade(FacadeBase):
 
@@ -18,8 +20,9 @@ class CustomerFacade(FacadeBase):
         else: self.repo.update_by_id(Customers, Customers.id, customer_id, customer)
 
     def add_customer(self, customer):
-        self.repo.add_all(customer)
-        #self.repo.add(user)
+        user = self.repo.get_by_id(Users, customer.user_id)
+        if user.user_role == 3: self.repo.add(customer)
+        else: raise UnauthorizedUserID
 
     def add_ticket(self, ticket):
         try:

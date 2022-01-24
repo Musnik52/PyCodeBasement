@@ -1,10 +1,12 @@
 from facade_base import FacadeBase
 from customers import Customers
+from users import Users
 from airline_companies import AirlineCompanies
 from administrators import Administrators
 from error_airline_not_found import AirlineNotFound
 from error_admin_not_found import AdminNotFound
 from error_customer_not_found import CustomerNotFound
+from error_unauthorized_user_id import UnauthorizedUserID
 
 class AdministratorFacade(FacadeBase):
 
@@ -15,10 +17,14 @@ class AdministratorFacade(FacadeBase):
         return self.repo.get_all(Customers)
 
     def add_administrator(self, administrator):
-        self.repo.add_all(administrator) #administrator must be list
+        user = self.repo.get_by_id(Users, administrator.user_id)
+        if user.user_role == 1: self.repo.add(administrator)
+        else: raise UnauthorizedUserID
 
     def add_airline(self, airline):
-        self.repo.add_all(airline) #airline must be list
+        user = self.repo.get_by_id(Users, airline.user_id)
+        if user.user_role == 2: self.repo.add(airline)
+        else: raise UnauthorizedUserID
 
     def add_user_roles(self, user_roles):
         self.repo.add_all(user_roles)

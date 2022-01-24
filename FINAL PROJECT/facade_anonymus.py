@@ -4,6 +4,8 @@ from facade_customer import CustomerFacade
 from facade_administrator import AdministratorFacade
 from airline_companies import AirlineCompanies
 from error_user_not_found import UsernameNotFound
+from error_user_exists import UserAlreadyExists
+from error_short_password import PasswordTooShort
 
 class AnonymusFacade(FacadeBase):
 
@@ -21,7 +23,9 @@ class AnonymusFacade(FacadeBase):
             else: print('Invalid user role!') 
 
     def create_user(self, user):
-        self.repo.add(user)
+        if self.repo.get_by_column_value(Users, Users.username, user.username) == user.username: raise UserAlreadyExists
+        elif len(user.password) < 6: raise PasswordTooShort
+        else: self.repo.add(user)
 
     def __str__(self):
         return f'{super().__init__}'
