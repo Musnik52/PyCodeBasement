@@ -7,6 +7,7 @@ from error_airline_not_found import AirlineNotFound
 from error_admin_not_found import AdminNotFound
 from error_customer_not_found import CustomerNotFound
 from error_unauthorized_user_id import UnauthorizedUserID
+from error_user_exists import UserAlreadyExists
 
 class AdministratorFacade(FacadeBase):
 
@@ -16,18 +17,33 @@ class AdministratorFacade(FacadeBase):
     def get_all_customers(self):
         return self.repo.get_all(Customers)
 
-    def add_administrator(self, administrator):
-        user = self.repo.get_by_id(Users, administrator.user_id)
-        if user.user_role == 1: self.repo.add(administrator)
+    def add_administrator(self, administrator, user):
+        if self.repo.get_by_id(Users, administrator.user_id) != None: raise UserAlreadyExists
+        elif user.user_role == 1: 
+            super().create_user(user)
+            self.repo.add(administrator)
         else: raise UnauthorizedUserID
+        #try-Catch inc!
 
-    def add_airline(self, airline):
-        user = self.repo.get_by_id(Users, airline.user_id)
-        if user.user_role == 2: self.repo.add(airline)
+    def add_airline(self, airline, user):
+        if self.repo.get_by_id(Users, airline.user_id) != None: raise UserAlreadyExists
+        elif user.user_role == 2: 
+            super().create_user(user)
+            self.repo.add(airline)
         else: raise UnauthorizedUserID
+        #try-Catch inc!
+
+    def add_customer(self, customer, user):
+        if self.repo.get_by_id(Users, customer.user_id) != None: raise UserAlreadyExists
+        elif user.user_role == 3: 
+            super().create_user(user)
+            self.repo.add(customer)
+        else: raise UnauthorizedUserID
+        #try-Catch inc!
 
     def add_user_roles(self, user_roles):
         self.repo.add_all(user_roles)
+        #redundant
     
     def remove_administrator(self, administrator):
         if self.repo.get_by_id(AdministratorFacade, administrator) == None: raise AdminNotFound

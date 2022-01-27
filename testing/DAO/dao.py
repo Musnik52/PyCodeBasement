@@ -33,7 +33,3 @@ def test_get_all(dao_connection):
 
 def test_get_first(dao_connection):
     assert dao_connection.get_first() == [1]
-
-'''
-
-'''

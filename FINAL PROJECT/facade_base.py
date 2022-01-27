@@ -2,6 +2,7 @@ from abc import ABC, abstractmethod
 from flights import Flights
 from airline_companies import AirlineCompanies
 from countries import Countries
+from error_short_password import PasswordTooShort
 from error_airline_not_found import AirlineNotFound
 from error_flight_not_found import FlightNotFound
 
@@ -33,6 +34,10 @@ class FacadeBase(ABC):
 
     def get_country_by_id(self, id):
         return self.repo.get_by_id(Countries, id)
+
+    def create_user(self, user):
+        if len(user.password) < 6: raise PasswordTooShort
+        else: self.repo.add(user)
 
     def __str__(self):
         return f'REPOSITORY: {self.repo}'
