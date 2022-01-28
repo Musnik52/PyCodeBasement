@@ -56,7 +56,7 @@ def main():
     airline_facade.add_flight(      Flights(airline_company_id=2, origin_country_id=2, destination_country_id=1, departure_time=datetime(2022, 3, 18, 10, 12, 10), landing_time=datetime(2022, 12, 4, 23, 29, 1), remaining_tickets=432))
     customer_facade.add_ticket(     Tickets(flight_id=1, customer_id=1))
     customer_facade.add_ticket(     Tickets(flight_id=2, customer_id=2))
-    airline_facade.update_flight({'remaining_tickets': -3},1)
+    airline_facade.update_flight(   {'remaining_tickets': 0}, 4)
 
 main()
 print('DONE')

@@ -16,13 +16,12 @@ class AnonymusFacade(FacadeBase):
 
     def login(self, username, password):
         user = self.repo.get_by_column_value(Users, Users.username, username)
-        if user.username != username:
-            raise UsernameNotFound
-        if user.password == password:
-            token = LoginToken(user)
-            if user.user_role == 1: return (AdministratorFacade(), token)
-            elif user.user_role == 2: return (AirlineCompanies(), token)
-            elif user.user_role == 3: return (CustomerFacade(), token)
+        if user.username != username: raise UsernameNotFound
+        elif user.password == password:
+            #token = LoginToken(user)
+            if user.user_role == 1: return AdministratorFacade() # (AdministratorFacade(), token)
+            elif user.user_role == 2: return AirlineCompanies() # (AirlineCompanies(), token)
+            elif user.user_role == 3: return CustomerFacade() # (CustomerFacade(), token)
             else: print('Invalid user role!')
         else: raise InvalidPassword
 
