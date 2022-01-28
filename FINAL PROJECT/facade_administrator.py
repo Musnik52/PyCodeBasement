@@ -40,22 +40,30 @@ class AdministratorFacade(FacadeBase):
             self.repo.add(customer)
         else: raise UnauthorizedUserID
         #try-Catch inc!
-
-    def add_user_roles(self, user_roles):
-        self.repo.add_all(user_roles)
-        #redundant
     
     def remove_administrator(self, administrator):
-        if self.repo.get_by_id(AdministratorFacade, administrator) == None: raise AdminNotFound
-        else: self.repo.delete_by_id(Administrators, Administrators.id, administrator)
+        admin = self.repo.get_by_id(Administrators, administrator)
+        if admin == None: raise AdminNotFound
+        else: 
+            admin_user_id = admin.user_id
+            self.repo.delete_by_id(Administrators, Administrators.id, administrator)
+            self.repo.delete_by_id(Users, Users.id, admin_user_id)
 
     def remove_airline(self, airline):
-        if self.repo.get_by_id(AirlineCompanies, airline) == None: raise AirlineNotFound
-        else: self.repo.delete_by_id(AirlineCompanies, AirlineCompanies.id, airline)
+        airline1 = self.repo.get_by_id(AirlineCompanies, airline)
+        if airline1 == None: raise AirlineNotFound
+        else: 
+            airline_user_id = airline1.user_id
+            self.repo.delete_by_id(AirlineCompanies, AirlineCompanies.id, airline)
+            self.repo.delete_by_id(Users, Users.id, airline_user_id)
 
     def remove_customer(self, customer):
-        if self.repo.get_by_id(Customers, customer) == None: raise CustomerNotFound
-        else: self.repo.delete_by_id(Customers, Customers.id, customer)
+        customer1 = self.repo.get_by_id(Customers, customer)
+        if customer1 == None: raise CustomerNotFound
+        else: 
+            customer1_user_id = customer1.user_id
+            self.repo.delete_by_id(Customers, Customers.id, customer)
+            self.repo.delete_by_id(Users, Users.id, customer1_user_id)
 
     def __str__(self):
         return f'{super().__init__}'
