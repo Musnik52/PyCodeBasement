@@ -39,7 +39,7 @@ def test_not_get_flights_by_airline(dao_connection):
 
 def test_add_flight(dao_connection):
     flight = Flights(airline_company_id=2, origin_country_id=1, destination_country_id=2, departure_time=datetime(2022, 1, 4, 10, 10, 10), landing_time=datetime(2022, 1, 24, 10, 29, 1), remaining_tickets=44)
-    airline_facade.add_flight(flight)
+    dao_connection.add_flight(flight)
     assert repo.get_by_id(Flights, 3) != None
 
 def test_not_add_flight(dao_connection):

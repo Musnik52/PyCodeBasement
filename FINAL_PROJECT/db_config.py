@@ -3,7 +3,7 @@ from sqlalchemy.orm import declarative_base, sessionmaker
 from configparser import ConfigParser
 
 config = ConfigParser()
-config.read("c:/git/pyCodeBasement/FINAL PROJECT/config.conf")
+config.read("c:/git/pyCodeBasement/FINAL_PROJECT/config.conf")
 connection_string = config["db"]["conn_string"]
 Base = declarative_base()
 engine = create_engine(connection_string, echo=True)
