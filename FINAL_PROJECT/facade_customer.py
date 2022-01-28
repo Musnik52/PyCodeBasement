@@ -12,8 +12,7 @@ class CustomerFacade(FacadeBase):
     def __init__(self, repo):
         super().__init__(repo)
 
-    def update_customer(self, customer):
-        customer_id = int(input('Please enter customer ID: '))
+    def update_customer(self, customer, customer_id):
         if self.repo.get_by_id(Customers, customer_id) == None: raise CustomerNotFound
         else: self.repo.update_by_id(Customers, Customers.id, customer_id, customer)
 
