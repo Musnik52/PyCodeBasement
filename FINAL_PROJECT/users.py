@@ -9,9 +9,9 @@ class Users(Base):
     username = Column(Text(), nullable=False, unique=True)
     password = Column(Text(), nullable=False)
     email = Column(Text(), nullable=False, unique=True)
-    user_role = Column(Integer(), ForeignKey('user_roles.id'), unique=False, nullable=False)
+    user_role = Column(Integer(), ForeignKey('user_roles.id', ondelete='CASCADE'), unique=False, nullable=False)
 
-    userrole = relationship("UserRoles", backref=backref("users", uselist=True))
+    userrole = relationship("UserRoles", backref=backref("users", uselist=True, passive_deletes=True))
 
     def __repr__(self):
         return f'\n<User id={self.id} Username={self.username} Password={self.password} Email={self.email} User role={self.user_role}>'

@@ -1,4 +1,13 @@
 from sqlalchemy import asc, desc
+from datetime import datetime
+from airline_companies import AirlineCompanies
+from customers import Customers
+from countries import Countries
+from users import Users
+from flights import Flights
+from tickets import Tickets
+from user_roles import UserRoles
+from administrators import Administrators
 
 class DbRepo:
     def __init__(self, local_session):
@@ -45,10 +54,68 @@ class DbRepo:
         self.local_session.commit()
         print(f'{table_name} Deleted')
 
+    def delete_all_tables(self):
+        self.delete_table('countries')
+        self.delete_table('flights')
+        self.delete_table('tickets')
+        self.delete_table('airline_companies')
+        self.delete_table('administrators')
+        self.delete_table('customers')
+        self.delete_table('users')
+        self.delete_table('user_roles')
+
     def update_by_id(self, table_class, id_column_name, id, data):
         self.local_session.query(table_class).filter(id_column_name == id).update(data)#data must be dict.
         self.local_session.commit()
         print('Updated')
 
     def reset_auto_inc(self, table_class):
-        self.local_session.execute(f'TRUNCATE TABLE {table_class.__tablename__} RESTART IDENTITY')
+        self.local_session.execute(f'TRUNCATE TABLE {table_class.__tablename__} RESTART IDENTITY CASCADE')
+    
+    def reset_db(self):
+        self.reset_auto_inc(Countries)
+        self.reset_auto_inc(Users)
+        self.reset_auto_inc(AirlineCompanies)
+        self.reset_auto_inc(Customers)
+        self.reset_auto_inc(Flights)
+        self.reset_auto_inc(Tickets)
+        self.reset_auto_inc(Administrators)
+        self.reset_auto_inc(UserRoles)
+        self.add_all([  Countries(name='israel'), 
+                        Countries(name='russia'),
+                        Countries(name='france')])
+        self.add_all([  UserRoles(role_name='administrator'),
+                        UserRoles(role_name='airline company'), 
+                        UserRoles(role_name='customer')])
+        self.add_all([  Users(username='b0r1s', password='boris1992', email='boris@jb.com', user_role=2), 
+                        Users(username='m4x1m', password='2themax', email='max@jb.com', user_role=2),
+                        Users(username='l10r', password='lior1999', email='lior@jb.com', user_role=1),
+                        Users(username='sh4ch4r', password='18031991', email='shachar@jb.com', user_role=1), 
+                        Users(username='k0st4', password='1kosta1', email='kosta@jb.com', user_role=3),
+                        Users(username='3m1l', password='e0m1i2l', email='emil@jb.com', user_role=3),
+                        Users(username='y4h4v', password='y4h4av5ch', email='yahav@jb.com', user_role=3)])
+        self.add_all([  AirlineCompanies(name='bazooka air', country_id=1, user_id=1),
+                        AirlineCompanies(name='sky high', country_id=2, user_id=2)])
+        self.add_all([  Administrators(first_name='lior', last_name='musnik', user_id=3),
+                        Administrators(first_name='shachar', last_name='harush', user_id=4)])
+        self.add_all([  Customers(first_name='kosta', last_name='makarkov', address='rashi 31', phone_number='0507897765', credit_card_number='13323432', user_id=5),
+                        Customers(first_name='emil', last_name='tayeb', address='amsterdam 32', phone_number='0523452231', credit_card_number='13245678', user_id=6), 
+                        Customers(first_name='yahav', last_name='schwartz', address='lachish 32', phone_number='04786367899', credit_card_number='1342455678', user_id=7)])
+        self.add_all([  Flights(airline_company_id=1, origin_country_id=1, destination_country_id=2, departure_time=datetime(2022, 1, 1, 10, 10, 10), landing_time=datetime(2022, 1, 24, 10, 29, 1), remaining_tickets=3),
+                        Flights(airline_company_id=2, origin_country_id=2, destination_country_id=1, departure_time=datetime(2022, 3, 18, 10, 12, 10), landing_time=datetime(2022, 12, 4, 23, 29, 1), remaining_tickets=0),
+                        Flights(airline_company_id=2, origin_country_id=3, destination_country_id=2, departure_time=datetime(2022, 1, 2, 10, 12, 10), landing_time=datetime(2022, 1, 24, 10, 29, 1), remaining_tickets=400)])
+        self.add_all([  Tickets(flight_id=1, customer_id=1),
+                        Tickets(flight_id=1, customer_id=2),
+                        Tickets(flight_id=3, customer_id=2)])
+'''
+    def create_all_sp(self, file):
+            try:
+                with open(file, 'r') as sp_file:
+                    queries = sp_file.read().split('|||')
+                for query in queries:
+                    self.local_session.execute(query)
+                self.local_session.commit()
+                self.logger.logger.debug(f'all sp from {file} were created.')
+            except FileNotFoundError:
+                self.logger.logger.critical(f'Tried to create all sp from the the file "{file}" but file was not found')
+'''

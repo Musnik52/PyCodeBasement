@@ -1,49 +1,58 @@
 import pytest
-import datetime
-import time
 from db_config import local_session
 from db_repo import DbRepo
 from facade_airline import AirlineFacade
 from facade_administrator import AdministratorFacade
 from facade_anonymus import AnonymusFacade
 from facade_customer import CustomerFacade
-from countries import Countries
-from flights import Flights
 from tickets import Tickets
-from airline_companies import AirlineCompanies
-from customers import Customers
-from users import Users
-from user_roles import UserRoles
-from administrators import Administrators 
-from main import main
-from configparser import ConfigParser
-from error_invalid_time import InvalidTime
-from error_invalid_location import InvalidLocation
-from error_invalid_remaining_tickets import InvalidRemainingTickets
-from error_user_exists import UserAlreadyExists
-from error_short_password import PasswordTooShort
-from error_unauthorized_user_id import UnauthorizedUserID
-from error_admin_not_found import AdminNotFound
-from error_airline_not_found import AirlineNotFound
+from customers import Customers 
 from error_no_more_tickets import NoMoreTicketsLeft
 from error_flight_not_found import FlightNotFound
 from error_customer_not_found import CustomerNotFound
+from error_ticket_not_found import TicketNotFound
 
 repo = DbRepo(local_session)
-admin_facade = AdministratorFacade(repo)
-airline_facade = AirlineFacade (repo)
 anonymus_facade = AnonymusFacade(repo)
-customer_facade = CustomerFacade(repo)
 
 @pytest.fixture(scope='session')
-def dao_connection():
-    return customer_facade
+def customer_facade_object():
+    an_facade = AnonymusFacade(repo)
+    return an_facade.login('3m1l', 'e0m1i2l')
 
 @pytest.fixture(scope='function', autouse=True)
-def dao_init_before_each_test():
-    main()
+def customer_facade_clean():
+    repo.reset_db()
 
-def test_update_customer(dao_connection):
-    dao_connection.update_customer({'first_name': 'Samuel'}, 1) 
+def test_update_customer(customer_facade_object):
+    customer_facade_object.update_customer({'first_name': 'Samuel'}, 1) 
     assert repo.get_by_column_value(Customers, Customers.first_name, 'Samuel') != None
 
+def test_not_update_customer(customer_facade_object):
+    with pytest.raises(CustomerNotFound):
+        customer_facade_object.update_customer({'first_name': 'Samuel'}, 55) 
+    
+def test_add_ticket(customer_facade_object):
+    customer_facade_object.add_ticket(Tickets(id=999, flight_id=3, customer_id=1))
+    assert repo.get_by_id(Tickets, 999) != None
+    
+def test_not_add_ticket(customer_facade_object):
+    with pytest.raises(FlightNotFound):
+        customer_facade_object.add_ticket(Tickets(flight_id=4, customer_id=1))
+    with pytest.raises(NoMoreTicketsLeft):
+        customer_facade_object.add_ticket(Tickets(flight_id=2, customer_id=2))
+
+def test_remove_ticket(customer_facade_object):
+    customer_facade_object.remove_ticket(3)
+    assert repo.get_by_id(Tickets, 3) == None
+
+def test_not_remove_ticket(customer_facade_object):
+    with pytest.raises(TicketNotFound):
+        customer_facade_object.remove_ticket(45)
+
+def test_get_ticket_by_customer(customer_facade_object):
+    assert repo.get_by_column_value(Tickets, Tickets.customer_id, 2) == customer_facade_object.get_ticket_by_customer(2)
+
+def test_not_get_ticket_by_customer(customer_facade_object):
+    with pytest.raises(CustomerNotFound):
+        customer_facade_object.get_ticket_by_customer(4)
