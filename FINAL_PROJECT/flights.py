@@ -18,7 +18,7 @@ class Flights(Base):
     destination = relationship("Countries", foreign_keys = [destination_country_id] , uselist=True, passive_deletes=True)
 
     def __repr__(self):
-        return f'\n<Flight id={self.id} Airline Co. id={self.airline_company_id} Origin country id={self.origin_country_id} Desitnation country id={self.desitnation_country_id} Departure time={self.departure_time} Landing time={self.landing_time} Remaining tickets={self.remaining_tickets}>'
+        return f'\n<Flight id={self.id} Airline Co. id={self.airline_company_id} Origin country id={self.origin_country_id} Desitnation country id={self.destination_country_id} Departure time={self.departure_time} Landing time={self.landing_time} Remaining tickets={self.remaining_tickets}>'
 
     def __str__(self):
-        return f'<Flight id={self.id} Airline Co. id={self.airline_company_id} Origin country id={self.origin_country_id} Desitnation country id={self.desitnation_country_id} Departure time={self.departure_time} Landing time={self.landing_time} Remaining tickets={self.remaining_tickets}>'
+        return f'<Flight id={self.id} Airline Co. id={self.airline_company_id} Origin country id={self.origin_country_id} Desitnation country id={self.destination_country_id} Departure time={self.departure_time} Landing time={self.landing_time} Remaining tickets={self.remaining_tickets}>'

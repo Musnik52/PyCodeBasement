@@ -1,5 +1,6 @@
 from facade_base import FacadeBase
 from users import Users
+from customers import Customers
 from login_token import LoginToken
 from facade_customer import CustomerFacade
 from facade_administrator import AdministratorFacade
@@ -8,6 +9,7 @@ from error_user_not_found import UsernameNotFound
 from error_unauthorized_user_id import UnauthorizedUserID
 from error_user_exists import UserAlreadyExists
 from error_invalid_password import InvalidPassword
+from error_invalid_input import InvalidInput
 
 class AnonymusFacade(FacadeBase):
 
@@ -15,6 +17,8 @@ class AnonymusFacade(FacadeBase):
         super().__init__(repo)
 
     def login(self, username, password):
+        if not isinstance(username, str): raise InvalidInput('username must be string!')
+        elif not isinstance(password, str): raise InvalidInput('password must be a string!')
         user = self.repo.get_by_column_value(Users, Users.username, username)
         if not self.repo.get_by_column_value(Users, Users.username, username): raise UsernameNotFound
         elif not self.repo.get_by_column_value(Users, Users.password, password): raise InvalidPassword
@@ -25,7 +29,9 @@ class AnonymusFacade(FacadeBase):
             else: print('Invalid user-role assigned!')
 
     def add_customer(self, customer, user):
-        if self.repo.get_by_id(Users, customer.user_id) != None: raise UserAlreadyExists
+        if not isinstance(customer, Customers): raise InvalidInput('Customer must be a "Customers" object!')
+        elif not isinstance(user, Users): raise InvalidInput('user must be a "Users" object!')
+        elif self.repo.get_by_id(Users, customer.user_id) != None: raise UserAlreadyExists
         elif user.user_role == 3: 
             super().create_user(user)
             self.repo.add(customer)

@@ -12,6 +12,7 @@ from error_unauthorized_user_id import UnauthorizedUserID
 from error_admin_not_found import AdminNotFound
 from error_airline_not_found import AirlineNotFound
 from error_customer_not_found import CustomerNotFound
+from error_invalid_input import InvalidInput
 
 repo = DbRepo(local_session)
 anonymus_facade = AnonymusFacade(repo)
@@ -25,7 +26,7 @@ def admin_facade_object():
 def admin_facade_clean():
     repo.reset_db()
 
-def test_get_all_customers(admin_facade_object):
+def get_all_customers(admin_facade_object):
     assert admin_facade_object.get_all_customers() == repo.get_all(Customers)
 
 def test_add_administrator(admin_facade_object):
@@ -36,6 +37,14 @@ def test_add_administrator(admin_facade_object):
     assert repo.get_by_column_value(Users, Users.username, 'testl10r') != None
 
 def test_not_add_administrator(admin_facade_object):
+    with pytest.raises(InvalidInput):
+        expected_admin = Administrators(first_name='testlior', last_name='testmusnik', user_id=3)
+        expected_user = "Users(username='testl10r', password='1234545678', email='testlior@jb.com', user_role=1)"
+        admin_facade_object.add_administrator(expected_admin, expected_user)
+    with pytest.raises(InvalidInput):
+        expected_admin = "Administrators(first_name='testlior', last_name='testmusnik', user_id=3)"
+        expected_user = Users(username='testl10r', password='1234545678', email='testlior@jb.com', user_role=1)
+        admin_facade_object.add_administrator(expected_admin, expected_user)
     with pytest.raises(UserAlreadyExists):
         expected_admin = Administrators(first_name='testlior', last_name='testmusnik', user_id=3)
         expected_user = Users(username='testl10r', password='1234545678', email='testlior@jb.com', user_role=1)
@@ -57,6 +66,14 @@ def test_add_airline(admin_facade_object):
     assert repo.get_by_column_value(Users, Users.username, 'testb0r1s') != None
 
 def test_not_add_airline(admin_facade_object):
+    with pytest.raises(InvalidInput):
+        expected_airline = AirlineCompanies(name='testbazooka air', country_id=1, user_id=2)
+        expected_user = "Users(username='testb0r1s', password='boris1992', email='testboris@jb.com', user_role=2)"
+        admin_facade_object.add_airline(expected_airline, expected_user)
+    with pytest.raises(InvalidInput):
+        expected_airline = "AirlineCompanies(name='testbazooka air', country_id=1, user_id=2)"
+        expected_user = Users(username='testb0r1s', password='boris1992', email='testboris@jb.com', user_role=2)
+        admin_facade_object.add_airline(expected_airline, expected_user)
     with pytest.raises(UserAlreadyExists):
         expected_airline = AirlineCompanies(name='testbazooka air', country_id=1, user_id=2)
         expected_user = Users(username='testb0r1s', password='boris1992', email='testboris@jb.com', user_role=2)
@@ -78,6 +95,14 @@ def test_add_customer(admin_facade_object):
     assert repo.get_by_column_value(Users, Users.username, 'testk0st4') != None
 
 def test_not_add_customer(admin_facade_object):
+    with pytest.raises(InvalidInput):
+        expected_customer = "Customers(first_name='testkosta', last_name='testmakarkov', address='testrashi 31', phone_number='test0507897765', credit_card_number='test13323432', user_id=3)"
+        expected_user = Users(username='testk0st4', password='test1kosta1', email='testkosta@jb.com', user_role=3)
+        admin_facade_object.add_customer(expected_customer, expected_user)
+    with pytest.raises(InvalidInput):
+        expected_customer = Customers(first_name='testkosta', last_name='testmakarkov', address='testrashi 31', phone_number='test0507897765', credit_card_number='test13323432', user_id=3)
+        expected_user = "Users(username='testk0st4', password='test1kosta1', email='testkosta@jb.com', user_role=3)"
+        admin_facade_object.add_customer(expected_customer, expected_user)
     with pytest.raises(UserAlreadyExists):
         expected_customer = Customers(first_name='testkosta', last_name='testmakarkov', address='testrashi 31', phone_number='test0507897765', credit_card_number='test13323432', user_id=3)
         expected_user = Users(username='testk0st4', password='test1kosta1', email='testkosta@jb.com', user_role=3)
@@ -97,6 +122,8 @@ def test_remove_administrator(admin_facade_object):
     assert repo.get_by_id(Users, 3) == None
 
 def test_not_remove_administrator(admin_facade_object):
+    with pytest.raises(InvalidInput):
+        admin_facade_object.remove_administrator('3')
     with pytest.raises(AdminNotFound):
         admin_facade_object.remove_administrator(3)
 
@@ -109,6 +136,8 @@ def test_remove_airline(admin_facade_object):
     assert repo.get_by_id(Users, 8) == None
 
 def test_not_remove_airline(admin_facade_object):
+    with pytest.raises(InvalidInput):
+        admin_facade_object.remove_airline('3')
     with pytest.raises(AirlineNotFound):
         admin_facade_object.remove_airline(3)
 
@@ -121,5 +150,7 @@ def test_remove_customer(admin_facade_object):
     assert repo.get_by_id(Users, 8) == None
 
 def test_not_remove_customer(admin_facade_object):
+    with pytest.raises(InvalidInput):
+        admin_facade_object.remove_customer('4')
     with pytest.raises(CustomerNotFound):
         admin_facade_object.remove_customer(4)

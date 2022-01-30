@@ -24,11 +24,11 @@ try:
     print_to_log(logging.DEBUG, f'x is {x}')
 except ValueError:
     #print('invalid')
-    print_to_log.log(logging.CRITICAL, "wrong input for int")
+    print_to_log(logging.CRITICAL, "wrong input for int")
 
 def repo_add_ticket(obj_ticket):
-    print_to_log.log(logging.DEBUG, f'adding ticket : {obj_ticket}')
+    print_to_log(logging.DEBUG, f'adding ticket : {obj_ticket}')
     try:
         pass
     except BaseException as e:
-        print_to_log.log(logging.ERROR, f'error during adding ticket : {obj_ticket}, error: {e}')
+        print_to_log(logging.ERROR, f'error during adding ticket : {obj_ticket}, error: {e}')
