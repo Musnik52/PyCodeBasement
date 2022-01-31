@@ -1,5 +1,3 @@
---get_airline_by_username--
-DROP FUNCTION get_airline_by_username;
 CREATE OR REPLACE FUNCTION get_airline_by_username(_username text)
 RETURNS TABLE(id bigint, airline_name text,country_id bigint, user_id bigint)
 LANGUAGE plpgsql AS
@@ -12,12 +10,7 @@ LANGUAGE plpgsql AS
             WHERE _username = u.username;
         END;
     $$;
----------------------------
-SELECT * FROM get_airline_by_username('b0r1s');
----------------------------
-
---get_customer_by_username--
-DROP FUNCTION get_customer_by_username;
+|||
 CREATE OR REPLACE FUNCTION get_customer_by_username(_username text)
 RETURNS TABLE(id bigint, first_name text,last_name text, address text, phone_number text, credit_card_number text, user_id bigint)
 LANGUAGE plpgsql AS
@@ -30,12 +23,7 @@ LANGUAGE plpgsql AS
             WHERE _username = u.username;
         END;
     $$;
-----------------------------
-SELECT * FROM get_customer_by_username('3m1l');
-----------------------------
-
---get_user_by_username--
-DROP FUNCTION get_user_by_username;
+|||
 CREATE OR REPLACE FUNCTION get_user_by_username(_username text)
 RETURNS TABLE(id bigint, username text, password text, email text, user_role integer)
 LANGUAGE plpgsql AS
@@ -47,12 +35,7 @@ LANGUAGE plpgsql AS
             WHERE _username = u.username;
         END;
     $$;
-------------------------
-SELECT * FROM get_user_by_username('m4x1m');
-------------------------
-
---get_flights_by_parameters--
-DROP FUNCTION get_flights_by_parameters;
+|||
 CREATE OR REPLACE FUNCTION get_flights_by_parameters(_origin_country_id integer, _destination_country_id integer, _date timestamp)
 RETURNS TABLE(id bigint, airline_company_id bigint, origin_country_id bigint, destination_country_id bigint, departure_time timestamp, landing_time timestamp, remaining_tickets integer)
 LANGUAGE plpgsql AS
@@ -66,12 +49,7 @@ LANGUAGE plpgsql AS
 			AND _date = f.departure_time;
         END;
     $$;
------------------------------
-SELECT * FROM get_flights_by_parameters(1, 2, '2022-03-01 10:10:10');
------------------------------
-
---get_flights_by_airline_id--
-DROP FUNCTION get_flights_by_airline_id;
+|||
 CREATE OR REPLACE FUNCTION get_flights_by_airline_id(_airline_id bigint)
 RETURNS TABLE(id bigint, airline_company_id bigint, origin_country_id bigint, destination_country_id bigint, departure_time timestamp, landing_time timestamp, remaining_tickets integer)
 LANGUAGE plpgsql AS
@@ -83,12 +61,7 @@ LANGUAGE plpgsql AS
             WHERE _airline_id = f.airline_company_id;
         END;
     $$;
------------------------------
-SELECT * FROM get_flights_by_airline_id(2);
------------------------------
-
---get_arrival_flights--
-DROP FUNCTION get_arrival_flights;
+|||
 CREATE OR REPLACE FUNCTION get_arrival_flights(_country_id int)
 RETURNS TABLE(id bigint, airline_company_id bigint, origin_country_id bigint, destination_country_id bigint, departure_time timestamp, landing_time timestamp, remaining_tickets integer)
 LANGUAGE plpgsql AS
@@ -101,12 +74,7 @@ LANGUAGE plpgsql AS
 			AND f.landing_time <= CURRENT_TIMESTAMP + interval '12' HOUR;
         END;
     $$;
------------------------
-SELECT * FROM get_arrival_flights(2);
------------------------
-
---get_departure_flights--
-DROP FUNCTION get_departure_flights;
+|||
 CREATE OR REPLACE FUNCTION get_departure_flights(_country_id int)
 RETURNS TABLE(id bigint, airline_company_id bigint, origin_country_id bigint, destination_country_id bigint, departure_time timestamp, landing_time timestamp, remaining_tickets integer)
 LANGUAGE plpgsql AS
@@ -119,12 +87,7 @@ LANGUAGE plpgsql AS
 			AND f.departure_time <= CURRENT_TIMESTAMP + interval '12' HOUR;
         END;
     $$;
--------------------------
-SELECT * FROM get_departure_flights(2);
--------------------------
-
---get_tickets_by_customer--
-DROP FUNCTION get_tickets_by_customer;
+|||
 CREATE OR REPLACE FUNCTION get_tickets_by_customer(_customer_id bigint)
 RETURNS TABLE(id bigint, flight_id bigint, customer_id bigint)
 LANGUAGE plpgsql AS
@@ -137,6 +100,3 @@ LANGUAGE plpgsql AS
             WHERE _customer_id = c.id;
         END;
     $$;
----------------------------
-SELECT * FROM get_tickets_by_customer(1);
----------------------------

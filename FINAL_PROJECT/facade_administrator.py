@@ -1,56 +1,97 @@
+from logger import Logger
 from facade_base import FacadeBase
-from customers import Customers
 from users import Users
-from airline_companies import AirlineCompanies
+from customers import Customers
 from administrators import Administrators
-from error_airline_not_found import AirlineNotFound
-from error_admin_not_found import AdminNotFound
-from error_customer_not_found import CustomerNotFound
-from error_unauthorized_user_id import UnauthorizedUserID
+from airline_companies import AirlineCompanies
 from error_user_exists import UserAlreadyExists
 from error_invalid_token import InvalidToken
 from error_invalid_input import InvalidInput
+from error_short_password import PasswordTooShort
+from error_admin_not_found import AdminNotFound
+from error_airline_not_found import AirlineNotFound
+from error_customer_not_found import CustomerNotFound
+from error_unauthorized_user_id import UnauthorizedUserID
 
 class AdministratorFacade(FacadeBase):
 
     def __init__(self, repo, login_token):
         super().__init__(repo)
         self.login_token = login_token
+        self.logger = Logger.get_instance()
 
     def get_all_customers(self):
+        self.logger.logger.debug(f'Attempting to fetch all customers...')
         if self.login_token.role != 'Administrator': raise InvalidToken
-        else: return self.repo.get_all(Customers)
+        else: 
+            self.logger.logger.info(f'Customer(s) Displayed!')
+            return self.repo.get_all(Customers)
 
     def add_administrator(self, administrator, user):
-        if not isinstance(administrator, Administrators): raise InvalidInput('Input must be a "Administrators" object!')
-        elif not isinstance(user, Users): raise InvalidInput('Input must be a "Users" object!')
+        self.logger.logger.debug('Setting up new administrator and user...')
+        if not isinstance(administrator, Administrators): 
+            self.logger.logger.error(f'{InvalidInput} - Admin must be a "Administrators" object!')
+            raise InvalidInput('Input must be a "Administrators" object!')
+        elif not isinstance(user, Users): 
+            self.logger.logger.error(f'{InvalidInput} - User must be a "Users" object!')
+            raise InvalidInput('Input must be a "Users" object!')
         elif self.login_token.role != 'Administrator': raise InvalidToken
-        elif self.repo.get_by_id(Users, administrator.user_id) != None: raise UserAlreadyExists
+        elif self.repo.get_by_id(Users, administrator.user_id) != None: 
+            self.logger.logger.error(f'{UserAlreadyExists} - User-ID {administrator.user_id} already in use!')
+            raise UserAlreadyExists
         elif user.user_role == 1: 
             super().create_user(user)
+            self.logger.logger.info(f'User {user.username} created!')
             self.repo.add(administrator)
-        else: raise UnauthorizedUserID
-        #try-Catch inc!
+            self.logger.logger.info(f'Administrator {administrator.first_name} {administrator.last_name} created!')
+        else: 
+            self.logger.logger.error(f'{UnauthorizedUserID} - Unauthorized ID to create an "administrator"!')
+            raise UnauthorizedUserID
 
     def add_airline(self, airline, user):
-        if not isinstance(airline, AirlineCompanies): raise InvalidInput('Input must be a "AirlineCompanies" object!')
-        elif not isinstance(user, Users): raise InvalidInput('Input must be a "Users" object!')
+        self.logger.logger.debug('Setting up new airline and user...')
+        if not isinstance(airline, AirlineCompanies): 
+            self.logger.logger.error(f'{InvalidInput} - Admin must be a "AirlineCompanies" object!')
+            raise InvalidInput('Input must be a "AirlineCompanies" object!')
+        elif not isinstance(user, Users): 
+            self.logger.logger.error(f'{InvalidInput} - User must be a "Users" object!')
+            raise InvalidInput('Input must be a "Users" object!')
         elif self.login_token.role != 'Administrator': raise InvalidToken
-        elif self.repo.get_by_id(Users, airline.user_id) != None: raise UserAlreadyExists
+        elif self.repo.get_by_id(Users, airline.user_id) != None: 
+            self.logger.logger.error(f'{UserAlreadyExists} - User-ID {airline.user_id} already in use!')
+            raise UserAlreadyExists
         elif user.user_role == 2: 
             super().create_user(user)
+            self.logger.logger.info(f'User {user.username} created!')
             self.repo.add(airline)
-        else: raise UnauthorizedUserID
+            self.logger.logger.info(f'Administrator {airline.name} created!')
+        else: 
+            self.logger.logger.error(f'{UnauthorizedUserID} - Unauthorized ID to create an "airline"!')
+            raise UnauthorizedUserID
 
     def add_customer(self, customer, user):
-        if not isinstance(customer, Customers): raise InvalidInput('Input must be a "Customers" object!')
-        elif not isinstance(user, Users): raise InvalidInput('Input must be a "Users" object!')
+        self.logger.logger.debug('Setting up new customer and user...')
+        if not isinstance(customer, Customers): 
+            self.logger.logger.error(f'{InvalidInput} - Customer must be a "Customers" object!')
+            raise InvalidInput('Input must be a "Customers" object!')
+        elif not isinstance(user, Users): 
+            self.logger.logger.error(f'{InvalidInput} - User must be a "Users" object!')
+            raise InvalidInput('Input must be a "Users" object!')
         elif self.login_token.role != 'Administrator': raise InvalidToken
-        elif self.repo.get_by_id(Users, customer.user_id) != None: raise UserAlreadyExists
+        elif self.repo.get_by_id(Users, customer.user_id) != None: 
+            self.logger.logger.error(f'{UserAlreadyExists} - User-ID {customer.user_id} already in use!')
+            raise UserAlreadyExists
+        elif len(user.password) < 6: 
+            self.logger.logger.error(f'{PasswordTooShort} - Use at least 6 characters for the password!')
+            raise PasswordTooShort
         elif user.user_role == 3: 
             super().create_user(user)
+            self.logger.logger.info(f'User {user.username} created!')
             self.repo.add(customer)
-        else: raise UnauthorizedUserID
+            self.logger.logger.info(f'Customer {customer.first_name} {customer.last_name} created!')
+        else: 
+            self.logger.logger.error(f'{UnauthorizedUserID} - Unauthorized ID to create a "customer"!')
+            raise UnauthorizedUserID
     
     def remove_administrator(self, administrator):
         if not isinstance(administrator, int): raise InvalidInput('Input must be an integer!')
@@ -63,24 +104,39 @@ class AdministratorFacade(FacadeBase):
             self.repo.delete_by_id(Users, Users.id, admin_user_id)
 
     def remove_airline(self, airline):
-        if not isinstance(airline, int): raise InvalidInput('Input must be an integer!')
+        self.logger.logger.debug(f'Attempting to remove airline #{airline}...')
+        if not isinstance(airline, int): 
+            self.logger.logger.error(f'{InvalidInput} - Input must be an integer!!')
+            raise InvalidInput('Input must be an integer!')
         elif self.login_token.role != 'Administrator': raise InvalidToken
         airline1 = self.repo.get_by_id(AirlineCompanies, airline)
-        if airline1 == None: raise AirlineNotFound
+        if airline1 == None: 
+            self.logger.logger.error(f'{AirlineNotFound} - Airline #{airline} was not found!')
+            raise AirlineNotFound
         else: 
             airline_user_id = airline1.user_id
             self.repo.delete_by_id(AirlineCompanies, AirlineCompanies.id, airline)
+            self.logger.logger.info(f'Airline #{airline} Deleted!')
             self.repo.delete_by_id(Users, Users.id, airline_user_id)
+            self.logger.logger.info(f'User #{airline_user_id} Deleted!')
 
     def remove_customer(self, customer):
-        if not isinstance(customer, int): raise InvalidInput('Input must be an integer!')
+        self.logger.logger.debug(f'Attempting to remove customer #{customer}...')
+        if not isinstance(customer, int): 
+            self.logger.logger.error(f'{InvalidInput} - Input must be an integer!!')
+            raise InvalidInput('Input must be an integer!')
         elif self.login_token.role != 'Administrator': raise InvalidToken
         customer1 = self.repo.get_by_id(Customers, customer)
-        if customer1 == None: raise CustomerNotFound
+        if customer1 == None: 
+            self.logger.logger.error(f'{CustomerNotFound} - Customer #{customer} was not found!')
+            raise CustomerNotFound
         else: 
             customer1_user_id = customer1.user_id
             self.repo.delete_by_id(Customers, Customers.id, customer)
+            self.logger.logger.info(f'Customer #{customer} Deleted!')
             self.repo.delete_by_id(Users, Users.id, customer1_user_id)
+            self.logger.logger.info(f'User #{customer1_user_id} Deleted!')
+
 
     def __str__(self):
         return f'{super().__init__}'

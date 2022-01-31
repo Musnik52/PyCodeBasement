@@ -9,7 +9,6 @@ from error_invalid_time import InvalidTime
 from error_invalid_location import InvalidLocation
 from error_invalid_remaining_tickets import InvalidRemainingTickets
 from error_airline_not_found import AirlineNotFound
-from error_no_more_tickets import NoMoreTicketsLeft
 from error_flight_not_found import FlightNotFound
 from error_invalid_input import InvalidInput
 
@@ -79,7 +78,7 @@ def test_not_update_flight(airline_facade_object):
         airline_facade_object.update_flight("{'remaining_tickets':-2}", 1)
     with pytest.raises(InvalidInput):
         airline_facade_object.update_flight({'remaining_tickets':-2}, 'ty')
-    with pytest.raises(NoMoreTicketsLeft):
+    with pytest.raises(InvalidRemainingTickets):
         airline_facade_object.update_flight({'remaining_tickets':-2}, 1)
     with pytest.raises(FlightNotFound):
         airline_facade_object.update_flight({'remaining_tickets':22}, 52)

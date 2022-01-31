@@ -1,41 +1,76 @@
-from facade_base import FacadeBase
 from users import Users
+from logger import Logger
 from customers import Customers
 from login_token import LoginToken
+from facade_base import FacadeBase
+from facade_airline import AirlineFacade
 from facade_customer import CustomerFacade
 from facade_administrator import AdministratorFacade
-from facade_airline import AirlineFacade
-from error_user_not_found import UsernameNotFound
-from error_unauthorized_user_id import UnauthorizedUserID
 from error_user_exists import UserAlreadyExists
-from error_invalid_password import InvalidPassword
 from error_invalid_input import InvalidInput
+from error_user_not_found import UsernameNotFound
+from error_short_password import PasswordTooShort
+from error_invalid_password import InvalidPassword
+from error_invalid_user_role import InvalidUserRole
+from error_unauthorized_user_id import UnauthorizedUserID
 
 class AnonymusFacade(FacadeBase):
 
     def __init__(self, repo):
         super().__init__(repo)
+        self.logger = Logger.get_instance()
 
     def login(self, username, password):
-        if not isinstance(username, str): raise InvalidInput('username must be string!')
-        elif not isinstance(password, str): raise InvalidInput('password must be a string!')
+        self.logger.logger.debug('Attempting Logging-in...')
+        if not isinstance(username, str):
+            self.logger.logger.error(f'{InvalidInput} - username must be string!')
+            raise InvalidInput('username must be string!')
+        elif not isinstance(password, str): 
+            self.logger.logger.error(f'{InvalidInput} - password must be string!')
+            raise InvalidInput('password must be a string!')
         user = self.repo.get_by_column_value(Users, Users.username, username)
-        if not self.repo.get_by_column_value(Users, Users.username, username): raise UsernameNotFound
-        elif not self.repo.get_by_column_value(Users, Users.password, password): raise InvalidPassword
+        if not self.repo.get_by_column_value(Users, Users.username, username):
+            self.logger.logger.error(f'{UsernameNotFound} - Login attempt failed - username: {username}')
+            raise UsernameNotFound(f'User not found - Login attempt failed - username: {username}')
+        elif not self.repo.get_by_column_value(Users, Users.password, password): 
+            self.logger.logger.error(f'{InvalidPassword} - Login attempt failed - username: {username}')
+            raise InvalidPassword(f'Invalid password - Login attempt failed - username: {username}')
         else:
-            if user[0].user_role == 1: return AdministratorFacade(self.repo, LoginToken(id=user[0].administrators.id, name=user[0].administrators.first_name, role='Administrator'))
-            elif user[0].user_role == 2: return AirlineFacade(self.repo, LoginToken(id=user[0].airline_companies.id, name=user[0].airline_companies.name, role='Airline'))
-            elif user[0].user_role == 3: return CustomerFacade(self.repo, LoginToken(id=user[0].customers.id, name=user[0].customers.first_name, role='Customer'))
-            else: print('Invalid user-role assigned!')
+            if user[0].user_role == 1: 
+                self.logger.logger.info(f'Welcome, Admin {user[0].username}')
+                return AdministratorFacade(self.repo, LoginToken(id=user[0].administrators.id, name=user[0].administrators.first_name, role='Administrator'))
+            elif user[0].user_role == 2: 
+                self.logger.logger.info(f'Welcome, Airline {user[0].username}')
+                return AirlineFacade(self.repo, LoginToken(id=user[0].airline_companies.id, name=user[0].airline_companies.name, role='Airline'))
+            elif user[0].user_role == 3: 
+                self.logger.logger.info(f'Welcome, Customer {user[0].username}')
+                return CustomerFacade(self.repo, LoginToken(id=user[0].customers.id, name=user[0].customers.first_name, role='Customer'))
+            else: 
+                self.logger.logger.error(f'{InvalidUserRole} - Invalid User-role assigned! USER: {user[0].username}')
+                raise InvalidUserRole
 
     def add_customer(self, customer, user):
-        if not isinstance(customer, Customers): raise InvalidInput('Customer must be a "Customers" object!')
-        elif not isinstance(user, Users): raise InvalidInput('user must be a "Users" object!')
-        elif self.repo.get_by_id(Users, customer.user_id) != None: raise UserAlreadyExists
+        self.logger.logger.debug('Setting up new customer and user...')
+        if not isinstance(customer, Customers): 
+            self.logger.logger.error(f'{InvalidInput} - Customer must be a "Customers" object!')
+            raise InvalidInput('Customer must be a "Customers" object!')
+        elif not isinstance(user, Users): 
+            self.logger.logger.error(f'{InvalidInput} - User must be a "Users" object!')
+            raise InvalidInput('User must be a "Users" object!')
+        elif self.repo.get_by_id(Users, customer.user_id) != None: 
+            self.logger.logger.error(f'{UserAlreadyExists} - User-ID {customer.user_id} already in use!')
+            raise UserAlreadyExists(f'User-ID {customer.user_id} already in use!')
+        elif len(user.password) < 6: 
+            self.logger.logger.error(f'{PasswordTooShort} - Use at least 6 characters for the password!')
+            raise PasswordTooShort
         elif user.user_role == 3: 
             super().create_user(user)
+            self.logger.logger.info(f'User {user.username} created!')
             self.repo.add(customer)
-        else: raise UnauthorizedUserID
+            self.logger.logger.info(f'Customer {customer.first_name} {customer.last_name} created!')
+        else: 
+            self.logger.logger.error(f'{UnauthorizedUserID} - Unauthorized ID to create a "customer"!')
+            raise UnauthorizedUserID
 
     def __str__(self):
         return f'{super().__init__}'

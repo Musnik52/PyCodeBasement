@@ -1,7 +1,6 @@
-from db_config import local_session, create_all_entities
 from db_repo import DbRepo
+from db_config import local_session, create_all_entities
 from facade_anonymus import AnonymusFacade
-from datetime import datetime
 
 #defining
 repo = DbRepo(local_session)
@@ -15,6 +14,5 @@ customer_facade = anonymus_facade.login('3m1l', 'e0m1i2l')
 repo.delete_all_tables()
 create_all_entities()
 repo.reset_db()
+repo.create_all_sp("C:\git\pyCodeBasement\FINAL_PROJECT\sp_file.sql")
 print('DONE')
-
-print(admin_facade.get_flights_by_parameters(1,3,datetime(2022, 1, 1, 10, 10, 10)))

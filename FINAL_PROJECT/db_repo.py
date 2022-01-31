@@ -1,17 +1,20 @@
-from sqlalchemy import asc, desc
+from logger import Logger
 from datetime import datetime
-from airline_companies import AirlineCompanies
-from customers import Customers
-from countries import Countries
+from sqlalchemy import asc
 from users import Users
 from flights import Flights
 from tickets import Tickets
+from customers import Customers
+from countries import Countries
 from user_roles import UserRoles
 from administrators import Administrators
+from airline_companies import AirlineCompanies
+
 
 class DbRepo:
     def __init__(self, local_session):
         self.local_session = local_session
+        self.logger = Logger.get_instance()
 
     def get_all(self, table_class):
         return self.local_session.query(table_class).all()
@@ -47,14 +50,17 @@ class DbRepo:
     def delete_by_id(self, table_class, id_column_name, id):
         self.local_session.query(table_class).filter(id_column_name == id).delete(synchronize_session=False)
         self.local_session.commit()
+        self.logger.logger.warning(f'deleting from table {table_class}.')
         print('Deleted')
 
     def delete_table(self, table_name):
+        self.logger.logger.warning(f'deleting table {table_name}.')
         self.local_session.execute(f'drop TABLE if exists {table_name} cascade')
         self.local_session.commit()
         print(f'{table_name} Deleted')
 
     def delete_all_tables(self):
+        self.logger.logger.warning('deleting all tables.')
         self.delete_table('countries')
         self.delete_table('flights')
         self.delete_table('tickets')
@@ -72,6 +78,17 @@ class DbRepo:
     def reset_auto_inc(self, table_class):
         self.local_session.execute(f'TRUNCATE TABLE {table_class.__tablename__} RESTART IDENTITY CASCADE')
     
+    def create_all_sp(self, file):
+            try:
+                with open(file, 'r') as sp_file:
+                    queries = sp_file.read().split('|||')
+                for query in queries:
+                    self.local_session.execute(query)
+                self.local_session.commit()
+                self.logger.logger.debug(f'From {file} - All SP were created.')
+            except FileNotFoundError:
+                self.logger.logger.critical(f'File "{file}" was not found')
+
     def reset_db(self):
         self.reset_auto_inc(Countries)
         self.reset_auto_inc(Users)
@@ -107,15 +124,3 @@ class DbRepo:
         self.add_all([  Tickets(flight_id=1, customer_id=1),
                         Tickets(flight_id=1, customer_id=2),
                         Tickets(flight_id=3, customer_id=2)])
-'''
-    def create_all_sp(self, file):
-            try:
-                with open(file, 'r') as sp_file:
-                    queries = sp_file.read().split('|||')
-                for query in queries:
-                    self.local_session.execute(query)
-                self.local_session.commit()
-                self.logger.logger.debug(f'all sp from {file} were created.')
-            except FileNotFoundError:
-                self.logger.logger.critical(f'Tried to create all sp from the the file "{file}" but file was not found')
-'''
