@@ -74,16 +74,20 @@ class AirlineFacade(FacadeBase):
             self.logger.logger.error(f'{InvalidInput} - Input must be a dictionary!')
             raise InvalidInput('Input must be a dictionary!')
         elif self.login_token.role != 'Airline': raise InvalidToken
-        elif flight['remaining_tickets'] < 0: 
-            self.logger.logger.error(f'{InvalidRemainingTickets} - Negative number of seats is impossible!')
-            raise InvalidRemainingTickets
         elif super().get_flight_by_id(flight_id) == None: 
             self.logger.logger.error(f'{FlightNotFound} - Flight #{flight_id} was not found!')
             raise FlightNotFound 
         else: 
-            self.logger.logger.info(f'Flight updated!')
-            self.repo.update_by_id(Flights, Flights.id, flight_id, flight) #flight must be dictionary
-            print(f'{flight["remaining_tickets"]} remaining ticket(s) on flight #{flight_id}')
+            current_tickets = self.repo.get_by_id(Flights, flight_id).remaining_tickets
+            self.repo.update_by_id(Flights, Flights.id, flight_id, flight)
+            updated_tickets = self.repo.get_by_id(Flights, flight_id).remaining_tickets
+            if updated_tickets < 0:
+                self.repo.update_by_id(Flights, Flights.id, flight_id, {'remaining_tickets':current_tickets})
+                self.logger.logger.error(f'{InvalidRemainingTickets} - Negative number of seats is impossible!')
+                raise InvalidRemainingTickets
+            else:
+                self.logger.logger.info(f'Flight updated!')
+                print(f'{updated_tickets} remaining ticket(s) on flight #{flight_id}')
 
     def remove_flight(self, flight_id):
         self.logger.logger.debug(f'Attempting to remove flight #{flight_id}...')

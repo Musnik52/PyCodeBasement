@@ -69,7 +69,7 @@ def test_not_update_airline(airline_facade_object):
         airline_facade_object.update_airline(airline_update, 33)
 
 def test_update_flight(airline_facade_object):
-    flight_update = {'remaining_tickets':12332}
+    flight_update = {'departure_time': datetime(2022,1,1,11,10,10), 'remaining_tickets':12332}
     airline_facade_object.update_flight(flight_update, 1)
     assert repo.get_by_column_value(Flights, Flights.remaining_tickets, 12332) != None
 
@@ -77,7 +77,7 @@ def test_not_update_flight(airline_facade_object):
     with pytest.raises(InvalidInput):
         airline_facade_object.update_flight("{'remaining_tickets':-2}", 1)
     with pytest.raises(InvalidInput):
-        airline_facade_object.update_flight({'remaining_tickets':-2}, 'ty')
+        airline_facade_object.update_flight({'remaining_tickets':2}, 'ty')
     with pytest.raises(InvalidRemainingTickets):
         airline_facade_object.update_flight({'remaining_tickets':-2}, 1)
     with pytest.raises(FlightNotFound):
