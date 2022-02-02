@@ -118,9 +118,10 @@ class DbRepo:
         self.add_all([  Customers(first_name='kosta', last_name='makarkov', address='rashi 31', phone_number='0507897765', credit_card_number='13323432', user_id=5),
                         Customers(first_name='emil', last_name='tayeb', address='amsterdam 32', phone_number='0523452231', credit_card_number='13245678', user_id=6), 
                         Customers(first_name='yahav', last_name='schwartz', address='lachish 32', phone_number='04786367899', credit_card_number='1342455678', user_id=7)])
-        self.add_all([  Flights(airline_company_id=1, origin_country_id=1, destination_country_id=2, departure_time=datetime(2022, 1, 1, 10, 10, 10), landing_time=datetime(2022, 1, 24, 10, 29, 1), remaining_tickets=3),
-                        Flights(airline_company_id=2, origin_country_id=2, destination_country_id=1, departure_time=datetime(2022, 3, 18, 10, 12, 10), landing_time=datetime(2022, 12, 4, 23, 29, 1), remaining_tickets=0),
-                        Flights(airline_company_id=2, origin_country_id=3, destination_country_id=2, departure_time=datetime(2022, 1, 2, 10, 12, 10), landing_time=datetime(2022, 1, 24, 10, 29, 1), remaining_tickets=400)])
+        self.add_all([  Flights(airline_company_id=1, origin_country_id=1, destination_country_id=2, departure_time=datetime(2022, 1, 1, 10, 10, 10), landing_time=datetime(2022, 1, 24, 10, 29, 1), remaining_tickets=0),
+                        Flights(airline_company_id=2, origin_country_id=2, destination_country_id=1, departure_time=datetime(2022, 3, 18, 10, 12, 10), landing_time=datetime(2022, 12, 4, 23, 29, 1), remaining_tickets=3),
+                        Flights(airline_company_id=2, origin_country_id=3, destination_country_id=2, departure_time=datetime(2022, 1, 2, 10, 12, 10), landing_time=datetime(2022, 1, 24, 10, 29, 1), remaining_tickets=400),
+                        Flights(airline_company_id=1, origin_country_id=1, destination_country_id=3, departure_time=datetime(2022, 1, 2, 10, 12, 10), landing_time=datetime(2022, 1, 24, 10, 29, 1), remaining_tickets=0)])
         self.add_all([  Tickets(flight_id=1, customer_id=1),
                         Tickets(flight_id=1, customer_id=2),
                         Tickets(flight_id=3, customer_id=2)])

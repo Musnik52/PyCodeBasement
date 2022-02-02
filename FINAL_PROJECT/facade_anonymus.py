@@ -38,13 +38,13 @@ class AnonymusFacade(FacadeBase):
         else:
             if user[0].user_role == 1: 
                 self.logger.logger.info(f'Welcome, Admin {user[0].username}')
-                return AdministratorFacade(self.repo, LoginToken(id=user[0].administrators.id, name=user[0].administrators.first_name, role='Administrator'))
+                return AdministratorFacade(self.repo, LoginToken(id=user[0].administrators.user_id, name=user[0].administrators.first_name, role='Administrator'))
             elif user[0].user_role == 2: 
                 self.logger.logger.info(f'Welcome, Airline {user[0].username}')
-                return AirlineFacade(self.repo, LoginToken(id=user[0].airline_companies.id, name=user[0].airline_companies.name, role='Airline'))
+                return AirlineFacade(self.repo, LoginToken(id=user[0].airline_companies.user_id, name=user[0].airline_companies.name, role='Airline'))
             elif user[0].user_role == 3: 
                 self.logger.logger.info(f'Welcome, Customer {user[0].username}')
-                return CustomerFacade(self.repo, LoginToken(id=user[0].customers.id, name=user[0].customers.first_name, role='Customer'))
+                return CustomerFacade(self.repo, LoginToken(id=user[0].customers.user_id, name=user[0].customers.first_name, role='Customer'))
             else: 
                 self.logger.logger.error(f'{InvalidUserRole} - Invalid User-role assigned! USER: {user[0].username}')
                 raise InvalidUserRole

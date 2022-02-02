@@ -1,0 +1,20 @@
+2022-02-02 18:05:13,013:facade_anonymus:DEBUG:Attempting Logging-in...
+2022-02-02 18:05:13,096:facade_anonymus:INFO:Welcome, Admin l10r
+2022-02-02 18:05:13,101:facade_anonymus:DEBUG:Attempting Logging-in...
+2022-02-02 18:05:13,105:facade_anonymus:INFO:Welcome, Airline m4x1m
+2022-02-02 18:05:13,113:facade_anonymus:DEBUG:Attempting Logging-in...
+2022-02-02 18:05:13,118:facade_anonymus:INFO:Welcome, Customer 3m1l
+2022-02-02 18:05:13,128:db_repo:WARNING:deleting all tables.
+2022-02-02 18:05:13,128:db_repo:WARNING:deleting table countries.
+2022-02-02 18:05:13,149:db_repo:WARNING:deleting table flights.
+2022-02-02 18:05:13,155:db_repo:WARNING:deleting table tickets.
+2022-02-02 18:05:13,164:db_repo:WARNING:deleting table airline_companies.
+2022-02-02 18:05:13,171:db_repo:WARNING:deleting table administrators.
+2022-02-02 18:05:13,183:db_repo:WARNING:deleting table customers.
+2022-02-02 18:05:13,197:db_repo:WARNING:deleting table users.
+2022-02-02 18:05:13,203:db_repo:WARNING:deleting table user_roles.
+2022-02-02 18:05:13,693:db_repo:DEBUG:From C:\git\pyCodeBasement\FINAL_PROJECT\sp_file.sql - All SP were created.
+2022-02-02 18:05:13,693:facade_airline:DEBUG:Attempting to update flight #1...
+2022-02-02 18:05:13,693:facade_base:DEBUG:Attempting to fetch flight #1...
+2022-02-02 18:05:13,699:facade_base:INFO:Flight Displayed!
+2022-02-02 18:05:13,710:facade_airline:INFO:Flight updated!

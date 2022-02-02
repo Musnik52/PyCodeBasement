@@ -1,4 +1,3 @@
-from datetime import datetime
 from db_repo import DbRepo
 from db_config import local_session, create_all_entities
 from facade_anonymus import AnonymusFacade
@@ -17,5 +16,3 @@ create_all_entities()
 repo.reset_db()
 repo.create_all_sp("C:\git\pyCodeBasement\FINAL_PROJECT\sp_file.sql")
 print('DONE')
-
-airline_facade.update_flight({'departure_time': datetime(2022,1,1,11,10,10), 'remaining_tickets': 0},1)

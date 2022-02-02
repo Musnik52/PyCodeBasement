@@ -22,20 +22,23 @@ class AirlineFacade(FacadeBase):
         if not isinstance(airline, int): 
             self.logger.logger.error(f'{InvalidInput} - Input must be an integer!!')
             raise InvalidInput('Input must be an integer!')
-        elif self.login_token.role != 'Airline': raise InvalidToken
         elif self.repo.get_by_id(AirlineCompanies, airline) == None: 
             self.logger.logger.error(f'{AirlineNotFound} - Airline #{airline} was not found!')
             raise AirlineNotFound
         else: 
-            self.logger.logger.info(f'Flight(s) for #{airline} Displayed!')
-            return self.repo.get_by_column_value(Flights, Flights.airline_company_id, airline)
+            airline_check = self.repo.get_by_id(AirlineCompanies, airline)
+            if self.login_token.id != airline_check.user_id:
+                self.logger.logger.error(f'{InvalidToken} - you cannot edit for other airline!')
+                raise InvalidToken
+            else:
+                self.logger.logger.info(f'Flight(s) for #{airline} Displayed!')
+                return self.repo.get_by_column_value(Flights, Flights.airline_company_id, airline)
 
     def add_flight(self, flight):
         self.logger.logger.debug('Attempting to create a flight...')
         if not isinstance(flight, Flights): 
             self.logger.logger.error(f'{InvalidInput} - Input must be an "Flights" object!')
             raise InvalidInput('Input must be "Flights" object!')
-        elif self.login_token.role != 'Airline': raise InvalidToken
         elif flight.departure_time > flight.landing_time: 
             self.logger.logger.error(f'{InvalidTime} - Departure time cannot be later than landing time!')
             raise InvalidTime
@@ -46,8 +49,13 @@ class AirlineFacade(FacadeBase):
             self.logger.logger.error(f'{InvalidLocation} - Destination & origin countries cannot be the same country!')
             raise InvalidLocation
         else: 
-            self.logger.logger.info(f'Flight created!')
-            self.repo.add(flight)
+            airline_check = self.repo.get_by_id(AirlineCompanies, flight.airline_company_id)
+            if self.login_token.id != airline_check.user_id:
+                self.logger.logger.error(f'{InvalidToken} - you cannot edit for other airline!')
+                raise InvalidToken
+            else:
+                self.logger.logger.info(f'Flight created!')
+                self.repo.add(flight)
 
     def update_airline(self, airline, airline_id):
         self.logger.logger.debug(f'Attempting to update Airline #{airline_id}...')
@@ -57,13 +65,17 @@ class AirlineFacade(FacadeBase):
         elif not isinstance(airline, dict): 
             self.logger.logger.error(f'{InvalidInput} - Input must be a dictionary!')
             raise InvalidInput('Input must be a dictionary!')
-        elif self.login_token.role != 'Airline': raise InvalidToken
         elif super().get_airline_by_id(airline_id) == None: 
             self.logger.logger.error(f'{AirlineNotFound} - Airline #{airline_id} was not found!')
             raise AirlineNotFound
         else: 
-            self.logger.logger.info(f'Airline updated!')
-            self.repo.update_by_id(AirlineCompanies, AirlineCompanies.id, airline_id, airline)
+            airline_check = self.repo.get_by_id(AirlineCompanies, airline_id)
+            if self.login_token.id != airline_check.user_id:
+                self.logger.logger.error(f'{InvalidToken} - you cannot edit for other airline!')
+                raise InvalidToken
+            else:
+                self.logger.logger.info(f'Airline updated!')
+                self.repo.update_by_id(AirlineCompanies, AirlineCompanies.id, airline_id, airline)
 
     def update_flight(self, flight, flight_id):
         self.logger.logger.debug(f'Attempting to update flight #{flight_id}...')
@@ -73,7 +85,6 @@ class AirlineFacade(FacadeBase):
         elif not isinstance(flight, dict): 
             self.logger.logger.error(f'{InvalidInput} - Input must be a dictionary!')
             raise InvalidInput('Input must be a dictionary!')
-        elif self.login_token.role != 'Airline': raise InvalidToken
         elif super().get_flight_by_id(flight_id) == None: 
             self.logger.logger.error(f'{FlightNotFound} - Flight #{flight_id} was not found!')
             raise FlightNotFound 
@@ -86,21 +97,32 @@ class AirlineFacade(FacadeBase):
                 self.logger.logger.error(f'{InvalidRemainingTickets} - Negative number of seats is impossible!')
                 raise InvalidRemainingTickets
             else:
-                self.logger.logger.info(f'Flight updated!')
-                print(f'{updated_tickets} remaining ticket(s) on flight #{flight_id}')
+                flight_check = self.repo.get_by_id(Flights, flight_id)
+                airline_check = self.repo.get_by_id(AirlineCompanies, flight_check.airline_company_id)
+                if self.login_token.id != airline_check.user_id:
+                    self.logger.logger.error(f'{InvalidToken} - you cannot edit for other airline!')
+                    raise InvalidToken
+                else:
+                    self.logger.logger.info(f'Flight updated!')
+                    print(f'{updated_tickets} remaining ticket(s) on flight #{flight_id}')
 
     def remove_flight(self, flight_id):
         self.logger.logger.debug(f'Attempting to remove flight #{flight_id}...')
         if not isinstance(flight_id, int): 
             self.logger.logger.error(f'{InvalidInput} - Input must be an integer!!')
             raise InvalidInput('Input must be an integer!')
-        elif self.login_token.role != 'Airline': raise InvalidToken
         elif super().get_flight_by_id(flight_id) == None: 
             self.logger.logger.error(f'{FlightNotFound} - Flight #{flight_id} was not found!')
             raise FlightNotFound
         else: 
-            self.repo.delete_by_id(Flights, Flights.id, flight_id)
-            self.logger.logger.info(f'Flight #{flight_id} Deleted!')
+            flight_check = self.repo.get_by_id(Flights, flight_id)
+            airline_check = self.repo.get_by_id(AirlineCompanies, flight_check.airline_company_id)
+            if self.login_token.id != airline_check.user_id:
+                self.logger.logger.error(f'{InvalidToken} - you cannot edit for other airline!')
+                raise InvalidToken
+            else:
+                self.repo.delete_by_id(Flights, Flights.id, flight_id)
+                self.logger.logger.info(f'Flight #{flight_id} Deleted!')
 
     def __str__(self):
         return f'{super().__init__}'
