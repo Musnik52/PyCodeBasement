@@ -42,7 +42,7 @@ class CustomerFacade(FacadeBase):
         if not isinstance(ticket, Tickets): 
             self.logger.logger.error(f'{InvalidInput} - Input must be an "Tickets" object!')
             raise InvalidInput('Input must be an "Tickets" object!')
-        flight = super().get_flight_by_id(ticket.flight_id)
+        flight = self.get_flight_by_id(ticket.flight_id)
         if flight == None: 
             self.logger.logger.error(f'{FlightNotFound} - Flight #{ticket.flight_id} was not found!')
             raise FlightNotFound
@@ -76,7 +76,7 @@ class CustomerFacade(FacadeBase):
                 self.logger.logger.error(f'{InvalidToken} - you cannot edit for other customers!')
                 raise InvalidToken
             else:
-                flight = super().get_flight_by_id(ticket_delete.flight_id) 
+                flight = self.get_flight_by_id(ticket_delete.flight_id) 
                 self.repo.update_by_id(Flights, Flights.id, flight.id, {'remaining_tickets': flight.remaining_tickets + 1})
                 self.repo.delete_by_id(Tickets, Tickets.id, ticket)
                 self.logger.logger.info(f'Ticket #{ticket} Deleted!')
@@ -99,4 +99,4 @@ class CustomerFacade(FacadeBase):
                 return self.repo.get_by_column_value(Tickets, Tickets.customer_id, customer)
 
     def __str__(self):
-        return f'{super().__init__}'
+        return f'<<Customer-Facade: {self.logger}>>\nToken ID: {self.login_token.id} Name: {self.login_token.name} Role: {self.login_token.role}'

@@ -65,7 +65,7 @@ class AirlineFacade(FacadeBase):
         elif not isinstance(airline, dict): 
             self.logger.logger.error(f'{InvalidInput} - Input must be a dictionary!')
             raise InvalidInput('Input must be a dictionary!')
-        elif super().get_airline_by_id(airline_id) == None: 
+        elif self.get_airline_by_id(airline_id) == None: 
             self.logger.logger.error(f'{AirlineNotFound} - Airline #{airline_id} was not found!')
             raise AirlineNotFound
         else: 
@@ -85,7 +85,7 @@ class AirlineFacade(FacadeBase):
         elif not isinstance(flight, dict): 
             self.logger.logger.error(f'{InvalidInput} - Input must be a dictionary!')
             raise InvalidInput('Input must be a dictionary!')
-        elif super().get_flight_by_id(flight_id) == None: 
+        elif self.get_flight_by_id(flight_id) == None: 
             self.logger.logger.error(f'{FlightNotFound} - Flight #{flight_id} was not found!')
             raise FlightNotFound 
         else: 
@@ -111,7 +111,7 @@ class AirlineFacade(FacadeBase):
         if not isinstance(flight_id, int): 
             self.logger.logger.error(f'{InvalidInput} - Input must be an integer!!')
             raise InvalidInput('Input must be an integer!')
-        elif super().get_flight_by_id(flight_id) == None: 
+        elif self.get_flight_by_id(flight_id) == None: 
             self.logger.logger.error(f'{FlightNotFound} - Flight #{flight_id} was not found!')
             raise FlightNotFound
         else: 
@@ -125,4 +125,4 @@ class AirlineFacade(FacadeBase):
                 self.logger.logger.info(f'Flight #{flight_id} Deleted!')
 
     def __str__(self):
-        return f'{super().__init__}'
+        return f'<<Airline-Facade: {self.logger}>>\nToken ID: {self.login_token.id} Name: {self.login_token.name} Role: {self.login_token.role}'

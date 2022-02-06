@@ -32,3 +32,6 @@ class Logger():
             cls._instance.file_handler.setFormatter(cls._instance.formatter)
             cls._instance.logger.addHandler(cls._instance.file_handler)
         return cls._instance
+    
+    def __str__(cls):
+        return f'Log file-name: {cls.filename}'

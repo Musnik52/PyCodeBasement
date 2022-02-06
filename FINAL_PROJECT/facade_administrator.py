@@ -40,7 +40,7 @@ class AdministratorFacade(FacadeBase):
             self.logger.logger.error(f'{UserAlreadyExists} - User-ID {administrator.user_id} already in use!')
             raise UserAlreadyExists
         elif user.user_role == 1: 
-            super().create_user(user)
+            self.create_user(user)
             self.logger.logger.info(f'User {user.username} created!')
             self.repo.add(administrator)
             self.logger.logger.info(f'Administrator {administrator.first_name} {administrator.last_name} created!')
@@ -61,7 +61,7 @@ class AdministratorFacade(FacadeBase):
             self.logger.logger.error(f'{UserAlreadyExists} - User-ID {airline.user_id} already in use!')
             raise UserAlreadyExists
         elif user.user_role == 2: 
-            super().create_user(user)
+            self.create_user(user)
             self.logger.logger.info(f'User {user.username} created!')
             self.repo.add(airline)
             self.logger.logger.info(f'Administrator {airline.name} created!')
@@ -85,7 +85,7 @@ class AdministratorFacade(FacadeBase):
             self.logger.logger.error(f'{PasswordTooShort} - Use at least 6 characters for the password!')
             raise PasswordTooShort
         elif user.user_role == 3: 
-            super().create_user(user)
+            self.create_user(user)
             self.logger.logger.info(f'User {user.username} created!')
             self.repo.add(customer)
             self.logger.logger.info(f'Customer {customer.first_name} {customer.last_name} created!')
@@ -137,6 +137,5 @@ class AdministratorFacade(FacadeBase):
             self.repo.delete_by_id(Users, Users.id, customer1_user_id)
             self.logger.logger.info(f'User #{customer1_user_id} Deleted!')
 
-
     def __str__(self):
-        return f'{super().__init__}'
+        return f'<<Administrator-Facade: {self.logger}>>\nToken ID: {self.login_token.id} Name: {self.login_token.name} Role: {self.login_token.role}'

@@ -29,10 +29,10 @@ class AnonymusFacade(FacadeBase):
             self.logger.logger.error(f'{InvalidInput} - password must be string!')
             raise InvalidInput('password must be a string!')
         user = self.repo.get_by_column_value(Users, Users.username, username)
-        if not self.repo.get_by_column_value(Users, Users.username, username):
+        if not user:
             self.logger.logger.error(f'{UsernameNotFound} - Login attempt failed - username: {username}')
             raise UsernameNotFound(f'User not found - Login attempt failed - username: {username}')
-        elif not self.repo.get_by_column_value(Users, Users.password, password): 
+        elif user[0].password != password: 
             self.logger.logger.error(f'{InvalidPassword} - Login attempt failed - username: {username}')
             raise InvalidPassword(f'Invalid password - Login attempt failed - username: {username}')
         else:
@@ -64,7 +64,7 @@ class AnonymusFacade(FacadeBase):
             self.logger.logger.error(f'{PasswordTooShort} - Use at least 6 characters for the password!')
             raise PasswordTooShort
         elif user.user_role == 3: 
-            super().create_user(user)
+            self.create_user(user)
             self.logger.logger.info(f'User {user.username} created!')
             self.repo.add(customer)
             self.logger.logger.info(f'Customer {customer.first_name} {customer.last_name} created!')
@@ -73,4 +73,4 @@ class AnonymusFacade(FacadeBase):
             raise UnauthorizedUserID
 
     def __str__(self):
-        return f'{super().__init__}'
+        return f'<<Anonymus-Facade: {self.logger}>>'

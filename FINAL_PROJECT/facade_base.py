@@ -95,4 +95,4 @@ class FacadeBase(ABC):
             self.repo.add(user)
 
     def __str__(self):
-        return f'REPOSITORY: {self.repo}'
+        return f'Base-Facade - REPOSITORY: {self.repo}'

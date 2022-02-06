@@ -16,3 +16,5 @@ create_all_entities()
 repo.reset_db()
 repo.create_all_sp("C:\git\pyCodeBasement\FINAL_PROJECT\sp_file.sql")
 print('DONE')
+
+print(airline_facade)

@@ -90,6 +90,7 @@ class DbRepo:
                 self.logger.logger.critical(f'File "{file}" was not found')
 
     def reset_db(self):
+        self.logger.logger.debug(f'Reseting initial DB.')
         self.reset_auto_inc(Countries)
         self.reset_auto_inc(Users)
         self.reset_auto_inc(AirlineCompanies)
