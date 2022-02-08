@@ -1,11 +1,12 @@
 import logging
 from configparser import ConfigParser
 from datetime import datetime 
+import threading
 
 class Logger():
     
     _instance = None
-
+    _lock = threading.Lock()
     config = ConfigParser()
     config.read("c:/git/pyCodeBasement/final_project/config.conf")
     LOG_LEVEL = config["logging"]["level"]
@@ -20,18 +21,19 @@ class Logger():
     
     @classmethod
     def get_instance(cls):
-        if cls._instance == None:
-            cls._instance = cls.__new__(cls)
-            for handler in logging.root.handlers:
-                logging.root.removeHandler(handler)
-            cls._instance.logger = logging.getLogger(__name__)
-            cls._instance.logger.setLevel(logging.__dict__[cls.LOG_LEVEL])
-            cls._instance.formatter = logging.Formatter(f'%(asctime)s:%(module)s:%(levelname)s:%(message)s')
-            cls._instance.file_handler = logging.FileHandler(Logger.filename)
-            cls._instance.file_handler.setLevel(logging.__dict__[cls.LOG_LEVEL])
-            cls._instance.file_handler.setFormatter(cls._instance.formatter)
-            cls._instance.logger.addHandler(cls._instance.file_handler)
-        return cls._instance
+        with cls._lock:
+            if cls._instance == None:
+                cls._instance = cls.__new__(cls)
+                for handler in logging.root.handlers:
+                    logging.root.removeHandler(handler)
+                cls._instance.logger = logging.getLogger(__name__)
+                cls._instance.logger.setLevel(logging.__dict__[cls.LOG_LEVEL])
+                cls._instance.formatter = logging.Formatter(f'%(asctime)s:%(module)s:%(levelname)s:%(message)s')
+                cls._instance.file_handler = logging.FileHandler(Logger.filename)
+                cls._instance.file_handler.setLevel(logging.__dict__[cls.LOG_LEVEL])
+                cls._instance.file_handler.setFormatter(cls._instance.formatter)
+                cls._instance.logger.addHandler(cls._instance.file_handler)
+            return cls._instance
     
     def __str__(cls):
         return f'Log file-name: {cls.filename}'
