@@ -1,26 +1,20 @@
 import pytest
 from countries import Countries
-from db_config import local_session
+from db_config import local_session, config
 from db_repo import DbRepo
 from datetime import datetime
 from facade_anonymus import AnonymusFacade
 from airline_companies import AirlineCompanies
-from customers import Customers
 from users import Users
 from flights import Flights
-from administrators import Administrators 
-from error_user_exists import UserAlreadyExists
 from error_short_password import PasswordTooShort
-from error_unauthorized_user_id import UnauthorizedUserID
-from error_admin_not_found import AdminNotFound
 from error_airline_not_found import AirlineNotFound
-from error_customer_not_found import CustomerNotFound
 from error_invalid_input import InvalidInput
 from error_flight_not_found import FlightNotFound
 from error_invalid_country import InvalidCountry
 
 repo = DbRepo(local_session)
-anonymus_facade = AnonymusFacade(repo)
+anonymus_facade = AnonymusFacade(repo, config)
 
 @pytest.fixture(scope='session')
 def base_facade_object():

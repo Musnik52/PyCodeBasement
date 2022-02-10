@@ -1,6 +1,6 @@
 import pytest
 from datetime import datetime
-from db_config import local_session
+from db_config import local_session, config
 from db_repo import DbRepo
 from facade_anonymus import AnonymusFacade
 from flights import Flights
@@ -14,11 +14,11 @@ from error_invalid_input import InvalidInput
 from error_invalid_token import InvalidToken
 
 repo = DbRepo(local_session)
-anonymus_facade = AnonymusFacade(repo)
+anonymus_facade = AnonymusFacade(repo, config)
 
 @pytest.fixture(scope='session')
 def airline_facade_object():
-    an_facade = AnonymusFacade(repo)
+    an_facade = AnonymusFacade(repo, config)
     return an_facade.login('m4x1m', '2themax')
 
 @pytest.fixture(scope='function', autouse=True)

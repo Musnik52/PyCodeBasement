@@ -14,8 +14,9 @@ from error_invalid_country import InvalidCountry
 class FacadeBase(ABC):
 
     @abstractmethod
-    def __init__(self, repo):
+    def __init__(self, repo, config):
         self.repo = repo
+        self.config = config
         self.logger = Logger.get_instance()
 
     def get_all_flights(self):

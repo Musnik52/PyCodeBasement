@@ -1,5 +1,5 @@
 import pytest
-from db_config import local_session
+from db_config import local_session, config
 from db_repo import DbRepo
 from facade_anonymus import AnonymusFacade
 from tickets import Tickets
@@ -12,11 +12,11 @@ from error_invalid_input import InvalidInput
 from error_invalid_token import InvalidToken
 
 repo = DbRepo(local_session)
-anonymus_facade = AnonymusFacade(repo)
+anonymus_facade = AnonymusFacade(repo, config)
 
 @pytest.fixture(scope='session')
 def customer_facade_object():
-    an_facade = AnonymusFacade(repo)
+    an_facade = AnonymusFacade(repo, config)
     return an_facade.login('3m1l', 'e0m1i2l')
 
 @pytest.fixture(scope='function', autouse=True)

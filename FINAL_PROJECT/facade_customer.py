@@ -12,8 +12,8 @@ from error_customer_not_found import CustomerNotFound
 
 class CustomerFacade(FacadeBase):
 
-    def __init__(self, repo, login_token):
-        super().__init__(repo)
+    def __init__(self, repo, config, login_token):
+        super().__init__(repo, config)
         self.login_token = login_token
         self.logger = Logger.get_instance()
 
@@ -46,6 +46,9 @@ class CustomerFacade(FacadeBase):
         if flight == None: 
             self.logger.logger.error(f'{FlightNotFound} - Flight #{ticket.flight_id} was not found!')
             raise FlightNotFound
+        elif flight.remaining_tickets == 0:
+            self.logger.logger.error(f'{NoMoreTicketsLeft} - No seats available. Ticket canceled!')
+            raise NoMoreTicketsLeft
         else:
             customer_check = self.repo.get_by_id(Customers, ticket.customer_id)
             if self.login_token.id != customer_check.user_id:
@@ -55,11 +58,6 @@ class CustomerFacade(FacadeBase):
                 self.repo.add(ticket)
                 self.repo.update_by_id(Flights, Flights.id, ticket.flight_id, {'remaining_tickets': flight.remaining_tickets - 1})
                 self.logger.logger.info(f'Ticket created!')
-                if flight.remaining_tickets < 0:
-                    self.repo.update_by_id(Flights, Flights.id, ticket.flight_id, {'remaining_tickets': 0})
-                    self.repo.delete_by_id(Tickets, Tickets.id, ticket.id)
-                    self.logger.logger.error(f'{NoMoreTicketsLeft} - No seats available. Ticket canceled!')
-                    raise NoMoreTicketsLeft
 
     def remove_ticket(self, ticket):
         self.logger.logger.debug(f'Attempting to remove ticket #{ticket}...')

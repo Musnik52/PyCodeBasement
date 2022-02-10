@@ -16,9 +16,13 @@ from error_unauthorized_user_id import UnauthorizedUserID
 
 class AnonymusFacade(FacadeBase):
 
-    def __init__(self, repo):
-        super().__init__(repo)
+    def __init__(self, repo, config):
+        super().__init__(repo, config)
         self.logger = Logger.get_instance()
+        self.admin_role_number = self.config["user_roles"]["admin"]
+        self.airline_role_number = self.config["user_roles"]["airline"]
+        self.customer_role_number = self.config["user_roles"]["customer"]
+        self.password_length = self.config["limits"]["password_length"]
 
     def login(self, username, password):
         self.logger.logger.debug('Attempting Logging-in...')
@@ -36,15 +40,15 @@ class AnonymusFacade(FacadeBase):
             self.logger.logger.error(f'{InvalidPassword} - Login attempt failed - username: {username}')
             raise InvalidPassword(f'Invalid password - Login attempt failed - username: {username}')
         else:
-            if user[0].user_role == 1: 
+            if user[0].user_role == int(self.admin_role_number): 
                 self.logger.logger.info(f'Welcome, Admin {user[0].username}')
-                return AdministratorFacade(self.repo, LoginToken(id=user[0].administrators.user_id, name=user[0].administrators.first_name, role='Administrator'))
-            elif user[0].user_role == 2: 
+                return AdministratorFacade(self.repo, self.config, LoginToken(id=user[0].administrators.user_id, name=user[0].administrators.first_name, role='Administrator'))
+            elif user[0].user_role == int(self.airline_role_number): 
                 self.logger.logger.info(f'Welcome, Airline {user[0].username}')
-                return AirlineFacade(self.repo, LoginToken(id=user[0].airline_companies.user_id, name=user[0].airline_companies.name, role='Airline'))
-            elif user[0].user_role == 3: 
+                return AirlineFacade(self.repo, self.config, LoginToken(id=user[0].airline_companies.user_id, name=user[0].airline_companies.name, role='Airline'))
+            elif user[0].user_role == int(self.customer_role_number): 
                 self.logger.logger.info(f'Welcome, Customer {user[0].username}')
-                return CustomerFacade(self.repo, LoginToken(id=user[0].customers.user_id, name=user[0].customers.first_name, role='Customer'))
+                return CustomerFacade(self.repo, self.config, LoginToken(id=user[0].customers.user_id, name=user[0].customers.first_name, role='Customer'))
             else: 
                 self.logger.logger.error(f'{InvalidUserRole} - Invalid User-role assigned! USER: {user[0].username}')
                 raise InvalidUserRole
@@ -60,10 +64,10 @@ class AnonymusFacade(FacadeBase):
         elif self.repo.get_by_id(Users, customer.user_id) != None: 
             self.logger.logger.error(f'{UserAlreadyExists} - User-ID {customer.user_id} already in use!')
             raise UserAlreadyExists(f'User-ID {customer.user_id} already in use!')
-        elif len(user.password) < 6: 
+        elif len(user.password) < self.password_length: 
             self.logger.logger.error(f'{PasswordTooShort} - Use at least 6 characters for the password!')
             raise PasswordTooShort
-        elif user.user_role == 3: 
+        elif user.user_role == self.customer_role_number: 
             self.create_user(user)
             self.logger.logger.info(f'User {user.username} created!')
             self.repo.add(customer)

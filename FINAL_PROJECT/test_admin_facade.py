@@ -1,5 +1,5 @@
 import pytest
-from db_config import local_session
+from db_config import local_session, config
 from db_repo import DbRepo
 from facade_anonymus import AnonymusFacade
 from airline_companies import AirlineCompanies
@@ -15,11 +15,10 @@ from error_customer_not_found import CustomerNotFound
 from error_invalid_input import InvalidInput
 
 repo = DbRepo(local_session)
-anonymus_facade = AnonymusFacade(repo)
 
 @pytest.fixture(scope='session')
 def admin_facade_object():
-    an_facade = AnonymusFacade(repo)
+    an_facade = AnonymusFacade(repo, config)
     return an_facade.login('l10r', 'lior1999')
 
 @pytest.fixture(scope='function', autouse=True)

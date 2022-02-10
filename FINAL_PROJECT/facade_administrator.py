@@ -15,10 +15,14 @@ from error_unauthorized_user_id import UnauthorizedUserID
 
 class AdministratorFacade(FacadeBase):
 
-    def __init__(self, repo, login_token):
-        super().__init__(repo)
+    def __init__(self, repo, config, login_token):
+        super().__init__(repo, config)
         self.login_token = login_token
         self.logger = Logger.get_instance()
+        self.admin_role_number = self.config["user_roles"]["admin"]
+        self.airline_role_number = self.config["user_roles"]["airline"]
+        self.customer_role_number = self.config["user_roles"]["customer"]
+        self.password_length = self.config["limits"]["password_length"]
 
     def get_all_customers(self):
         self.logger.logger.debug(f'Attempting to fetch all customers...')
@@ -39,7 +43,7 @@ class AdministratorFacade(FacadeBase):
         elif self.repo.get_by_id(Users, administrator.user_id) != None: 
             self.logger.logger.error(f'{UserAlreadyExists} - User-ID {administrator.user_id} already in use!')
             raise UserAlreadyExists
-        elif user.user_role == 1: 
+        elif user.user_role == int(self.admin_role_number): 
             self.create_user(user)
             self.logger.logger.info(f'User {user.username} created!')
             self.repo.add(administrator)
@@ -60,7 +64,7 @@ class AdministratorFacade(FacadeBase):
         elif self.repo.get_by_id(Users, airline.user_id) != None: 
             self.logger.logger.error(f'{UserAlreadyExists} - User-ID {airline.user_id} already in use!')
             raise UserAlreadyExists
-        elif user.user_role == 2: 
+        elif user.user_role == int(self.airline_role_number): 
             self.create_user(user)
             self.logger.logger.info(f'User {user.username} created!')
             self.repo.add(airline)
@@ -81,10 +85,10 @@ class AdministratorFacade(FacadeBase):
         elif self.repo.get_by_id(Users, customer.user_id) != None: 
             self.logger.logger.error(f'{UserAlreadyExists} - User-ID {customer.user_id} already in use!')
             raise UserAlreadyExists
-        elif len(user.password) < 6: 
+        elif len(user.password) < int(self.password_length): 
             self.logger.logger.error(f'{PasswordTooShort} - Use at least 6 characters for the password!')
             raise PasswordTooShort
-        elif user.user_role == 3: 
+        elif user.user_role == int(self.customer_role_number): 
             self.create_user(user)
             self.logger.logger.info(f'User {user.username} created!')
             self.repo.add(customer)

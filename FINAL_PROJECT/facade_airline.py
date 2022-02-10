@@ -12,10 +12,11 @@ from error_invalid_remaining_tickets import InvalidRemainingTickets
 
 class AirlineFacade(FacadeBase):
 
-    def __init__(self, repo, login_token):
-        super().__init__(repo)
+    def __init__(self, repo, config, login_token):
+        super().__init__(repo, config)
         self.login_token = login_token
         self.logger = Logger.get_instance()
+        self.ticket_limit = self.config["limits"]["ticket_limit"]
 
     def get_flights_by_airline(self, airline):
         self.logger.logger.debug(f'Attempting to fetch flight(s) for airline #{airline}...')
@@ -42,7 +43,7 @@ class AirlineFacade(FacadeBase):
         elif flight.departure_time > flight.landing_time: 
             self.logger.logger.error(f'{InvalidTime} - Departure time cannot be later than landing time!')
             raise InvalidTime
-        elif flight.remaining_tickets < 0: 
+        elif flight.remaining_tickets < self.ticket_limit: 
             self.logger.logger.error(f'{InvalidRemainingTickets} - Negative number of seats is impossible!')
             raise InvalidRemainingTickets
         elif flight.origin_country_id == flight.destination_country_id: 
@@ -92,7 +93,7 @@ class AirlineFacade(FacadeBase):
             current_tickets = self.repo.get_by_id(Flights, flight_id).remaining_tickets
             self.repo.update_by_id(Flights, Flights.id, flight_id, flight)
             updated_tickets = self.repo.get_by_id(Flights, flight_id).remaining_tickets
-            if updated_tickets < 0:
+            if updated_tickets < self.ticket_limit:
                 self.repo.update_by_id(Flights, Flights.id, flight_id, {'remaining_tickets':current_tickets})
                 self.logger.logger.error(f'{InvalidRemainingTickets} - Negative number of seats is impossible!')
                 raise InvalidRemainingTickets

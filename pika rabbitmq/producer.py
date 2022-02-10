@@ -11,4 +11,4 @@ while inp != 0:
     channel.basic_publish(exchange='', routing_key='hello',  body=f"{inp}")
     channel.basic_publish(exchange='', routing_key='hello',  body=f"Boris' input sum is {k}")
 
-print("END OF TRANSMITION'")
+print("END OF TRANSMIION'")
