@@ -9,6 +9,7 @@ from countries import Countries
 from user_roles import UserRoles
 from administrators import Administrators
 from airline_companies import AirlineCompanies
+from db_config import create_all_entities, config
 
 
 class DbRepo:
@@ -91,6 +92,8 @@ class DbRepo:
 
     def reset_db(self):
         self.logger.logger.debug(f'Reseting initial DB.')
+        self.delete_all_tables()
+        create_all_entities()
         self.reset_auto_inc(Countries)
         self.reset_auto_inc(Users)
         self.reset_auto_inc(AirlineCompanies)
@@ -126,3 +129,4 @@ class DbRepo:
         self.add_all([  Tickets(flight_id=1, customer_id=1),
                         Tickets(flight_id=1, customer_id=2),
                         Tickets(flight_id=3, customer_id=2)])
+        self.create_all_sp(config['db']['sp_file'])
