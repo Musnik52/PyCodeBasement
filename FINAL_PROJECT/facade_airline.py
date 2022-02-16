@@ -43,7 +43,7 @@ class AirlineFacade(FacadeBase):
         elif flight.departure_time > flight.landing_time: 
             self.logger.logger.error(f'{InvalidTime} - Departure time cannot be later than landing time!')
             raise InvalidTime
-        elif flight.remaining_tickets < self.ticket_limit: 
+        elif flight.remaining_tickets < int(self.ticket_limit): 
             self.logger.logger.error(f'{InvalidRemainingTickets} - Negative number of seats is impossible!')
             raise InvalidRemainingTickets
         elif flight.origin_country_id == flight.destination_country_id: 
@@ -93,7 +93,7 @@ class AirlineFacade(FacadeBase):
             current_tickets = self.repo.get_by_id(Flights, flight_id).remaining_tickets
             self.repo.update_by_id(Flights, Flights.id, flight_id, flight)
             updated_tickets = self.repo.get_by_id(Flights, flight_id).remaining_tickets
-            if updated_tickets < self.ticket_limit:
+            if updated_tickets < int(self.ticket_limit):
                 self.repo.update_by_id(Flights, Flights.id, flight_id, {'remaining_tickets':current_tickets})
                 self.logger.logger.error(f'{InvalidRemainingTickets} - Negative number of seats is impossible!')
                 raise InvalidRemainingTickets

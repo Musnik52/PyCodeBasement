@@ -98,6 +98,7 @@ class AdministratorFacade(FacadeBase):
             raise UnauthorizedUserID
     
     def remove_administrator(self, administrator):
+        self.logger.logger.debug(f'Attempting to remove Admin...')
         if not isinstance(administrator, int): raise InvalidInput('Input must be an integer!')
         elif self.login_token.role != 'Administrator': raise InvalidToken
         admin = self.repo.get_by_id(Administrators, administrator)
@@ -108,7 +109,7 @@ class AdministratorFacade(FacadeBase):
             self.repo.delete_by_id(Users, Users.id, admin_user_id)
 
     def remove_airline(self, airline):
-        self.logger.logger.debug(f'Attempting to remove airline #{airline}...')
+        self.logger.logger.debug(f'Attempting to remove Airline...')
         if not isinstance(airline, int): 
             self.logger.logger.error(f'{InvalidInput} - Input must be an integer!!')
             raise InvalidInput('Input must be an integer!')
@@ -125,7 +126,7 @@ class AdministratorFacade(FacadeBase):
             self.logger.logger.info(f'User #{airline_user_id} Deleted!')
 
     def remove_customer(self, customer):
-        self.logger.logger.debug(f'Attempting to remove customer #{customer}...')
+        self.logger.logger.debug(f'Attempting to remove customer...')
         if not isinstance(customer, int): 
             self.logger.logger.error(f'{InvalidInput} - Input must be an integer!!')
             raise InvalidInput('Input must be an integer!')

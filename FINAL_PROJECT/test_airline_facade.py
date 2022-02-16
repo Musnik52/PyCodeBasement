@@ -14,7 +14,6 @@ from error_invalid_input import InvalidInput
 from error_invalid_token import InvalidToken
 
 repo = DbRepo(local_session)
-anonymus_facade = AnonymusFacade(repo, config)
 
 @pytest.fixture(scope='session')
 def airline_facade_object():
@@ -37,9 +36,10 @@ def test_not_get_flights_by_airline(airline_facade_object):
         airline_facade_object.get_flights_by_airline(1) 
 
 def test_add_flight(airline_facade_object):
-    flight = Flights(airline_company_id=2, origin_country_id=1, destination_country_id=2, departure_time=datetime(2022, 1, 4, 10, 10, 10), landing_time=datetime(2022, 1, 24, 10, 29, 1), remaining_tickets=44)
-    airline_facade_object.add_flight(flight)
-    assert repo.get_by_id(Flights, 3) != None
+    expected_flight = Flights(airline_company_id=2, origin_country_id=1, destination_country_id=2, departure_time=datetime(2022, 1, 4, 10, 10, 10), landing_time=datetime(2022, 1, 24, 10, 29, 1), remaining_tickets=44)
+    airline_facade_object.add_flight(expected_flight)
+    check_flight = repo.get_by_id(Flights, 5)
+    assert check_flight == expected_flight
 
 def test_not_add_flight(airline_facade_object):
     with pytest.raises(InvalidInput):
@@ -62,7 +62,8 @@ def test_not_add_flight(airline_facade_object):
 def test_update_airline(airline_facade_object):
     airline_update = {'name':'Up Yours LTD'}
     airline_facade_object.update_airline(airline_update, 2)
-    assert repo.get_by_column_value(AirlineCompanies, AirlineCompanies.name, 'Up Yours LTD') != None
+    check_airline = repo.get_by_id(AirlineCompanies, 2)
+    assert check_airline.name == 'Up Yours LTD'
 
 def test_not_update_airline(airline_facade_object):
     with pytest.raises(InvalidInput):
@@ -81,7 +82,9 @@ def test_not_update_airline(airline_facade_object):
 def test_update_flight(airline_facade_object):
     flight_update = {'departure_time': datetime(2022,1,1,11,10,10), 'remaining_tickets':12332}
     airline_facade_object.update_flight(flight_update, 2)
-    assert repo.get_by_column_value(Flights, Flights.remaining_tickets, 12332) != None
+    check_flight = repo.get_by_id(Flights, 2)
+    assert check_flight.departure_time == datetime(2022,1,1,11,10,10)
+    assert check_flight.remaining_tickets == 12332
 
 def test_not_update_flight(airline_facade_object):
     with pytest.raises(InvalidInput):

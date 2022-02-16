@@ -12,11 +12,10 @@ from error_invalid_password import InvalidPassword
 from error_invalid_input import InvalidInput
 
 repo = DbRepo(local_session)
-anonymus_facade = AnonymusFacade(repo, config)
 
 @pytest.fixture(scope='session')
 def anonymus_facade_object():
-    an_facade = anonymus_facade
+    an_facade = AnonymusFacade(repo, config)
     return an_facade
 
 @pytest.fixture(scope='function', autouse=True)
@@ -39,9 +38,12 @@ def test_not_login(anonymus_facade_object):
 def test_add_customer(anonymus_facade_object):
     expected_customer = Customers(first_name='testkosta', last_name='testmakarkov', address='testrashi 31', phone_number='test0507897765', credit_card_number='test13323432', user_id=8)
     expected_user = Users(username='testk0st4', password='test1kosta1', email='testkosta@jb.com', user_role=3)
+    anonymus_facade_object.login('testk0st4', 'test1kosta1')
     anonymus_facade_object.add_customer(expected_customer, expected_user)
-    assert repo.get_by_column_value(Customers, Customers.first_name, 'testkosta') != None
-    assert repo.get_by_column_value(Users, Users.username, 'testk0st4') != None
+    check_customer = repo.get_by_id(Customers, 4)
+    check_user = repo.get_by_id(Users, 8)
+    assert check_customer == expected_customer
+    assert check_user == expected_user
 
 def test_not_add_customer(anonymus_facade_object):
     with pytest.raises(InvalidInput):

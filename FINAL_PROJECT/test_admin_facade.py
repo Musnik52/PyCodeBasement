@@ -32,8 +32,10 @@ def test_add_administrator(admin_facade_object):
     expected_admin = Administrators(first_name='testlior', last_name='testmusnik', user_id=8)
     expected_user = Users(username='testl10r', password='testlior1999', email='testlior@jb.com', user_role=1)
     admin_facade_object.add_administrator(expected_admin, expected_user)
-    assert repo.get_by_column_value(Administrators, Administrators.first_name, 'testlior') != None
-    assert repo.get_by_column_value(Users, Users.username, 'testl10r') != None
+    check_admin = repo.get_by_id(Administrators, 3)
+    check_user = repo.get_by_id(Users, 8)
+    assert check_admin == expected_admin
+    assert check_user == expected_user
 
 def test_not_add_administrator(admin_facade_object):
     with pytest.raises(InvalidInput):
@@ -61,8 +63,10 @@ def test_add_airline(admin_facade_object):
     expected_airline = AirlineCompanies(name='testbazooka air', country_id=1, user_id=8)
     expected_user = Users(username='testb0r1s', password='boris1992', email='testboris@jb.com', user_role=2)
     admin_facade_object.add_airline(expected_airline, expected_user)
-    assert repo.get_by_column_value(AirlineCompanies, AirlineCompanies.name, 'testbazooka air') != None
-    assert repo.get_by_column_value(Users, Users.username, 'testb0r1s') != None
+    check_airline = repo.get_by_id(AirlineCompanies, 3)
+    check_user = repo.get_by_id(Users, 8)
+    assert check_airline == expected_airline
+    assert check_user == expected_user
 
 def test_not_add_airline(admin_facade_object):
     with pytest.raises(InvalidInput):
@@ -90,8 +94,10 @@ def test_add_customer(admin_facade_object):
     expected_customer = Customers(first_name='testkosta', last_name='testmakarkov', address='testrashi 31', phone_number='test0507897765', credit_card_number='test13323432', user_id=8)
     expected_user = Users(username='testk0st4', password='test1kosta1', email='testkosta@jb.com', user_role=3)
     admin_facade_object.add_customer(expected_customer, expected_user)
-    assert repo.get_by_column_value(Customers, Customers.first_name, 'testkosta') != None
-    assert repo.get_by_column_value(Users, Users.username, 'testk0st4') != None
+    check_customer = repo.get_by_id(Customers, 4)
+    check_user = repo.get_by_id(Users, 8)
+    assert check_customer == expected_customer
+    assert check_user == expected_user
 
 def test_not_add_customer(admin_facade_object):
     with pytest.raises(InvalidInput):

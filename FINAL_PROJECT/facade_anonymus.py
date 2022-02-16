@@ -64,7 +64,7 @@ class AnonymusFacade(FacadeBase):
         elif self.repo.get_by_id(Users, customer.user_id) != None: 
             self.logger.logger.error(f'{UserAlreadyExists} - User-ID {customer.user_id} already in use!')
             raise UserAlreadyExists(f'User-ID {customer.user_id} already in use!')
-        elif len(user.password) < self.password_length: 
+        elif len(user.password) < int(self.password_length): 
             self.logger.logger.error(f'{PasswordTooShort} - Use at least 6 characters for the password!')
             raise PasswordTooShort
         elif user.user_role == self.customer_role_number: 

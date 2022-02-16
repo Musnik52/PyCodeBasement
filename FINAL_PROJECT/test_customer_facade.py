@@ -12,7 +12,6 @@ from error_invalid_input import InvalidInput
 from error_invalid_token import InvalidToken
 
 repo = DbRepo(local_session)
-anonymus_facade = AnonymusFacade(repo, config)
 
 @pytest.fixture(scope='session')
 def customer_facade_object():
@@ -25,7 +24,8 @@ def customer_facade_clean():
 
 def test_update_customer(customer_facade_object):
     customer_facade_object.update_customer({'first_name': 'Samuel'}, 2) 
-    assert repo.get_by_column_value(Customers, Customers.first_name, 'Samuel') != None
+    check_customer = repo.get_by_id(Customers, 2)
+    assert check_customer.first_name == 'Samuel'
 
 def test_not_update_customer(customer_facade_object):
     with pytest.raises(InvalidInput):
@@ -39,7 +39,9 @@ def test_not_update_customer(customer_facade_object):
     
 def test_add_ticket(customer_facade_object):
     customer_facade_object.add_ticket(Tickets(id=999, flight_id=2, customer_id=2))
-    assert repo.get_by_id(Tickets, 999) != None
+    check_ticket = repo.get_by_id(Tickets, 999)
+    assert check_ticket.flight_id == 2
+    assert check_ticket.customer_id == 2
     
 def test_not_add_ticket(customer_facade_object):
     with pytest.raises(InvalidInput):
@@ -51,7 +53,8 @@ def test_not_add_ticket(customer_facade_object):
 
 def test_remove_ticket(customer_facade_object):
     customer_facade_object.remove_ticket(3)
-    assert repo.get_by_id(Tickets, 3) == None
+    check_customer = repo.get_by_id(Tickets, 3)
+    assert check_customer == None
 
 def test_not_remove_ticket(customer_facade_object):
     with pytest.raises(InvalidInput):
