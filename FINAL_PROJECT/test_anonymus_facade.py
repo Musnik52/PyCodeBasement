@@ -6,7 +6,6 @@ from customers import Customers
 from users import Users
 from error_user_exists import UserAlreadyExists
 from error_short_password import PasswordTooShort
-from error_unauthorized_user_id import UnauthorizedUserID
 from error_user_not_found import UsernameNotFound
 from error_invalid_password import InvalidPassword
 from error_invalid_input import InvalidInput
@@ -38,7 +37,6 @@ def test_not_login(anonymus_facade_object):
 def test_add_customer(anonymus_facade_object):
     expected_customer = Customers(first_name='testkosta', last_name='testmakarkov', address='testrashi 31', phone_number='test0507897765', credit_card_number='test13323432', user_id=8)
     expected_user = Users(username='testk0st4', password='test1kosta1', email='testkosta@jb.com', user_role=3)
-    anonymus_facade_object.login('testk0st4', 'test1kosta1')
     anonymus_facade_object.add_customer(expected_customer, expected_user)
     check_customer = repo.get_by_id(Customers, 4)
     check_user = repo.get_by_id(Users, 8)
@@ -61,8 +59,4 @@ def test_not_add_customer(anonymus_facade_object):
     with pytest.raises(PasswordTooShort):
         expected_customer = Customers(first_name='testkosta', last_name='testmakarkov', address='testrashi 31', phone_number='test0507897765', credit_card_number='test13323432', user_id=8)
         expected_user = Users(username='testk0st4', password='123', email='testkosta@jb.com', user_role=3)
-        anonymus_facade_object.add_customer(expected_customer, expected_user)
-    with pytest.raises(UnauthorizedUserID):
-        expected_customer = Customers(first_name='testkosta', last_name='testmakarkov', address='testrashi 31', phone_number='test0507897765', credit_card_number='test13323432', user_id=8)
-        expected_user = Users(username='testk0st4', password='test1kosta1', email='testkosta@jb.com', user_role=1)
         anonymus_facade_object.add_customer(expected_customer, expected_user)

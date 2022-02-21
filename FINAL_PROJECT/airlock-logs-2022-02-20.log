@@ -1,0 +1,83 @@
+2022-02-20 20:42:27,285:db_repo:DEBUG:Reseting initial DB.
+2022-02-20 20:42:27,285:db_repo:WARNING:deleting all tables.
+2022-02-20 20:42:27,285:db_repo:WARNING:deleting table countries.
+2022-02-20 20:42:27,381:db_repo:WARNING:deleting table flights.
+2022-02-20 20:42:27,381:db_repo:WARNING:deleting table tickets.
+2022-02-20 20:42:27,381:db_repo:WARNING:deleting table airline_companies.
+2022-02-20 20:42:27,397:db_repo:WARNING:deleting table administrators.
+2022-02-20 20:42:27,397:db_repo:WARNING:deleting table customers.
+2022-02-20 20:42:27,416:db_repo:WARNING:deleting table users.
+2022-02-20 20:42:27,422:db_repo:WARNING:deleting table user_roles.
+2022-02-20 20:42:27,761:db_repo:DEBUG:From C:\git\pyCodeBasement\FINAL_PROJECT\sp_file.sql - All SP were created.
+2022-02-20 20:42:27,761:facade_anonymus:DEBUG:Attempting Logging-in...
+2022-02-20 20:42:27,777:facade_anonymus:INFO:Welcome, Airline b0r1s
+2022-02-20 20:42:27,777:db_repo:DEBUG:Reseting initial DB.
+2022-02-20 20:42:27,777:db_repo:WARNING:deleting all tables.
+2022-02-20 20:42:27,777:db_repo:WARNING:deleting table countries.
+2022-02-20 20:42:27,777:db_repo:WARNING:deleting table flights.
+2022-02-20 20:42:27,777:db_repo:WARNING:deleting table tickets.
+2022-02-20 20:42:27,793:db_repo:WARNING:deleting table airline_companies.
+2022-02-20 20:42:27,793:db_repo:WARNING:deleting table administrators.
+2022-02-20 20:42:27,809:db_repo:WARNING:deleting table customers.
+2022-02-20 20:42:27,819:db_repo:WARNING:deleting table users.
+2022-02-20 20:42:27,825:db_repo:WARNING:deleting table user_roles.
+2022-02-20 20:42:28,115:db_repo:DEBUG:From C:\git\pyCodeBasement\FINAL_PROJECT\sp_file.sql - All SP were created.
+2022-02-20 20:42:28,115:facade_anonymus:DEBUG:Attempting Logging-in...
+2022-02-20 20:42:28,115:facade_anonymus:ERROR:<class 'error_invalid_input.InvalidInput'> - password must be string!
+2022-02-20 20:42:28,115:facade_anonymus:DEBUG:Attempting Logging-in...
+2022-02-20 20:42:28,115:facade_anonymus:ERROR:<class 'error_invalid_input.InvalidInput'> - username must be string!
+2022-02-20 20:42:28,115:facade_anonymus:DEBUG:Attempting Logging-in...
+2022-02-20 20:42:28,115:facade_anonymus:ERROR:<class 'error_user_not_found.UsernameNotFound'> - Login attempt failed - username: we6682
+2022-02-20 20:42:28,115:facade_anonymus:DEBUG:Attempting Logging-in...
+2022-02-20 20:42:28,131:facade_anonymus:ERROR:<class 'error_invalid_password.InvalidPassword'> - Login attempt failed - username: b0r1s
+2022-02-20 20:42:28,131:db_repo:DEBUG:Reseting initial DB.
+2022-02-20 20:42:28,131:db_repo:WARNING:deleting all tables.
+2022-02-20 20:42:28,131:db_repo:WARNING:deleting table countries.
+2022-02-20 20:42:28,131:db_repo:WARNING:deleting table flights.
+2022-02-20 20:42:28,131:db_repo:WARNING:deleting table tickets.
+2022-02-20 20:42:28,144:db_repo:WARNING:deleting table airline_companies.
+2022-02-20 20:42:28,150:db_repo:WARNING:deleting table administrators.
+2022-02-20 20:42:28,159:db_repo:WARNING:deleting table customers.
+2022-02-20 20:42:28,164:db_repo:WARNING:deleting table users.
+2022-02-20 20:42:28,176:db_repo:WARNING:deleting table user_roles.
+2022-02-20 20:42:28,469:db_repo:DEBUG:From C:\git\pyCodeBasement\FINAL_PROJECT\sp_file.sql - All SP were created.
+2022-02-20 20:42:28,469:facade_anonymus:DEBUG:Setting up new customer and user...
+2022-02-20 20:42:28,485:facade_base:INFO:User testk0st4 created!
+2022-02-20 20:42:28,485:facade_anonymus:INFO:User testk0st4 created!
+2022-02-20 20:42:28,485:facade_anonymus:INFO:Customer testkosta testmakarkov created!
+2022-02-20 20:42:28,485:db_repo:DEBUG:Reseting initial DB.
+2022-02-20 20:42:28,485:db_repo:WARNING:deleting all tables.
+2022-02-20 20:42:28,485:db_repo:WARNING:deleting table countries.
+2022-02-20 20:42:28,485:db_repo:WARNING:deleting table flights.
+2022-02-20 20:42:28,501:db_repo:WARNING:deleting table tickets.
+2022-02-20 20:42:28,501:db_repo:WARNING:deleting table airline_companies.
+2022-02-20 20:42:28,513:db_repo:WARNING:deleting table administrators.
+2022-02-20 20:42:28,518:db_repo:WARNING:deleting table customers.
+2022-02-20 20:42:28,525:db_repo:WARNING:deleting table users.
+2022-02-20 20:42:28,525:db_repo:WARNING:deleting table user_roles.
+2022-02-20 20:42:28,830:db_repo:DEBUG:From C:\git\pyCodeBasement\FINAL_PROJECT\sp_file.sql - All SP were created.
+2022-02-20 20:42:28,830:facade_anonymus:DEBUG:Setting up new customer and user...
+2022-02-20 20:42:28,830:facade_anonymus:ERROR:<class 'error_invalid_input.InvalidInput'> - Customer must be a "Customers" object!
+2022-02-20 20:42:28,830:facade_anonymus:DEBUG:Setting up new customer and user...
+2022-02-20 20:42:28,831:facade_anonymus:ERROR:<class 'error_invalid_input.InvalidInput'> - User must be a "Users" object!
+2022-02-20 20:42:28,831:facade_anonymus:DEBUG:Setting up new customer and user...
+2022-02-20 20:42:28,834:facade_anonymus:ERROR:<class 'error_user_exists.UserAlreadyExists'> - User-ID 3 already in use!
+2022-02-20 20:42:28,835:facade_anonymus:DEBUG:Setting up new customer and user...
+2022-02-20 20:42:28,835:facade_anonymus:ERROR:<class 'error_short_password.PasswordTooShort'> - Use at least 6 characters for the password!
+2022-02-20 20:43:12,347:facade_anonymus:DEBUG:Attempting Logging-in...
+2022-02-20 20:43:12,414:facade_anonymus:INFO:Welcome, Admin l10r
+2022-02-20 20:43:12,419:facade_anonymus:DEBUG:Attempting Logging-in...
+2022-02-20 20:43:12,420:facade_anonymus:INFO:Welcome, Airline m4x1m
+2022-02-20 20:43:12,426:facade_anonymus:DEBUG:Attempting Logging-in...
+2022-02-20 20:43:12,428:facade_anonymus:INFO:Welcome, Customer 3m1l
+2022-02-20 20:43:12,438:db_repo:DEBUG:Reseting initial DB.
+2022-02-20 20:43:12,438:db_repo:WARNING:deleting all tables.
+2022-02-20 20:43:12,438:db_repo:WARNING:deleting table countries.
+2022-02-20 20:43:12,454:db_repo:WARNING:deleting table flights.
+2022-02-20 20:43:12,462:db_repo:WARNING:deleting table tickets.
+2022-02-20 20:43:12,471:db_repo:WARNING:deleting table airline_companies.
+2022-02-20 20:43:12,484:db_repo:WARNING:deleting table administrators.
+2022-02-20 20:43:12,493:db_repo:WARNING:deleting table customers.
+2022-02-20 20:43:12,504:db_repo:WARNING:deleting table users.
+2022-02-20 20:43:12,515:db_repo:WARNING:deleting table user_roles.
+2022-02-20 20:43:12,994:db_repo:DEBUG:From C:\git\pyCodeBasement\FINAL_PROJECT\sp_file.sql - All SP were created.

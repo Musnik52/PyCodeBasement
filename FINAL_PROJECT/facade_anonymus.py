@@ -67,14 +67,11 @@ class AnonymusFacade(FacadeBase):
         elif len(user.password) < int(self.password_length): 
             self.logger.logger.error(f'{PasswordTooShort} - Use at least 6 characters for the password!')
             raise PasswordTooShort
-        elif user.user_role == self.customer_role_number: 
+        else:
             self.create_user(user)
             self.logger.logger.info(f'User {user.username} created!')
             self.repo.add(customer)
             self.logger.logger.info(f'Customer {customer.first_name} {customer.last_name} created!')
-        else: 
-            self.logger.logger.error(f'{UnauthorizedUserID} - Unauthorized ID to create a "customer"!')
-            raise UnauthorizedUserID
 
     def __str__(self):
         return f'<<Anonymus-Facade: {self.logger}>>'
