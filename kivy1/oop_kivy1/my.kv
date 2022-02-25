@@ -1,0 +1,47 @@
+<MyGrid>:
+    # Global variable name references the id name
+    airline_companies: airline_companies
+    customers: customers
+    administrators: administrators
+    flights_per_company: flights_per_company
+    tickets_per_customer: tickets_per_customer
+    countries: countries
+    GridLayout:
+        cols:1
+        size: root.width-200, root.height-200
+        pos: 100, 100
+        GridLayout:
+            cols:2
+        Label:
+            text: "Airline Companies: "
+        TextInput:
+            id: airline_companies# <-Add this
+            multinline:False
+        Label:
+            text: "Customers: "
+        TextInput:
+            id: customers# <-Add this
+            multiline:False
+        Label:
+            text: "Administrators: "
+        TextInput:
+            id: administrators# <-Add this
+            multinline:False
+        Label:
+            text: "Flights Per Company: "
+        TextInput:
+            id: flights_per_company# <-Add this
+            multiline:False
+        Label:
+            text: "Tickets Per Customer: "
+        TextInput:
+            id: tickets_per_customer# <-Add this
+            multinline:False
+        Label:
+            text: "Countries: "
+        TextInput:
+            id: countries# <-Add this
+            multiline:False
+    Button:
+        text:"Submit"
+        on_press: root.btn()

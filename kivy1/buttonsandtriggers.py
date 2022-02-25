@@ -58,8 +58,8 @@ class MyGridAndButton(GridLayout):
         self.add_widget(self.inside) # Add the interior layout to the main
         self.submit = Button(text="Submit", font_size=40)
         self.submit.bind(on_press = self.pressed)
-        #self.submit.bind =  קישור פעולה לכפתור שהגדרנו
-        #self.pressed = שם הפעולה (פונ') המקושרת
+        '''self.submit.bind =  קישור פעולה לכפתור שהגדרנו
+        self.pressed = שם הפעולה (פונ') המקושרת'''
         self.add_widget(self.submit) # Add the button to the main layout
 
 class MyApp(App): #הרצת האפליקציה

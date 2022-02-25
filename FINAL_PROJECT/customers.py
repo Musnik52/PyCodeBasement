@@ -18,7 +18,7 @@ class Customers(Base):
     __table_args__= (UniqueConstraint('first_name', 'last_name', name='una_2'),)
 
     def __repr__(self):
-        return f'\n<Customer id={self.id} First name={self.first_name} Last name={self.last_name} Address={self.address} Phone number={self.phone_number} Credit-card number={self.credit_card_number} User id={self.user_id}>'
+        return f'<Customer id={self.id} First name={self.first_name} Last name={self.last_name} Address={self.address} Phone number={self.phone_number} Credit-card number={self.credit_card_number} User id={self.user_id}>'
 
     def __str__(self):
         return f'<Customer id={self.id} First name={self.first_name} Last name={self.last_name} Address={self.address} Phone number={self.phone_number} Credit-card number={self.credit_card_number} User id={self.user_id}>'
