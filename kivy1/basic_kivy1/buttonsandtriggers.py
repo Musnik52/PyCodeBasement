@@ -7,29 +7,6 @@ from kivy.uix.button import Button
 
 class MyGridAndButton(GridLayout):
 
-    def pressed(self, instance):
-        # Get the value of all of the tex inputs
-        airline_companies =self.airline_companies.text
-        customers = self.customers.text
-        administrators = self.administrators.text
-        flights_per_company = self.flights_per_company.text
-        tickets_per_customer = self.tickets_per_customer.text
-        countries =self.countries.text
-        # print the values to the console
-        print(  "Airline Companies:", airline_companies, 
-                "Customers:", customers,
-                "Administrators:", administrators,
-                "Flights Per Company:", flights_per_company,
-                "Tickets Per Customer:", tickets_per_customer,
-                "Countries:", countries)
-        # Reset text to blank in each text input
-        self.airline_companies.text =""
-        self.customers.text =""
-        self.administrators.text =""
-        self.flights_per_company.text =""
-        self.tickets_per_customer.text =""
-        self.countries.text =""
-
     def __init__(self, **kwargs):
         super(MyGridAndButton, self).__init__(**kwargs)
         self.cols = 1# #הגדרת רשת ראשית בעלת עמודה אחת
@@ -56,11 +33,34 @@ class MyGridAndButton(GridLayout):
         self.inside.add_widget(self.countries)
         #כאן הנתונים שיוצגו ברשת הראשית
         self.add_widget(self.inside) # Add the interior layout to the main
-        self.submit = Button(text="Submit", font_size=40)
+        self.submit = Button(text="Submit", font_size=40, size_hint_y=None, height=50)
         self.submit.bind(on_press = self.pressed)
         '''self.submit.bind =  קישור פעולה לכפתור שהגדרנו
         self.pressed = שם הפעולה (פונ') המקושרת'''
         self.add_widget(self.submit) # Add the button to the main layout
+
+    def pressed(self, instance):
+        # Get the value of all of the tex inputs
+        airline_companies =self.airline_companies.text
+        customers = self.customers.text
+        administrators = self.administrators.text
+        flights_per_company = self.flights_per_company.text
+        tickets_per_customer = self.tickets_per_customer.text
+        countries =self.countries.text
+        # print the values to the console
+        print(  "Airline Companies:", airline_companies, 
+                "Customers:", customers,
+                "Administrators:", administrators,
+                "Flights Per Company:", flights_per_company,
+                "Tickets Per Customer:", tickets_per_customer,
+                "Countries:", countries)
+        # Reset text to blank in each text input
+        self.airline_companies.text =""
+        self.customers.text =""
+        self.administrators.text =""
+        self.flights_per_company.text =""
+        self.tickets_per_customer.text =""
+        self.countries.text =""
 
 class MyApp(App): #הרצת האפליקציה
     def build(self):

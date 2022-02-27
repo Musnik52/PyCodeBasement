@@ -1,5 +1,4 @@
-<MyGrid>:
-    # Global variable name references the id name
+<MyWidget>:
     airline_companies: airline_companies
     customers: customers
     administrators: administrators
@@ -9,7 +8,8 @@
     GridLayout:
         cols:1
         size: root.width-200, root.height-200
-        pos: 100, 100
+        pos: 100, 150
+
         GridLayout:
             cols:2
         Label:
@@ -42,6 +42,21 @@
         TextInput:
             id: countries
             multiline:False
-    Button:
-        text:"Submit"
-        on_press: root.btn()
+
+    RoundedButton:
+        text:"Add To Airlock-DB"
+        size: root.width, 100
+        pos_hint: {'center_x': 0.5}
+        size_hint: (1, .3)
+        on_press: root.pop()
+
+<RoundedButton@Button>
+    background_color: (0,0,0,0)
+    background_normal: ''
+    canvas.before:
+        Color:
+            rgba: (48/255,84/255,150/255,1)
+        RoundedRectangle:
+            size: self.size
+            pos: self.pos
+            radius: [58]

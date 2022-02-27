@@ -25,6 +25,13 @@ class MyGrid(Widget):
         self.flights_per_company.text =""
         self.tickets_per_customer.text =""
         self.countries.text =""
+    
+    def checkbox_click(self, instance, value):
+        if value is True:
+            print("Checkbox Checked")
+        else:
+            print("Checkbox Unchecked")
+
 
 
 class MyApp(App):

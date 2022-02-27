@@ -12,7 +12,6 @@ from error_user_not_found import UsernameNotFound
 from error_short_password import PasswordTooShort
 from error_invalid_password import InvalidPassword
 from error_invalid_user_role import InvalidUserRole
-from error_unauthorized_user_id import UnauthorizedUserID
 
 class AnonymusFacade(FacadeBase):
 

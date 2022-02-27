@@ -1,15 +1,20 @@
-from os import remove
-from flask import Flask, request, render_template
+from flask import Flask, request
 import json
 from db_repo import DbRepo
 from db_config import local_session
 from customers import Customers
+from users import Users
 
 repo = DbRepo(local_session)
 app = Flask(__name__)
 
-#customers = [repo.get_all(Customers)] WHEN NO DB
-
+def convert_to_json(_list):
+    json_list = []
+    for i in _list:
+        _dict = i.__dict__
+        _dict.pop('_sa_instance_state', None)
+        json_list.append(_dict)
+    return json_list
 
 # localhost:5000/
 # static page
@@ -34,64 +39,81 @@ def home():
 # url/<resource> <--- GET POST
 @app.route('/customers', methods=['GET', 'POST'])
 def get_or_post_customer():
-    if request.method == 'GET':
-        # pseudo - select * from Customers
-        # parsing
-        # turn to json
-        #return json.dumps(customers1[0])
-        customers1 = [c.__dict__ for c in repo.get_all(Customers)]
-        return json.dumps(dict(customers1))
+    if request.method == 'GET': return json.dumps(convert_to_json(repo.get_all(Customers)))
     if request.method == 'POST':
-        #  {'id': 4 [not be sent with DB], 'name': 'david', 'address': 'herzeliya'}
+        #  {"username": "1i1y", "password": "passw0rd", "email": "lily@jb.com", "first_name":"lily", "last_name":"musnikov", "address":"narnia22", "phone_number":"0565452243", "credit_card_number":"65546765534", "user_id":8}
         new_customer = request.get_json()
-        customers.append(new_customer)
+        repo.add(Users(     id=new_customer['user_id'],
+                            username=new_customer['username'], 
+                            password=new_customer['password'],
+                            email=new_customer['email'],
+                            user_role=3))
+        repo.add(Customers( id=new_customer['id'],
+                            first_name=new_customer['first_name'], 
+                            last_name=new_customer['last_name'], 
+                            address=new_customer['address'], 
+                            phone_number=new_customer['phone_number'], 
+                            credit_card_number=new_customer['credit_card_number'], 
+                            user_id=new_customer['user_id']))
         return '{"status": "success"}'
 
 @app.route('/customers/<int:id>', methods=['GET', 'PUT', 'DELETE', 'PATCH'])
 def get_customer_by_id(id):
-    global customers
     if request.method == 'GET':
-        # pseudo - select * from Customers where Customer.id == id
-        # parsing
-        # turn to json
-        for c in customers:
+        for c in convert_to_json(repo.get_all(Customers)):
             if c["id"] == id:
                 return json.dumps(c)
         return '{}'
     if request.method == 'PUT':
-        #  {'id': 4 [not be sent with DB], 'name': 'david', 'address': 'herzeliya'}
-        # 1. if not exist --> add
-        # 2. if exist, update fields with given data
-        # 3.           missing fields will have None value
+        #  {"username": "1i1y", "password": "passw0rd", "email": "lily@jb.com", "first_name":"lily", "last_name":"musnikov", "address":"narnia22", "phone_number":"0565452243", "credit_card_number":"65546765534", "user_id":8}
         updated_new_customer = request.get_json()
-        for c in customers:
+        customers_json = convert_to_json(repo.get_all(Customers))
+        for c in customers_json:
             if c["id"] == id:
                 c["id"] = updated_new_customer["id"] if "id" in updated_new_customer.keys() else None
-                c["name"] = updated_new_customer["name"] if "name" in updated_new_customer.keys() else None
+                c["first_name"] = updated_new_customer["first_name"] if "first_name" in updated_new_customer.keys() else None
+                c["last_name"] = updated_new_customer["last_name"] if "last_name" in updated_new_customer.keys() else None
                 c["address"] = updated_new_customer["address"] if "address" in updated_new_customer.keys() else None
+                c["phone_number"] = updated_new_customer["phone_number"] if "phone_number" in updated_new_customer.keys() else None
+                c["credit_card_number"] = updated_new_customer["credit_card_number"] if "credit_card_number" in updated_new_customer.keys() else None
+                repo.update_by_id(Customers, Customers.id, id, c)
                 return json.dumps(updated_new_customer)
-        customers.append(updated_new_customer)
-        return json.dumps(updated_new_customer)
+            repo.add(Users(     id=updated_new_customer['user_id'],
+                                username=updated_new_customer['username'], 
+                                password=updated_new_customer['password'],
+                                email=updated_new_customer['email'],
+                                user_role=3))
+            repo.add(Customers( id=updated_new_customer['id'],
+                                first_name=updated_new_customer['first_name'], 
+                                last_name=updated_new_customer['last_name'], 
+                                address=updated_new_customer['address'], 
+                                phone_number=updated_new_customer['phone_number'], 
+                                credit_card_number=updated_new_customer['credit_card_number'], 
+                                user_id=updated_new_customer['user_id']))
+            return '{"status": "success"}'
     if request.method == 'PATCH':
-        #  {'id': 4 [not be sent with DB], 'name': 'david', 'address': 'herzeliya'}
-        # 1. if not exist --> return
-        # 2. if exist, update fields with given data
-        # 3.           missing fields will remain the same
+        # {"username": "1i1y", "password": "passw0rd", "email": "lily@jb.com", "first_name":"lily", "last_name":"musnikov", "address":"narnia22", "phone_number":"0565452243", "credit_card_number":"65546765534", "user_id":8}
         updated_customer = request.get_json()
-        for c in customers:
+        customers_json = convert_to_json(repo.get_all(Customers))
+        for c in customers_json:
             if c["id"] == id:
-                c["id"] = updated_customer["id"] if "id" in updated_customer.keys() else c["id"]
-                c["name"] = updated_customer["name"] if "name" in updated_customer.keys() else c["name"]
-                c["address"] = updated_customer["address"] if "address" in updated_customer.keys() else c["address"]
-                return json.dumps(updated_customer)
+                c["id"] = updated_customer["id"] if "id" in updated_customer.keys() else None
+                c["first_name"] = updated_customer["first_name"] if "first_name" in updated_customer.keys() else None
+                c["last_name"] = updated_customer["last_name"] if "last_name" in updated_customer.keys() else None
+                c["address"] = updated_customer["address"] if "address" in updated_customer.keys() else None
+                c["phone_number"] = updated_customer["phone_number"] if "phone_number" in updated_customer.keys() else None
+                c["credit_card_number"] = updated_customer["credit_card_number"] if "credit_card_number" in updated_customer.keys() else None
+                repo.update_by_id(Customers, Customers.id, id, c)
+                return '{"status": "success"}'
         return '{"status": "not found"}'
     if request.method == 'DELETE':
-        customers = [c for c in customers if c["id"] != id]
-        return json.dumps(customers)
+        deleted_customer = request.get_json()
+        customers_json = convert_to_json(repo.get_all(Customers))
+        for c in customers_json:
+            if c["id"] == id:
+                repo.delete_by_id(Customers, Customers.id, id)
+                repo.delete_by_id(Users, Users.id, c["user_id"])
+        return f'{json.dumps(deleted_customer)} deleted'
+    return '{"status": "not found"}'
 
 app.run()
-
-# download post-man
-# activate:
-# GET, GET/ID, POST, PUT, PATCH, DELETE -- check if they work
-# connect the project to a DB (sqlite, postgresql, w/o alchemy)
