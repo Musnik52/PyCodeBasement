@@ -1,0 +1,43 @@
+2022-03-01 21:33:08,253:db_repo:WARNING:deleting from table <class 'customers.Customers'>.
+2022-03-01 21:33:08,278:db_repo:WARNING:deleting from table <class 'users.Users'>.
+2022-03-01 21:40:55,308:db_repo:WARNING:deleting from table <class 'customers.Customers'>.
+2022-03-01 21:40:55,325:db_repo:WARNING:deleting from table <class 'users.Users'>.
+2022-03-01 21:42:18,957:db_repo:WARNING:deleting from table <class 'customers.Customers'>.
+2022-03-01 21:42:18,973:db_repo:WARNING:deleting from table <class 'users.Users'>.
+2022-03-01 21:42:46,399:db_repo:WARNING:deleting from table <class 'customers.Customers'>.
+2022-03-01 21:42:46,399:db_repo:WARNING:deleting from table <class 'users.Users'>.
+2022-03-01 22:08:06,253:db_repo:WARNING:deleting from table <class 'customers.Customers'>.
+2022-03-01 22:08:06,278:db_repo:WARNING:deleting from table <class 'users.Users'>.
+2022-03-01 22:12:06,752:db_repo:WARNING:deleting from table <class 'customers.Customers'>.
+2022-03-01 22:12:06,769:db_repo:WARNING:deleting from table <class 'users.Users'>.
+2022-03-01 22:36:35,254:db_repo:WARNING:deleting from table <class 'customers.Customers'>.
+2022-03-01 22:36:35,273:db_repo:WARNING:deleting from table <class 'users.Users'>.
+2022-03-01 22:41:30,971:db_repo:WARNING:deleting from table <class 'customers.Customers'>.
+2022-03-01 22:41:31,000:db_repo:WARNING:deleting from table <class 'users.Users'>.
+2022-03-01 22:45:33,951:db_repo:WARNING:deleting from table <class 'customers.Customers'>.
+2022-03-01 22:45:33,968:db_repo:WARNING:deleting from table <class 'users.Users'>.
+2022-03-01 22:47:37,278:db_repo:WARNING:deleting from table <class 'customers.Customers'>.
+2022-03-01 22:47:37,302:db_repo:WARNING:deleting from table <class 'users.Users'>.
+2022-03-01 22:51:25,251:db_repo:WARNING:deleting from table <class 'customers.Customers'>.
+2022-03-01 22:51:25,269:db_repo:WARNING:deleting from table <class 'users.Users'>.
+2022-03-01 23:01:39,589:facade_anonymus:DEBUG:Attempting Logging-in...
+2022-03-01 23:01:39,661:facade_anonymus:INFO:Welcome, Admin l10r
+2022-03-01 23:01:39,669:facade_anonymus:DEBUG:Attempting Logging-in...
+2022-03-01 23:01:39,669:facade_anonymus:INFO:Welcome, Airline m4x1m
+2022-03-01 23:01:39,685:facade_anonymus:DEBUG:Attempting Logging-in...
+2022-03-01 23:01:39,685:facade_anonymus:INFO:Welcome, Customer 3m1l
+2022-03-01 23:01:39,705:db_repo:DEBUG:Reseting initial DB.
+2022-03-01 23:01:39,705:db_repo:WARNING:deleting all tables.
+2022-03-01 23:01:39,705:db_repo:WARNING:deleting table countries.
+2022-03-01 23:01:39,723:db_repo:WARNING:deleting table flights.
+2022-03-01 23:01:39,732:db_repo:WARNING:deleting table tickets.
+2022-03-01 23:01:39,749:db_repo:WARNING:deleting table airline_companies.
+2022-03-01 23:01:39,762:db_repo:WARNING:deleting table administrators.
+2022-03-01 23:01:39,778:db_repo:WARNING:deleting table customers.
+2022-03-01 23:01:39,794:db_repo:WARNING:deleting table users.
+2022-03-01 23:01:39,805:db_repo:WARNING:deleting table user_roles.
+2022-03-01 23:01:40,437:db_repo:DEBUG:From C:\git\pyCodeBasement\FINAL_PROJECT\sp_file.sql - All SP were created.
+2022-03-01 23:06:31,941:db_repo:WARNING:deleting from table <class 'customers.Customers'>.
+2022-03-01 23:06:31,957:db_repo:WARNING:deleting from table <class 'users.Users'>.
+2022-03-01 23:08:29,379:db_repo:WARNING:deleting from table <class 'customers.Customers'>.
+2022-03-01 23:08:29,379:db_repo:WARNING:deleting from table <class 'users.Users'>.
