@@ -1,14 +1,13 @@
-from kivy.app import App
 import time
 import threading
-from kivy.uix.progressbar import ProgressBar
+from kivy.app import App
 from kivy.uix.popup import Popup
 from kivy.uix.widget import Widget
 from kivy.properties import ObjectProperty
-from kivy.core.window import Window
+from kivy.uix.progressbar import ProgressBar
 
 class myThread (threading.Thread):
-
+    
    def __init__(self, progress_bar):
       threading.Thread.__init__(self)
       self.progress_bar = progress_bar
@@ -34,7 +33,7 @@ class MyWidget(Widget):
         self.progress_bar = ProgressBar()
         self.popup = Popup(title ='Importing', content = self.progress_bar)
         self.popup.bind(on_open = self.puopen)
-
+    
     def pop(self):
         print(  "Airline Companies:", self.airline_companies.text,
                 "Customers:", self.customers.text,
