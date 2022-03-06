@@ -1,4 +1,4 @@
-from flask import Flask, request
+from flask import Flask, request, Response
 import json
 from db_repo import DbRepo
 from db_config import local_session
@@ -29,7 +29,7 @@ def add_customer_user(_input):
                         phone_number=_input['phone_number'], 
                         credit_card_number=_input['credit_card_number'], 
                         user_id=_input['user_id']))
-    return '{"status": "ADDED"}'
+    return Response(f'"new-item": "{request.url}/{_input["id"]}"', status=201, mimetype='application/json')
 
 def update_customer(_input, id):
     customers_json = convert_to_json(repo.get_all(Customers))
@@ -42,7 +42,7 @@ def update_customer(_input, id):
             c["phone_number"] = _input["phone_number"] if "phone_number" in _input.keys() else None
             c["credit_card_number"] = _input["credit_card_number"] if "credit_card_number" in _input.keys() else None
             repo.update_by_id(Customers, Customers.id, id, c)
-    return '{"status": "success"}'
+    return Response(f'"Updated-item": "{request.url}"', status=200, mimetype='application/json')
 
 # localhost:5000/
 # static page
@@ -63,11 +63,23 @@ def home():
         </html>
     '''
 
-
-# url/<resource> <--- GET POST
 @app.route('/customers', methods=['GET', 'POST'])
 def get_or_post_customer():
-    if request.method == 'GET': return json.dumps(convert_to_json(repo.get_all(Customers)))
+    customers = convert_to_json(repo.get_all(Customers))
+    if request.method == 'GET':
+        print(request.args.to_dict())
+        search_args = request.args.to_dict()
+        if len(search_args) == 0: Response(json.dumps(customers), status=200, mimetype='application/json')
+        results = []
+        for c in customers:
+            if "first_name" in search_args.keys() and c["first_name"].find(search_args["first_name"]) < 0: continue
+            if "last_name" in search_args.keys() and c["last_name"].find(search_args["last_name"]) < 0: continue
+            if "address" in search_args.keys() and c["address"].find(search_args["address"]) < 0: continue
+            if "phone_number" in search_args.keys() and c["phone_number"].find(search_args["phone_number"]) < 0: continue
+            if "credit_card_number" in search_args.keys() and c["credit_card_number"].find(search_args["credit_card_number"]) < 0: continue
+            results.append(c)
+        if len(results) == 0: return Response("[]", status=404, mimetype='application/json')
+        return Response(json.dumps(customers), status=200, mimetype='application/json')
     if request.method == 'POST':
         #  {"username": "1i1y", "password": "passw0rd", "email": "lily@jb.com", "first_name":"lily", "last_name":"musnikov", "address":"narnia22", "phone_number":"0565452243", "credit_card_number":"65546765534", "user_id":8}
         new_customer = request.get_json()
@@ -76,11 +88,11 @@ def get_or_post_customer():
 
 @app.route('/customers/<int:id>', methods=['GET', 'PUT', 'DELETE', 'PATCH'])
 def get_customer_by_id(id):
+    customers = convert_to_json(repo.get_all(Customers))
     if request.method == 'GET':
-        for c in convert_to_json(repo.get_all(Customers)):
-            if c["id"] == id:
-                return json.dumps(c)
-        return '{}'
+        for c in customers:
+            if c["id"] == id: return Response(json.dumps(c), status=200, mimetype='application/json')
+        return Response("[]", status=404, mimetype='application/json')
     if request.method == 'PUT':
         #  {"username": "1i1y", "password": "passw0rd", "email": "lily@jb.com", "first_name":"lily", "last_name":"musnikov", "address":"narnia22", "phone_number":"0565452243", "credit_card_number":"65546765534", "user_id":8}
         updated_new_customer = request.get_json()
@@ -90,15 +102,14 @@ def get_customer_by_id(id):
         # {"username": "1i1y", "password": "passw0rd", "email": "lily@jb.com", "first_name":"lily", "last_name":"musnikov", "address":"narnia22", "phone_number":"0565452243", "credit_card_number":"65546765534", "user_id":8}
         updated_customer = request.get_json()
         if repo.get_by_id(Customers, id) != None: return update_customer(updated_customer, id)
-        return '{"status": "not found"}'
+        return Response("[]", status=404, mimetype='application/json')
     if request.method == 'DELETE':
         deleted_customer = request.get_json()
-        customers_json = convert_to_json(repo.get_all(Customers))
-        for c in customers_json:
+        for c in customers:
             if c["id"] == id:
                 repo.delete_by_id(Customers, Customers.id, id)
                 repo.delete_by_id(Users, Users.id, c["user_id"])
-        return f'{json.dumps(deleted_customer)} deleted'
-    return '{"status": "not found"}'
+                return f'{json.dumps(deleted_customer)} deleted'
+        return Response("[]", status=404, mimetype='application/json')
 
 app.run()

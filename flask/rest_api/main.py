@@ -1,8 +1,8 @@
-from flask import Flask, request, render_template
+from flask import Flask, request, render_template, Response
 import json
 
 app = Flask(__name__)
-
+# name=y
 customers = [{'id': 1, 'name': 'danny', 'address': 'tel-aviv'},
              {'id': 2, 'name': 'marina', 'address': 'beer sheav'},
              {'id': 3, 'name': 'david', 'address': 'herzeliya'}]
@@ -28,12 +28,30 @@ def get_or_post_customer():
         # pseudo - select * from Customers
         # parsing
         # turn to json
-        return json.dumps(customers)
+        print(request.args.to_dict())
+        search_args = request.args.to_dict()
+        if len(search_args) == 0:
+            return Response(json.dumps(customers),
+                            status=200, mimetype='application/json')
+        results = []
+        for c in customers:
+            if "name" in search_args.keys():
+                if c["name"].find(search_args["name"]) < 0:
+                    continue
+            if "address" in search_args.keys() and \
+                    c["address"].find(search_args["address"]) < 0:
+                continue
+            results.append(c)
+        if len(results) == 0: return Response("[]", status=404, mimetype='application/json')
+        return Response(json.dumps(customers), status=200, mimetype='application/json')
+
     if request.method == 'POST':
         #  {'id': 4 [not be sent with DB], 'name': 'david', 'address': 'herzeliya'}
         new_customer = request.get_json()
         customers.append(new_customer)
-        return '{"status": "success"}'
+        return Response('"{status": "success",'\
+                        f'"new-item": "{request.url}/{new_customer["id"]}"',
+                        status=201, mimetype='application/json')
 
 @app.route('/customers/<int:id>', methods=['GET', 'PUT', 'DELETE', 'PATCH'])
 def get_customer_by_id(id):
@@ -78,8 +96,3 @@ def get_customer_by_id(id):
         return json.dumps(customers)
 
 app.run()
-
-# download post-man
-# activate:
-# GET, GET/ID, POST, PUT, PATCH, DELETE -- check if they work
-# connect the project to a DB (sqlite, postgresql, w/o alchemy)

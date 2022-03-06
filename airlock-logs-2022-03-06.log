@@ -1,0 +1,2 @@
+2022-03-06 17:51:36,321:db_repo:WARNING:deleting from table <class 'customers.Customers'>.
+2022-03-06 17:51:36,336:db_repo:WARNING:deleting from table <class 'users.Users'>.
