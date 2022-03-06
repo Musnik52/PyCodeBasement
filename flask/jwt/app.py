@@ -17,7 +17,6 @@ app = Flask(__name__)
     # PAYLOAD
     # signature
 app.config['SECRET_KEY'] = 'your secret key'
-# database name
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///Database.db'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = True
 # creates SQLALCHEMY object
@@ -90,7 +89,6 @@ def token_required(f):
 @token_required
 def get_all_users(current_user):
     users = User.query.all()
-
     print(current_user.name)
     print(current_user.email)
     print(current_user.password)

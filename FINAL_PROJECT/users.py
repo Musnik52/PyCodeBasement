@@ -9,6 +9,7 @@ class Users(Base):
     username = Column(Text(), nullable=False, unique=True)
     password = Column(Text(), nullable=False)
     email = Column(Text(), nullable=False, unique=True)
+    public_id = Column(Text(), unique=True)
     user_role = Column(Integer(), ForeignKey('user_roles.id', ondelete='CASCADE'), unique=False, nullable=False)
 
     userrole = relationship("UserRoles", backref=backref("users", uselist=True, passive_deletes=True))
