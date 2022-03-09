@@ -12,9 +12,9 @@ from users import Users
 
 repo = DbRepo(local_session)
 app = Flask(__name__)
-app.config['SECRET_KEY'] = 'your secret key'
+app.config['SECRET_KEY'] = 'boris is king'
 
-def convert_to_json(_list):
+def convert_to_json(_list): #cleaning& jsoning data recieved from SQLACLCHEMY
     json_list = []
     for i in _list:
         _dict = i.__dict__
@@ -137,6 +137,7 @@ def get_or_post_customer():
         search_args = request.args.to_dict()
         if len(search_args) == 0: Response(json.dumps(customers), status=200, mimetype='application/json')
         results = []
+        #query check
         for c in customers:
             if "first_name" in search_args.keys() and c["first_name"].find(search_args["first_name"]) < 0: continue
             if "last_name" in search_args.keys() and c["last_name"].find(search_args["last_name"]) < 0: continue
@@ -147,7 +148,7 @@ def get_or_post_customer():
         if len(results) == 0: return Response("[]", status=404, mimetype='application/json')
         return Response(json.dumps(customers), status=200, mimetype='application/json')
     if request.method == 'POST':
-        #  {"username": "1i1y", "password": "passw0rd", "email": "lily@jb.com", "first_name":"lily", "last_name":"musnikov", "address":"narnia22", "phone_number":"0565452243", "credit_card_number":"65546765534", "user_id":8}
+        #  {"username": "1i1y", "password": "passw0rd", "email": "lily@jb.com", "id":4, "first_name":"lily", "last_name":"musnikov", "address":"narnia22", "phone_number":"0565452243", "credit_card_number":"65546765534", "user_id":8}
         new_customer = request.get_json()
         if repo.get_by_id(Users,new_customer['user_id']): return 'Input violates restrictions!'
     return add_customer_user(new_customer)
@@ -160,12 +161,12 @@ def get_customer_by_id(id):
             if c["id"] == id: return Response(json.dumps(c), status=200, mimetype='application/json')
         return Response("[]", status=404, mimetype='application/json')
     if request.method == 'PUT':
-        #  {"username": "1i1y", "password": "passw0rd", "email": "lily@jb.com", "first_name":"lily", "last_name":"musnikov", "address":"narnia22", "phone_number":"0565452243", "credit_card_number":"65546765534", "user_id":8}
+        #  {"username": "1i1y", "password": "passw0rd", "email": "lily@jb.com", "id":4, "first_name":"lily", "last_name":"musnikov", "address":"narnia22", "phone_number":"0565452243", "credit_card_number":"65546765534", "user_id":8}
         updated_new_customer = request.get_json()
         if repo.get_by_id(Customers, id) != None: return update_customer(updated_new_customer, id)
         return add_customer_user(updated_new_customer)
     if request.method == 'PATCH':
-        # {"username": "1i1y", "password": "passw0rd", "email": "lily@jb.com", "first_name":"lily", "last_name":"musnikov", "address":"narnia22", "phone_number":"0565452243", "credit_card_number":"65546765534", "user_id":8}
+        # {"username": "1i1y", "password": "passw0rd", "email": "lily@jb.com", "id":4, "first_name":"lily", "last_name":"musnikov", "address":"narnia22", "phone_number":"0565452243", "credit_card_number":"65546765534", "user_id":8}
         updated_customer = request.get_json()
         if repo.get_by_id(Customers, id) != None: return update_customer(updated_customer, id)
         return Response("[]", status=404, mimetype='application/json')
