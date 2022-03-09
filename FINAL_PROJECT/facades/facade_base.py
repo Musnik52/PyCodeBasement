@@ -1,15 +1,15 @@
 from abc import ABC, abstractmethod
 from logger import Logger
 from datetime import datetime
-from users import Users
-from flights import Flights
-from countries import Countries
-from airline_companies import AirlineCompanies
-from error_invalid_input import InvalidInput
-from error_short_password import PasswordTooShort
-from error_invalid_country import InvalidCountry
-from error_flight_not_found import FlightNotFound
-from error_airline_not_found import AirlineNotFound
+from tables.users import Users
+from tables.flights import Flights
+from tables.countries import Countries
+from tables.airline_companies import AirlineCompanies
+from errors.error_invalid_input import InvalidInput
+from errors.error_short_password import PasswordTooShort
+from errors.error_invalid_country import InvalidCountry
+from errors.error_flight_not_found import FlightNotFound
+from errors.error_airline_not_found import AirlineNotFound
 
 class FacadeBase(ABC):
 

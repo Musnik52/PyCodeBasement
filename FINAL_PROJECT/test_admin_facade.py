@@ -1,18 +1,18 @@
 import pytest
 from db_config import local_session, config
 from db_repo import DbRepo
-from facade_anonymus import AnonymusFacade
-from airline_companies import AirlineCompanies
-from customers import Customers
-from users import Users
-from administrators import Administrators 
-from error_user_exists import UserAlreadyExists
-from error_short_password import PasswordTooShort
-from error_unauthorized_user_id import UnauthorizedUserID
-from error_admin_not_found import AdminNotFound
-from error_airline_not_found import AirlineNotFound
-from error_customer_not_found import CustomerNotFound
-from error_invalid_input import InvalidInput
+from facades.facade_anonymus import AnonymusFacade
+from tables.airline_companies import AirlineCompanies
+from tables.customers import Customers
+from tables.users import Users
+from tables.administrators import Administrators 
+from errors.error_user_exists import UserAlreadyExists
+from errors.error_short_password import PasswordTooShort
+from errors.error_unauthorized_user_id import UnauthorizedUserID
+from errors.error_admin_not_found import AdminNotFound
+from errors.error_airline_not_found import AirlineNotFound
+from errors.error_customer_not_found import CustomerNotFound
+from errors.error_invalid_input import InvalidInput
 
 repo = DbRepo(local_session)
 

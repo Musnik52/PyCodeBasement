@@ -1,14 +1,14 @@
 from logger import Logger
-from tickets import Tickets
-from flights import Flights
-from customers import Customers
-from facade_base import FacadeBase
-from error_invalid_input import InvalidInput
-from error_invalid_token import InvalidToken
-from error_no_more_tickets import NoMoreTicketsLeft
-from error_flight_not_found import FlightNotFound
-from error_ticket_not_found import TicketNotFound
-from error_customer_not_found import CustomerNotFound
+from tables.tickets import Tickets
+from tables.flights import Flights
+from tables.customers import Customers
+from facades.facade_base import FacadeBase
+from errors.error_invalid_input import InvalidInput
+from errors.error_invalid_token import InvalidToken
+from errors.error_no_more_tickets import NoMoreTicketsLeft
+from errors.error_flight_not_found import FlightNotFound
+from errors.error_ticket_not_found import TicketNotFound
+from errors.error_customer_not_found import CustomerNotFound
 
 class CustomerFacade(FacadeBase):
 

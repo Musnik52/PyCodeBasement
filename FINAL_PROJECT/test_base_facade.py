@@ -1,17 +1,17 @@
 import pytest
-from countries import Countries
-from db_config import local_session, config
 from db_repo import DbRepo
 from datetime import datetime
-from facade_anonymus import AnonymusFacade
-from airline_companies import AirlineCompanies
-from users import Users
-from flights import Flights
-from error_short_password import PasswordTooShort
-from error_airline_not_found import AirlineNotFound
-from error_invalid_input import InvalidInput
-from error_flight_not_found import FlightNotFound
-from error_invalid_country import InvalidCountry
+from db_config import local_session, config
+from tables.users import Users
+from tables.flights import Flights
+from tables.countries import Countries
+from facades.facade_anonymus import AnonymusFacade
+from tables.airline_companies import AirlineCompanies
+from errors.error_invalid_input import InvalidInput
+from errors.error_short_password import PasswordTooShort
+from errors.error_invalid_country import InvalidCountry
+from errors.error_flight_not_found import FlightNotFound
+from errors.error_airline_not_found import AirlineNotFound
 
 repo = DbRepo(local_session)
 anonymus_facade = AnonymusFacade(repo, config)

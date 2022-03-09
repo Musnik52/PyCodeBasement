@@ -1,17 +1,17 @@
 from logger import Logger
-from facade_base import FacadeBase
-from users import Users
-from customers import Customers
-from administrators import Administrators
-from airline_companies import AirlineCompanies
-from error_user_exists import UserAlreadyExists
-from error_invalid_token import InvalidToken
-from error_invalid_input import InvalidInput
-from error_short_password import PasswordTooShort
-from error_admin_not_found import AdminNotFound
-from error_airline_not_found import AirlineNotFound
-from error_customer_not_found import CustomerNotFound
-from error_unauthorized_user_id import UnauthorizedUserID
+from facades.facade_base import FacadeBase
+from tables.users import Users
+from tables.customers import Customers
+from tables.administrators import Administrators
+from tables.airline_companies import AirlineCompanies
+from errors.error_user_exists import UserAlreadyExists
+from errors.error_invalid_token import InvalidToken
+from errors.error_invalid_input import InvalidInput
+from errors.error_short_password import PasswordTooShort
+from errors.error_admin_not_found import AdminNotFound
+from errors.error_airline_not_found import AirlineNotFound
+from errors.error_customer_not_found import CustomerNotFound
+from errors.error_unauthorized_user_id import UnauthorizedUserID
 
 class AdministratorFacade(FacadeBase):
 

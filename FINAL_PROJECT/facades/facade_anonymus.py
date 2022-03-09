@@ -1,17 +1,17 @@
-from users import Users
+from tables.users import Users
 from logger import Logger
-from customers import Customers
+from tables.customers import Customers
 from login_token import LoginToken
-from facade_base import FacadeBase
-from facade_airline import AirlineFacade
-from facade_customer import CustomerFacade
-from facade_administrator import AdministratorFacade
-from error_user_exists import UserAlreadyExists
-from error_invalid_input import InvalidInput
-from error_user_not_found import UsernameNotFound
-from error_short_password import PasswordTooShort
-from error_invalid_password import InvalidPassword
-from error_invalid_user_role import InvalidUserRole
+from facades.facade_base import FacadeBase
+from facades.facade_airline import AirlineFacade
+from facades.facade_customer import CustomerFacade
+from facades.facade_administrator import AdministratorFacade
+from errors.error_user_exists import UserAlreadyExists
+from errors.error_invalid_input import InvalidInput
+from errors.error_user_not_found import UsernameNotFound
+from errors.error_short_password import PasswordTooShort
+from errors.error_invalid_password import InvalidPassword
+from errors.error_invalid_user_role import InvalidUserRole
 
 class AnonymusFacade(FacadeBase):
 

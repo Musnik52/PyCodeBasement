@@ -1,6 +1,6 @@
 from db_repo import DbRepo
 from db_config import local_session, config
-from facade_anonymus import AnonymusFacade
+from facades.facade_anonymus import AnonymusFacade
 
 #defining
 repo = DbRepo(local_session)

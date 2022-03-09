@@ -1,14 +1,14 @@
 import pytest
 from db_config import local_session, config
 from db_repo import DbRepo
-from facade_anonymus import AnonymusFacade
-from customers import Customers
-from users import Users
-from error_user_exists import UserAlreadyExists
-from error_short_password import PasswordTooShort
-from error_user_not_found import UsernameNotFound
-from error_invalid_password import InvalidPassword
-from error_invalid_input import InvalidInput
+from facades.facade_anonymus import AnonymusFacade
+from tables.customers import Customers
+from tables.users import Users
+from errors.error_user_exists import UserAlreadyExists
+from errors.error_short_password import PasswordTooShort
+from errors.error_user_not_found import UsernameNotFound
+from errors.error_invalid_password import InvalidPassword
+from errors.error_invalid_input import InvalidInput
 
 repo = DbRepo(local_session)
 

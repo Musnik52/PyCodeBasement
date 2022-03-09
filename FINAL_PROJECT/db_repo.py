@@ -1,14 +1,14 @@
 from logger import Logger
 from datetime import datetime
 from sqlalchemy import asc
-from users import Users
-from flights import Flights
-from tickets import Tickets
-from customers import Customers
-from countries import Countries
-from user_roles import UserRoles
-from administrators import Administrators
-from airline_companies import AirlineCompanies
+from tables.users import Users
+from tables.flights import Flights
+from tables.tickets import Tickets
+from tables.customers import Customers
+from tables.countries import Countries
+from tables.user_roles import UserRoles
+from tables.administrators import Administrators
+from tables.airline_companies import AirlineCompanies
 from db_config import create_all_entities, config
 
 

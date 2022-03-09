@@ -1,15 +1,15 @@
 import pytest
 from db_config import local_session, config
 from db_repo import DbRepo
-from facade_anonymus import AnonymusFacade
-from tickets import Tickets
-from customers import Customers 
-from error_no_more_tickets import NoMoreTicketsLeft
-from error_flight_not_found import FlightNotFound
-from error_customer_not_found import CustomerNotFound
-from error_ticket_not_found import TicketNotFound
-from error_invalid_input import InvalidInput
-from error_invalid_token import InvalidToken
+from tables.tickets import Tickets
+from tables.customers import Customers
+from facades.facade_anonymus import AnonymusFacade
+from errors.error_invalid_input import InvalidInput
+from errors.error_invalid_token import InvalidToken
+from errors.error_no_more_tickets import NoMoreTicketsLeft
+from errors.error_flight_not_found import FlightNotFound
+from errors.error_ticket_not_found import TicketNotFound
+from errors.error_customer_not_found import CustomerNotFound
 
 repo = DbRepo(local_session)
 

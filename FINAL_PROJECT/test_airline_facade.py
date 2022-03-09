@@ -2,16 +2,16 @@ import pytest
 from datetime import datetime
 from db_config import local_session, config
 from db_repo import DbRepo
-from facade_anonymus import AnonymusFacade
-from flights import Flights
-from airline_companies import AirlineCompanies
-from error_invalid_time import InvalidTime
-from error_invalid_location import InvalidLocation
-from error_invalid_remaining_tickets import InvalidRemainingTickets
-from error_airline_not_found import AirlineNotFound
-from error_flight_not_found import FlightNotFound
-from error_invalid_input import InvalidInput
-from error_invalid_token import InvalidToken
+from facades.facade_anonymus import AnonymusFacade
+from tables.flights import Flights
+from tables.airline_companies import AirlineCompanies
+from errors.error_invalid_time import InvalidTime
+from errors.error_invalid_location import InvalidLocation
+from errors.error_invalid_remaining_tickets import InvalidRemainingTickets
+from errors.error_airline_not_found import AirlineNotFound
+from errors.error_flight_not_found import FlightNotFound
+from errors.error_invalid_input import InvalidInput
+from errors.error_invalid_token import InvalidToken
 
 repo = DbRepo(local_session)
 
