@@ -14,14 +14,13 @@ for i in range(10):
     print(f"{response.json()['results'][0]['phone']}")
 
 #from JSON file
-countries = open('C:\git\pyCodeBasement\FINAL_PROJECT\countries.json')
+countries = open('C:\git\pyCodeBasement\FINAL_PROJECT\countries_json.json')
 data = json.load(countries)
-for i in data:
-    print(i['name'])
+for i in data: print(i['name'])
 countries.close()
 
-#using async multithreading:
-'''import httpx
+'''#using async multithreading:
+import httpx
 import trio
 
 

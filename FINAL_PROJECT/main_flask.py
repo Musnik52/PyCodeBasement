@@ -7,8 +7,8 @@ from functools import wraps
 from werkzeug.security import generate_password_hash, check_password_hash
 from db_repo import DbRepo
 from db_config import local_session
-from tables.customers import Customers
 from tables.users import Users
+from tables.customers import Customers
 
 repo = DbRepo(local_session)
 app = Flask(__name__)

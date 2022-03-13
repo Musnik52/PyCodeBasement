@@ -1,61 +1,49 @@
-import time
-import threading
-from kivy.app import App
-from kivy.uix.popup import Popup
-from kivy.uix.widget import Widget
-from kivy.properties import ObjectProperty
-from kivy.uix.progressbar import ProgressBar
+import random
+import json
+import requests
+from db_repo import DbRepo
+from db_config import connection_string, config
+from db_gen_base import DbRepoConnectionPool
+from tables.users import Users
+from tables.customers import Customers
+from tables.countries import Countries
 
-class myThread (threading.Thread):
-    
-   def __init__(self, progress_bar):
-      threading.Thread.__init__(self)
-      self.progress_bar = progress_bar
+class DbGenerator(DbRepoConnectionPool):
 
-   def run(self):
-        while self.progress_bar.value < 100:
-            self.progress_bar.value += 1
-            print(self.progress_bar.value)
-            time.sleep(1/25)
+    def __init__(self):
+        super().__init__()
+        self.repo = DbRepo(connection_string)
+        self.response = requests.get(config["db"]["api"])
 
-class MyWidget(Widget):
-  
-    progress_bar = ObjectProperty()
-    airline_companies = ObjectProperty(None)
-    customers = ObjectProperty(None)
-    administrators = ObjectProperty(None)
-    flights_per_company = ObjectProperty(None)
-    tickets_per_customer = ObjectProperty(None)
-    countries = ObjectProperty(None)
-      
-    def __init__(self, **kwa):
-        super(MyWidget, self).__init__(**kwa)
-        self.progress_bar = ProgressBar()
-        self.popup = Popup(title ='Importing', content = self.progress_bar)
-        self.popup.bind(on_open = self.puopen)
-    
-    def pop(self):
-        print(  "Airline Companies:", self.airline_companies.text,
-                "Customers:", self.customers.text,
-                "Administrators:", self.administrators.text,
-                "Flights Per Company:", self.flights_per_company.text,
-                "Tickets Per Customer:", self.tickets_per_customer.text,
-                "Countries:", self.countries.text)
-        self.progress_bar.value = 1
-        self.popup.open()
+    '''async def get_data(self):
+        async with httpx.AsyncClient() as client:
+            r = await client.get(self.response)
+            return r.json()'''
 
-    def next(self, dt):
-        if self.progress_bar.value>= 100:
-            return False
-        self.progress_bar.value += 1
-      
-    def puopen(self, instance):
-        t1 = myThread (self.progress_bar)
-        t1.start()
+    def create_user(self, user_role):
+        inserted_user = Users(  username = self.response.json()['results'][0]['login']['username'], 
+                                password = self.response.json()['results'][0]['login']['password'], 
+                                email = self.response.json()['results'][0]['email'], 
+                                user_role = user_role)
+        self.repo.add(inserted_user)
+        return inserted_user.id
 
-class MyApp(App):
-    def build(self):
-        return MyWidget()
+    def create_customers(self, num):
+        for l in range(num):
+            credit_card_number = str(random.randint(0, 9))
+            for i in range(11): credit_card_number = credit_card_number + str(random.randint(0, 9))
+            user_id = self.create_user(config["user_roles"]["customer"])
+            new_customer = Customers(first_name = self.response.json()['results'][0]['name']['first'],
+                                    last_name = self.response.json()['results'][0]['name']['last'],
+                                    address = str(self.response.json()['results'][0]['location']['street']['name']+' '+self.response.json()['results'][0]['location']['street']['number']), 
+                                    phone_number = self.response.json()['results'][0]['phone'],
+                                    credit_card_number = credit_card_number,
+                                    user_id = user_id)
+            self.repo.add(new_customer)
 
-if __name__ in ("__main__"):
-    MyApp().run()
+    def create_countries(self):
+        countries_ls = []
+        with open(config["db"]["countries_json"]) as f: countries = json.load(f)
+        #for i in range(num):
+        for country in countries: countries_ls.append(Countries(name=country['name']))
+        self.repo.add_all(countries_ls)
