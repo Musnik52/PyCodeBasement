@@ -14,7 +14,7 @@ repo = DbRepo(local_session)
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'boris is king'
 
-def convert_to_json(_list): #cleaning& jsoning data recieved from SQLACLCHEMY
+def convert_to_json(_list): #cleaning & jsoning data recieved from SQLACLCHEMY
     json_list = []
     for i in _list:
         _dict = i.__dict__
@@ -49,7 +49,6 @@ def update_customer(_input, id):
             c["credit_card_number"] = _input["credit_card_number"] if "credit_card_number" in _input.keys() else None
             repo.update_by_id(Customers, Customers.id, id, c)
     return Response(f'"Updated-item": "{request.url}"', status=200, mimetype='application/json')
-
 
 @app.route('/signup', methods=['POST'])
 def signup():

@@ -1,10 +1,8 @@
 <MyWidget>:
     airline_companies: airline_companies
     customers: customers
-    administrators: administrators
     flights_per_company: flights_per_company
     tickets_per_customer: tickets_per_customer
-    countries: countries
     GridLayout:
         cols:1
         size: root.width-200, root.height-200
@@ -23,11 +21,6 @@
             id: customers
             multiline:False
         Label:
-            text: "Administrators: "
-        TextInput:
-            id: administrators
-            multinline:False
-        Label:
             text: "Flights Per Company: "
         TextInput:
             id: flights_per_company
@@ -37,19 +30,30 @@
         TextInput:
             id: tickets_per_customer
             multinline:False
+
         Label:
-            text: "Countries: "
-        TextInput:
-            id: countries
-            multiline:False
+            text: "Add to DB: "
+        CheckBox:
+            id: rbutton1
+            group: 'radio button'
+            state: 'down'
+            on_press: root.switchstate1()
 
-    RoundedButton:
-        text:"Add To Airlock-DB"
-        size: root.width, 100
-        pos_hint: {'center_x': 0.5}
-        size_hint: (1, .3)
-        on_press: root.pop()
+        Label:
+            text: "Reset DB: "
+        CheckBox:
+            id: rbutton2
+            group: 'radio button'
+            state: 'normal'
+            on_press: root.switchstate2()
 
+        RoundedButton:
+            text:"Add To Airlock-DB"
+            size: root.width, 100
+            pos_hint: {'center_x': 0.5}
+            size_hint: (1, 2)
+            on_press: root.pop()
+            
 <RoundedButton@Button>
     background_color: (0,0,0,0)
     background_normal: ''

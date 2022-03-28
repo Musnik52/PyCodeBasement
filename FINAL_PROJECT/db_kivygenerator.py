@@ -1,13 +1,12 @@
 import time
 import threading
-from db_generator import DbGenerator
 from kivy.app import App
 from kivy.uix.popup import Popup
 from kivy.uix.widget import Widget
 from kivy.properties import ObjectProperty
 from kivy.uix.progressbar import ProgressBar
 
-class myThread (threading.Thread):
+class myThread(threading.Thread):
     
    def __init__(self, progress_bar):
       threading.Thread.__init__(self)
@@ -15,19 +14,17 @@ class myThread (threading.Thread):
 
    def run(self):
         while self.progress_bar.value < 100:
-            self.progress_bar.value += 1
-            print(self.progress_bar.value)
             time.sleep(1/25)
+            self.progress_bar.value += 1
+        print('Data Imported')
 
 class MyWidget(Widget):
   
     progress_bar = ObjectProperty()
     airline_companies = ObjectProperty(None)
     customers = ObjectProperty(None)
-    administrators = ObjectProperty(None)
     flights_per_company = ObjectProperty(None)
     tickets_per_customer = ObjectProperty(None)
-    countries = ObjectProperty(None)
       
     def __init__(self, **kwa):
         super(MyWidget, self).__init__(**kwa)
@@ -36,24 +33,25 @@ class MyWidget(Widget):
         self.popup.bind(on_open = self.puopen)
     
     def pop(self):
-        DbGenerator.create_countries()
+
         print(  "Airline Companies:", self.airline_companies.text,
                 "Customers:", self.customers.text,
-                "Administrators:", self.administrators.text,
                 "Flights Per Company:", self.flights_per_company.text,
-                "Tickets Per Customer:", self.tickets_per_customer.text,
-                "Countries:", self.countries.text)
+                "Tickets Per Customer:", self.tickets_per_customer.text)
         self.progress_bar.value = 0
         self.popup.open()
-
-    def next(self, dt):
-        if self.progress_bar.value>= 100:
-            return False
-        self.progress_bar.value += 1
       
     def puopen(self, instance):
-        t1 = myThread (self.progress_bar)
+        t1 = myThread(self.progress_bar)
         t1.start()
+    
+    def switchstate1(self):
+        self.ids.rbutton1.state = 'down'
+        self.ids.rbutton2.state = 'normal'
+
+    def switchstate2(self):
+        self.ids.rbutton2.state = 'down'
+        self.ids.rbutton1.state = 'normal'
 
 class MyApp(App):
     def build(self): return MyWidget()

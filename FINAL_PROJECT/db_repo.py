@@ -1,3 +1,4 @@
+import json
 from logger import Logger
 from datetime import datetime
 from sqlalchemy import asc
@@ -102,19 +103,20 @@ class DbRepo:
         self.reset_auto_inc(Tickets)
         self.reset_auto_inc(Administrators)
         self.reset_auto_inc(UserRoles)
-        self.add_all([  Countries(name='israel'), 
-                        Countries(name='russia'),
-                        Countries(name='france')])
+        countries = open(config['db']['countries_json'])
+        data = json.load(countries)
+        for i in data: self.add(Countries(name=i['name']))
+        countries.close()
         self.add_all([  UserRoles(role_name='administrator'),
                         UserRoles(role_name='airline company'), 
                         UserRoles(role_name='customer')])
-        self.add_all([  Users(username='b0r1s', password='boris1992', email='boris@jb.com', user_role=2), 
-                        Users(username='m4x1m', password='2themax', email='max@jb.com', user_role=2),
-                        Users(username='l10r', password='lior1999', email='lior@jb.com', user_role=1),
-                        Users(username='sh4ch4r', password='18031991', email='shachar@jb.com', user_role=1), 
-                        Users(username='k0st4', password='1kosta1', email='kosta@jb.com', user_role=3),
-                        Users(username='3m1l', password='e0m1i2l', email='emil@jb.com', user_role=3),
-                        Users(username='y4h4v', password='y4h4av5ch', email='yahav@jb.com', user_role=3)])
+        self.add_all([  Users(username='b0r1s', password='boris1992', email='boris@jb.com', user_role=config['user_roles']['airline']), 
+                        Users(username='m4x1m', password='2themax', email='max@jb.com', user_role=config['user_roles']['airline']),
+                        Users(username='l10r', password='lior1999', email='lior@jb.com', user_role=config['user_roles']['admin']),
+                        Users(username='sh4ch4r', password='18031991', email='shachar@jb.com', user_role=config['user_roles']['admin']), 
+                        Users(username='k0st4', password='1kosta1', email='kosta@jb.com', user_role=config['user_roles']['customer']),
+                        Users(username='3m1l', password='e0m1i2l', email='emil@jb.com', user_role=config['user_roles']['customer']),
+                        Users(username='y4h4v', password='y4h4av5ch', email='yahav@jb.com', user_role=config['user_roles']['customer'])])
         self.add_all([  AirlineCompanies(name='bazooka air', country_id=1, user_id=1),
                         AirlineCompanies(name='sky high', country_id=2, user_id=2)])
         self.add_all([  Administrators(first_name='lior', last_name='musnik', user_id=3),

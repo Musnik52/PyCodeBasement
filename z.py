@@ -3,7 +3,7 @@ import json
 
 #from WEBSITE
 for i in range(10):
-    response = requests.get("https://randomuser.me/api")
+    response = requests.get("https://randomuser.me/api/?nat=us")
     print(f"{response.json()['results'][0]['login']['username']}")
     print(f"{response.json()['results'][0]['login']['password']}")
     print(f"{response.json()['results'][0]['name']['first']}")
