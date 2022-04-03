@@ -1,15 +1,15 @@
 from sqlalchemy import create_engine
 from sqlalchemy.orm import declarative_base, sessionmaker
 from configparser import ConfigParser
-#from logger.Logger import Logger
+from logger.Logger import Logger
 from sqlalchemy.exc import OperationalError
 
 
 config = ConfigParser()
-config.read("c:/git/pyCodeBasement/TEST/config.conf")
-connection_string = config['dbs']["conn_string"]
+config.read("config.conf")
+connection_string = config["db"]["conn_string"]
 
-#logger = Logger.get_instance()
+logger = Logger.get_instance()
 # if you want to create a table from base the class needs to inherit from declarative_base
 Base = declarative_base()
 
@@ -22,7 +22,7 @@ local_session = Session(bind=engine)
 def create_all_entities():
     try:
         Base.metadata.create_all(engine)
-        #logger.logger.debug('Created all sql tables.')
+        logger.logger.debug('Created all sql tables.')
     except OperationalError:
         print('The database does not exist, please check the connection string')
-        #logger.logger.critical('The database does not exist, please check the connection string')
+        logger.logger.critical('The database does not exist, please check the connection string')

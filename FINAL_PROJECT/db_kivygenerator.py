@@ -1,10 +1,19 @@
 import time
+import json
 import threading
+from db_repo import DbRepo
+from db_config import local_session
+from db_data_object import DbDataObject
+from db_rabbit_producer import DbRabbitProducer
+from db_rabbit_consumer import DbRabbitConsumer
 from kivy.app import App
 from kivy.uix.popup import Popup
 from kivy.uix.widget import Widget
 from kivy.properties import ObjectProperty
 from kivy.uix.progressbar import ProgressBar
+
+from kivy.lang.builder import Builder
+
 
 class myThread(threading.Thread):
     
@@ -25,15 +34,22 @@ class MyWidget(Widget):
     customers = ObjectProperty(None)
     flights_per_company = ObjectProperty(None)
     tickets_per_customer = ObjectProperty(None)
+    rabbit_producer = DbRabbitProducer('DataToGenerate')
+    repo = DbRepo(local_session)
       
     def __init__(self, **kwa):
         super(MyWidget, self).__init__(**kwa)
         self.progress_bar = ProgressBar()
         self.popup = Popup(title ='Importing', content = self.progress_bar)
         self.popup.bind(on_open = self.puopen)
-    
+        
     def pop(self):
-
+        data_object = DbDataObject( customers=int(self.customers.text), 
+                                    airlines=int(self.airline_companies.text),
+                                    flights_per_company=int(self.flights_per_company.text),
+                                    tickets_per_customer=int(self.tickets_per_customer.text))
+        data_object.validate()
+        self.rabbit_producer.publish(json.dumps(data_object.__dict__()))
         print(  "Airline Companies:", self.airline_companies.text,
                 "Customers:", self.customers.text,
                 "Flights Per Company:", self.flights_per_company.text,
@@ -53,7 +69,17 @@ class MyWidget(Widget):
         self.ids.rbutton2.state = 'down'
         self.ids.rbutton1.state = 'normal'
 
+#Builder.load_file('my.kv')
+
 class MyApp(App):
     def build(self): return MyWidget()
 
-if __name__ in ("__main__"): MyApp().run()
+if __name__ in ("__main__"): 
+    repo = DbRepo(local_session)
+    repo_thread = threading.Thread(target=repo.reset_auto_inc)
+    repo_thread.start()
+    rabbit_consumer = DbRabbitConsumer(queue_name='GeneratedData')
+    t1 = threading.Thread(target=rabbit_consumer.consume)
+    t1.setDaemon(True)
+    t1.start()
+    MyApp().run()

@@ -17,6 +17,5 @@ def callback(ch, method, properties, body):
                             flights_per_airline=flights_per_airline,
                             tickets_per_customer=tickets_per_customer)
     db_data.generate_data()
-    return
 
 if __name__ == '__main__': main()

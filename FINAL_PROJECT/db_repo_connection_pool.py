@@ -2,6 +2,7 @@ import time
 import threading
 from db_repo import DbRepo
 from db_config import local_session, config
+from tables.users import Users
 
 class DbRepoConnectionPool(object):
     
@@ -45,5 +46,7 @@ print(sing1 == sing2)
 print(sing1)
 print(sing2)
 print(DbRepoConnectionPool.get_max_possible_connections(sing2))
-#print(sing1.name)
-#sing1.print_hello()'''
+
+sing1.get_connection()
+print(sing1)
+sing1.get_connection().add(Users(username='333b0r1s', password='boris1992', email='bo333ris@jb.com', user_role=config['user_roles']['airline']))'''

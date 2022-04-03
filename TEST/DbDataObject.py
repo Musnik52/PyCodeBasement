@@ -1,5 +1,7 @@
 from custom_errors.DbGenDataNotValidError import DbGenDataNotValidError
 from DbDataGen import DbDataGen
+from RabbitProducerObject import RabbitProducerObject
+import json
 
 
 class DbDataObject:
@@ -10,6 +12,7 @@ class DbDataObject:
         self.flights_per_airline = flights_per_airline
         self.tickets_per_customer = tickets_per_customer
         self.db_gen = DbDataGen()
+        self.rabbit_producer = RabbitProducerObject('GeneratedData')
 
     def validate_data(self):
         try:
@@ -24,16 +27,27 @@ class DbDataObject:
         except ValueError:
             raise DbGenDataNotValidError
 
-    def generate_data(self, airlines, customers, flights_per_company, tickets_per_customer):
-        self.db_gen.generate_countries()  # send back to rabbit after every task
+    def generate_data(self):
+        self.db_gen.generate_countries()
+        self.rabbit_producer.publish(json.dumps({'Countries': 10}))
         self.db_gen.generate_user_roles()
+        self.rabbit_producer.publish(json.dumps({'User Roles': 20}))
         self.db_gen.generate_admin()
-        self.db_gen.generate_airline_companies(airlines)
-        self.db_gen.generate_customers(customers)
-        self.db_gen.generate_flights_per_company(flights_per_company)
-        self.db_gen.generate_tickets_per_customer(tickets_per_customer)
+        self.rabbit_producer.publish(json.dumps({'Admins': 30}))
+        self.db_gen.generate_airline_companies(self.airlines)
+        self.rabbit_producer.publish(json.dumps({'Airlines': 50}))
+        self.db_gen.generate_customers(self.customers)
+        self.rabbit_producer.publish(json.dumps({'Customers': 70}))
+        self.db_gen.generate_flights_per_company(self.flights_per_airline)
+        self.rabbit_producer.publish(json.dumps({'Flights': 90}))
+        self.db_gen.generate_tickets_per_customer(self.tickets_per_customer)
+        self.rabbit_producer.publish(json.dumps({'Tickets': 100}))
 
     def __str__(self):
         return f'{{"customers": {self.customers}, "airlines": {self.airlines}, ' \
                f'"flights_per_airline": {self.flights_per_airline},' \
                f' "tickets_per_customer": {self.tickets_per_customer}}}'
+
+    def __dict__(self):
+        return {'customers': self.customers, 'airlines': self.airlines, 'flights_per_airline': self.flights_per_airline,
+                'tickets_per_customer': self.tickets_per_customer}

@@ -1,36 +1,24 @@
-from flask import Flask, render_template, Response, request, jsonify, make_response, session, url_for, request, redirect
+from flask import Flask, render_template, request, make_response, session, url_for, request
 from flask_session import Session
-from datetime import datetime, timedelta
-from functools import wraps
 from werkzeug.security import generate_password_hash, check_password_hash
 from db_repo import DbRepo
 from db_config import local_session
 from tables.users import Users
-from tables.customers import Customers
 import flask
-import jwt
-import json
 import uuid
 
 repo = DbRepo(local_session)
 app = Flask(__name__)
 app.config["SESSION_PERMANENT"] = False
 app.config["SESSION_TYPE"] = "filesystem"
-app.config['SECRET_KEY'] = 'boris is king'
 Session(app)
-
-def convert_to_json(_list): #cleaning & jsoning data recieved from SQLACLCHEMY
-    json_list = []
-    for i in _list:
-        _dict = i.__dict__
-        _dict.pop('_sa_instance_state', None)
-        json_list.append(_dict)
-    return json_list
 
 # localhost:5000/
 @app.route("/")
 def home():
-    if session['remember'] == 'on': return flask.redirect(url_for('login_success'))
+    try:
+        if session['remember'] == 'on': return flask.redirect(url_for('login_success'))
+    except: pass
     return flask.redirect(url_for('login'))
 
 @app.route('/login', methods=['GET'])
@@ -39,7 +27,12 @@ def login():
 
 @app.route('/my_app', methods=['GET'])
 def login_success():
-    return render_template('my_app.html')
+    if session['uname'] != None: 
+        try:
+            user = repo.get_by_column_value(Users, Users.username, session['uname'])
+            if user[0] != None : return render_template('my_app.html') 
+        except: pass
+    return make_response('Could not verify', 401) 
 
 @app.route('/login_process', methods=['POST'])
 def hanle_login():
@@ -48,15 +41,15 @@ def hanle_login():
     password = form_data.get('psw')
     print(request)
     print(form_data)
-    user = repo.get_by_column_value(Users, Users.username, username)
-    if username == user[0].username and check_password_hash(user[0].password, password): 
-        session['remember'] = request.form.get('remember')
-        token = jwt.encode({'public_id': user[0].public_id, 'exp': datetime.utcnow() + timedelta(minutes=30)}, app.config['SECRET_KEY'])
-        if session['remember'] == 'on': 
-            session['jwt'] = token
-            session['uname'] = username
-            session['pwd'] = password
-        return flask.redirect(url_for('login_success'))
+    try: 
+        user = repo.get_by_column_value(Users, Users.username, username)
+        if username == user[0].username and check_password_hash(user[0].password, password): 
+            session['remember'] = request.form.get('remember')
+            if session['remember'] == 'on':
+                session['uname'] = username
+                session['pwd'] = password
+            return flask.redirect(url_for('login_success'))
+    except: pass
     return render_template('login.html', try_again=True)
 
 @app.route('/signup', methods=['GET'])
@@ -83,7 +76,7 @@ def handle_signup():
 
 @app.route('/logout', methods=['GET'])
 def logging_out():
-    session['jwt'], session['remember'], session['uname'], session['pwd'] = None, None, None, None
+    session['remember'], session['uname'], session['pwd'] = None, None, None
     return flask.redirect(url_for('login'))
 
 app.run(debug=True, port=5002)

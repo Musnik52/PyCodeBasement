@@ -1,6 +1,6 @@
 from abc import ABC, abstractmethod
 from data_access_objects.DbRepoPool import DbRepoPool
-#from logger.Logger import Logger
+from logger.Logger import Logger
 
 
 class BaseDbDataGen(ABC):
@@ -9,7 +9,7 @@ class BaseDbDataGen(ABC):
     def __init__(self):
         self.repool = DbRepoPool.get_instance()
         self.repo = self.repool.get_connection()
-        #self.logger = Logger.get_instance()
+        self.logger = Logger.get_instance()
 
     @abstractmethod
     def get_data(self):

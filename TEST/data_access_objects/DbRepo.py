@@ -8,115 +8,102 @@ from tables.Ticket import Ticket
 from tables.User_Role import User_Role
 from tables.User import User
 from datetime import datetime
-#from logger.Logger import Logger
+from logger.Logger import Logger
 from sqlalchemy.exc import OperationalError, IntegrityError
 
 
 class DbRepo:
     def __init__(self, local_session):
         self.local_session = local_session
-        #self.logger = Logger.get_instance()
+        self.logger = Logger.get_instance()
 
     def reset_auto_inc(self, table_class):
         try:
             self.local_session.execute(f'TRUNCATE TABLE {table_class.__tablename__} RESTART IDENTITY CASCADE')
             self.local_session.commit()
-            #self.logger.logger.debug(f'Reset auto inc in {table_class} table')
+            self.logger.logger.debug(f'Reset auto inc in {table_class} table')
         except OperationalError as e:
-            pass
-            #self.logger.logger.critical(e)
+            self.logger.logger.critical(e)
 
     def get_all(self, table_class):
         try:
             return self.local_session.query(table_class).all()
         except OperationalError as e:
-            pass
-            #self.logger.logger.critical(e)
+            self.logger.logger.critical(e)
 
     def get_all_limit(self, table_class, limit_num):
         try:
             return self.local_session.query(table_class).limit(limit_num).all()
         except OperationalError as e:
-            pass
-            #self.logger.logger.critical(e)
+            self.logger.logger.critical(e)
 
     def get_all_order_by(self, table_class, column_name, direction=asc):
         try:
             return self.local_session.query(table_class).order_by(direction(column_name)).all()
         except OperationalError as e:
-            pass
-            #self.logger.logger.critical(e)
+            self.logger.logger.critical(e)
 
     def get_by_column_value(self, table_class, column_value, value):
         try:
             return self.local_session.query(table_class).filter(column_value == value).all()
         except OperationalError as e:
-            pass
-            #self.logger.logger.critical(e)
+            self.logger.logger.critical(e)
 
     def get_by_condition(self, table_class, condition):  # condition is a lambda expression of a filter
         try:
             return condition(self.local_session.query(table_class))
         except OperationalError as e:
-            pass
-            #self.logger.logger.critical(e)
+            self.logger.logger.critical(e)
 
     def add(self, one_row):
         try:
             self.local_session.add(one_row)
             self.local_session.commit()
-            #self.logger.logger.debug(f'{one_row} has been added to the db')
+            self.logger.logger.debug(f'{one_row} has been added to the db')
         except OperationalError as e:
-            pass
-            #            self.logger.logger.critical(e)
+            self.logger.logger.critical(e)
 
     def add_all(self, rows_list):
         try:
             self.local_session.add_all(rows_list)
             self.local_session.commit()
-            #self.logger.logger.debug(f'{rows_list} have been added to the db')
+            self.logger.logger.debug(f'{rows_list} have been added to the db')
         except OperationalError as e:
-            pass
-            #            self.logger.logger.critical(e)
+            self.logger.logger.critical(e)
 
     def delete_by_id(self, table_class, id_column_name, id_):
         try:
             self.local_session.query(table_class).filter(id_column_name == id_).delete(synchronize_session=False)
             self.local_session.commit()
-            #self.logger.logger.debug(f'A row with the id {id_} has been deleted from {table_class}')
+            self.logger.logger.debug(f'A row with the id {id_} has been deleted from {table_class}')
         except OperationalError as e:
-            pass
-            #            self.logger.logger.critical(e)
+            self.logger.logger.critical(e)
 
     def update_by_id(self, table_class, id_column_name, id_, data):  # data is a dictionary of all the new columns and values
         try:
             self.local_session.query(table_class).filter(id_column_name == id_).update(data)
             self.local_session.commit()
-            #self.logger.logger.debug(f'A row with the id {id_} has been updated from {table_class}. the updated data is  {data}.')
+            self.logger.logger.debug(f'A row with the id {id_} has been updated from {table_class}. the updated data is  {data}.')
         except OperationalError as e:
-            pass
-            #            self.logger.logger.critical(e)
+            self.logger.logger.critical(e)
 
     def get_airlines_by_country(self, country_id):
         try:
             return self.local_session.query(Airline_Company).filter(Airline_Company.country_id == country_id).all()
         except OperationalError as e:
-            pass
-            #            self.logger.logger.critical(e)
+            self.logger.logger.critical(e)
 
     def get_flights_by_destination_country_id(self, country_id):
         try:
             return self.local_session.query(Flight).filter(Flight.destination_country_id == country_id).all()
         except OperationalError as e:
-            pass
-            #            self.logger.logger.critical(e)
+            self.logger.logger.critical(e)
 
     def get_flights_by_origin_country_id(self, country_id):
         try:
             return self.local_session.query(Flight).filter(Flight.origin_country_id == country_id).all()
         except OperationalError as e:
-            pass
-            #            self.logger.logger.critical(e)
+            self.logger.logger.critical(e)
 
     def get_flights_by_departure_date(self, departure_date):
         try:
@@ -124,8 +111,7 @@ class DbRepo:
                                                            extract('month', Flight.departure_date) == departure_date.month,
                                                            extract('day', Flight.departure_date) == departure_date.day).all()
         except OperationalError as e:
-            pass
-            #self.logger.logger.critical(e)
+            self.logger.logger.critical(e)
 
     def get_flights_by_landing_date(self, landing_date):
         try:
@@ -134,8 +120,7 @@ class DbRepo:
                                                            extract('day',
                                                                    Flight.departure_date) == landing_date.day).all()
         except OperationalError as e:
-            pass
-            # self.logger.logger.critical(e)
+            self.logger.logger.critical(e)
 
     def get_flights_by_customer(self, customer_id):
         try:
@@ -145,8 +130,7 @@ class DbRepo:
                 flights_ls.append(ticket.flight)
             return flights_ls
         except OperationalError as e:
-            pass
-            #self.logger.logger.critical(e)
+            self.logger.logger.critical(e)
 
     def sp_get_airline_by_username(self, _username):
         try:
@@ -155,8 +139,7 @@ class DbRepo:
             airline = [air1 for air1 in airline_cursor][0]
             return airline
         except OperationalError as e:
-            pass
-            #self.logger.logger.critical(e)
+            self.logger.logger.critical(e)
 
     def sp_get_customer_by_username(self, _username):
         try:
@@ -165,8 +148,7 @@ class DbRepo:
             customer = [cus1 for cus1 in customer_cursor][0]
             return customer
         except OperationalError as e:
-            pass
-            #self.logger.logger.critical(e)
+            self.logger.logger.critical(e)
 
     def sp_get_user_by_username(self, _username):
         try:
@@ -175,8 +157,7 @@ class DbRepo:
             user = [us1 for us1 in user_cursor][0]
             return user
         except OperationalError as e:
-            pass
-            #self.logger.logger.critical(e)
+            self.logger.logger.critical(e)
 
     def sp_get_flights_by_airline_id(self, _airline_id):
         try:
@@ -185,8 +166,7 @@ class DbRepo:
             flights = [flight for flight in flights_cursor]
             return flights
         except OperationalError as e:
-            pass
-            #self.logger.logger.critical(e)
+            self.logger.logger.critical(e)
 
     def sp_get_tickets_by_customer_id(self, _customer_id):
         try:
@@ -195,8 +175,7 @@ class DbRepo:
             tickets = [ticket for ticket in tickets_cursor]
             return tickets
         except OperationalError as e:
-            pass
-            #self.logger.logger.critical(e)
+            self.logger.logger.critical(e)
 
     def sp_get_arrival_flights(self, _country_id):  # returns all the flights that arrive to the country_id in the next 12 hours
         try:
@@ -205,8 +184,7 @@ class DbRepo:
             flights = [flight for flight in flights_cursor]
             return flights
         except OperationalError as e:
-            pass
-            #self.logger.logger.critical(e)
+            self.logger.logger.critical(e)
 
     def sp_get_departure_flights(self, _country_id):  # returns all the flights that departure to the country_id in the next 12 hours
         try:
@@ -215,8 +193,7 @@ class DbRepo:
             flights = [flight for flight in flights_cursor]
             return flights
         except OperationalError as e:
-            pass
-            #self.logger.logger.critical(e)
+            self.logger.logger.critical(e)
 
     def sp_get_flights_by_parameters(self, _origin_country_id, _destination_country_id, _date):
         try:
@@ -226,8 +203,7 @@ class DbRepo:
             flights = [flight for flight in flights_cursor]
             return flights
         except OperationalError as e:
-            pass
-            #self.logger.logger.critical(e)
+            self.logger.logger.critical(e)
 
     def create_all_sp(self, file):
         try:
@@ -237,13 +213,11 @@ class DbRepo:
                 for query in queries:
                     self.local_session.execute(query)
                 self.local_session.commit()
-                #self.logger.logger.debug(f'all sp from {file} were created.')
+                self.logger.logger.debug(f'all sp from {file} were created.')
             except FileNotFoundError:
-                pass
-            #self.logger.logger.critical(f'Tried to create all sp from the the file "{file}" but file was not found')
+                self.logger.logger.critical(f'Tried to create all sp from the the file "{file}" but file was not found')
         except OperationalError as e:
-            pass
-            #self.logger.logger.critical(e)
+            self.logger.logger.critical(e)
 
     def drop_all_tables(self):
         try:
@@ -256,10 +230,9 @@ class DbRepo:
             self.local_session.execute('DROP TABLE airline_companies CASCADE')
             self.local_session.execute('DROP TABLE administrators CASCADE')
             self.local_session.commit()
-            #self.logger.logger.debug(f'All tables Dropped.')
+            self.logger.logger.debug(f'All tables Dropped.')
         except OperationalError as e:
-            pass
-            #self.logger.logger.critical(e)
+            self.logger.logger.critical(e)
 
     def reset_all_tables_auto_inc(self):
         try:
@@ -273,8 +246,7 @@ class DbRepo:
             self.reset_auto_inc(Flight)
             self.reset_auto_inc(Ticket)
         except OperationalError as e:
-            pass
-            #self.logger.logger.critical(e)
+            self.logger.logger.critical(e)
 
     def reset_test_db(self):
         try:
@@ -325,9 +297,8 @@ class DbRepo:
             # ticket
             self.add(Ticket(flight_id=1, customer_id=1))
             self.add(Ticket(flight_id=2, customer_id=2))
-            #self.logger.logger.debug(f'Reset flights_db_tests')
+            self.logger.logger.debug(f'Reset flights_db_tests')
         except OperationalError as e:
-            pass
-            #self.logger.logger.critical(e)
+            self.logger.logger.critical(e)
 
 
