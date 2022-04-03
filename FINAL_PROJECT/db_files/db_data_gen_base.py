@@ -1,5 +1,5 @@
 from abc import ABC, abstractmethod
-from db_repo_connection_pool import DbRepoConnectionPool
+from db_files.db_repo_connection_pool import DbRepoConnectionPool
 
 
 class BaseDbDataGen(ABC):

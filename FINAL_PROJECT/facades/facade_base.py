@@ -1,5 +1,5 @@
 from abc import ABC, abstractmethod
-from logger import Logger
+from db_files.logger import Logger
 from datetime import datetime
 from tables.users import Users
 from tables.flights import Flights

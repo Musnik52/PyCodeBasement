@@ -1,4 +1,4 @@
-from db_data_gen import DbDataGen
+from db_files.db_data_gen import DbDataGen
 from errors.error_invalid_input import InvalidInput
 
 class DbDataObject:

@@ -1,7 +1,7 @@
 import pytest
 from datetime import datetime
-from db_config import local_session, config
-from db_repo import DbRepo
+from db_files.db_config import local_session, config
+from db_files.db_repo import DbRepo
 from facades.facade_anonymus import AnonymusFacade
 from tables.flights import Flights
 from tables.airline_companies import AirlineCompanies

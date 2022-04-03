@@ -1,7 +1,7 @@
-from flask import Flask, render_template, request, make_response, session, url_for, request
+from flask import Flask, render_template, request, session, url_for, request
 from werkzeug.security import generate_password_hash, check_password_hash
-from db_repo import DbRepo
-from db_config import local_session
+from db_files.db_repo import DbRepo
+from db_files.db_config import local_session
 from tables.users import Users
 import flask
 import uuid

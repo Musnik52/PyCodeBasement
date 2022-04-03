@@ -1,4 +1,4 @@
-from db_config import Base
+from db_files.db_config import Base
 from sqlalchemy import Column, BigInteger, Text
 
 class Countries(Base):

@@ -1,4 +1,4 @@
-from logger import Logger
+from db_files.logger import Logger
 from tables.tickets import Tickets
 from tables.flights import Flights
 from tables.customers import Customers

@@ -1,6 +1,6 @@
 import pytest
-from db_config import local_session, config
-from db_repo import DbRepo
+from db_files.db_config import local_session, config
+from db_files.db_repo import DbRepo
 from tables.tickets import Tickets
 from tables.customers import Customers
 from facades.facade_anonymus import AnonymusFacade

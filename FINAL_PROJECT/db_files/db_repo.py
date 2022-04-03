@@ -1,8 +1,8 @@
 import json
-from logger import Logger
 from datetime import datetime
-from db_config import create_all_entities, config
 from sqlalchemy import asc
+from db_files.logger import Logger
+from db_files.db_config import create_all_entities, config
 from tables.users import Users
 from tables.flights import Flights
 from tables.tickets import Tickets

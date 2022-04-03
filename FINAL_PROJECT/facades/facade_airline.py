@@ -1,4 +1,4 @@
-from logger import Logger
+from db_files.logger import Logger
 from tables.flights import Flights
 from tables.airline_companies import AirlineCompanies
 from facades.facade_base import FacadeBase

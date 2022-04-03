@@ -1,4 +1,4 @@
-from logger import Logger
+from db_files.logger import Logger
 from facades.facade_base import FacadeBase
 from tables.users import Users
 from tables.customers import Customers

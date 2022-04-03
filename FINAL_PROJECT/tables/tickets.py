@@ -1,4 +1,4 @@
-from db_config import Base
+from db_files.db_config import Base
 from sqlalchemy import Column, UniqueConstraint, ForeignKey, BigInteger
 from sqlalchemy.orm import relationship, backref
 

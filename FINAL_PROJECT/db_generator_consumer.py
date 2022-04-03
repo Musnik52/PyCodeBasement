@@ -1,6 +1,6 @@
 import json
-from db_data_object import DbDataObject
-from db_rabbit_consumer import DbRabbitConsumer
+from db_files.db_data_object import DbDataObject
+from db_files.db_rabbit_consumer import DbRabbitConsumer
 
 def callback(ch, method, properties, body):
     data = json.loads(body)

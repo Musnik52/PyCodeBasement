@@ -5,8 +5,8 @@ from flask import Flask, request, Response, jsonify, make_response
 from datetime import datetime, timedelta
 from functools import wraps
 from werkzeug.security import generate_password_hash, check_password_hash
-from db_repo import DbRepo
-from db_config import local_session
+from db_files.db_repo import DbRepo
+from db_files.db_config import local_session
 from tables.users import Users
 from tables.customers import Customers
 

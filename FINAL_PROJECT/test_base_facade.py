@@ -1,7 +1,7 @@
 import pytest
-from db_repo import DbRepo
+from db_files.db_repo import DbRepo
 from datetime import datetime
-from db_config import local_session, config
+from db_files.db_config import local_session, config
 from tables.users import Users
 from tables.flights import Flights
 from tables.countries import Countries

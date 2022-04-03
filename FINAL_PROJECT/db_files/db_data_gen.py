@@ -4,8 +4,8 @@ import json
 import trio
 from faker import Faker
 from datetime import timedelta
-from db_config import config
-from db_data_gen_base import BaseDbDataGen
+from db_files.db_config import config
+from db_files.db_data_gen_base import BaseDbDataGen
 from tables.users import Users
 from tables.flights import Flights
 from tables.tickets import Tickets
