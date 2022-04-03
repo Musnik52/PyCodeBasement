@@ -1,5 +1,4 @@
 from flask import Flask, render_template, request, make_response, session, url_for, request
-from flask_session import Session
 from werkzeug.security import generate_password_hash, check_password_hash
 from db_repo import DbRepo
 from db_config import local_session
@@ -9,9 +8,10 @@ import uuid
 
 repo = DbRepo(local_session)
 app = Flask(__name__)
+app.secret_key = 'secret'
 app.config["SESSION_PERMANENT"] = False
 app.config["SESSION_TYPE"] = "filesystem"
-Session(app)
+
 
 # localhost:5000/
 @app.route("/")
@@ -27,12 +27,11 @@ def login():
 
 @app.route('/my_app', methods=['GET'])
 def login_success():
-    if session['uname'] != None: 
-        try:
-            user = repo.get_by_column_value(Users, Users.username, session['uname'])
-            if user[0] != None : return render_template('my_app.html') 
-        except: pass
-    return make_response('Could not verify', 401) 
+    try:
+        user = repo.get_by_column_value(Users, Users.username, session['uname'])
+        if user[0] != None: return render_template('my_app.html') 
+    except: pass
+    return render_template('login.html', try_again=True, registered_success=False)
 
 @app.route('/login_process', methods=['POST'])
 def hanle_login():
@@ -45,9 +44,8 @@ def hanle_login():
         user = repo.get_by_column_value(Users, Users.username, username)
         if username == user[0].username and check_password_hash(user[0].password, password): 
             session['remember'] = request.form.get('remember')
-            if session['remember'] == 'on':
-                session['uname'] = username
-                session['pwd'] = password
+            session['uname'] = username
+            session['pwd'] = password if session['remember'] == 'on' else None
             return flask.redirect(url_for('login_success'))
     except: pass
     return render_template('login.html', try_again=True)

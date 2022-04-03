@@ -16,13 +16,13 @@ from tables.airline_companies import AirlineCompanies
 
 class DbDataGen(BaseDbDataGen):
 
-    number_of_countries_in_db = 244
-    max_hours_delta_t = 15
-    remaining_tickets_per_flight = 200
+    number_of_countries_in_db = int(config['limits']['max_countries_in_db'])
+    max_hours_delta_t = int(config['limits']['max_hours_delta'])
+    remaining_tickets_per_flight = int(config['limits']['max_tickets'])
 
     def __init__(self):
         super().__init__()
-        self.response = requests.get(config['db']['api'])
+        self.response = config['db']['api']
         self.fake = Faker()
 
     async def get_data(self):
@@ -66,8 +66,8 @@ class DbDataGen(BaseDbDataGen):
     def generate_admin(self):
         data = trio.run(self.get_data)
         user = self.create_user(data, config['user_roles']['admin'])
-        self.repo.add(Administrators(   first_name='generated',
-                                        last_name='admin',
+        self.repo.add(Administrators(   first_name=data['results'][0]['name']['first'],
+                                        last_name=data['results'][0]['name']['last'],
                                         user_id=user.id))
 
     def generate_customers(self, num):
@@ -84,11 +84,11 @@ class DbDataGen(BaseDbDataGen):
             self.repo.add(new_customer)
 
     def generate_airline_companies(self, num):
-        with open(r"airlines.json") as f: airlines = json.load(f)
+        with open(config['db']['airlines_json']) as f: airlines = json.load(f)
         for i in range(num):
             data = trio.run(self.get_data)
             user = self.create_user(data, config['user_roles']['airline'])
-            new_airline = AirlineCompanies( name=airlines[0][i]["name"],
+            new_airline = AirlineCompanies( name=airlines[i]["name"],
                                             country_id=random.randint(1, self.number_of_countries_in_db),
                                             user_id=user.id)
             self.repo.add(new_airline)

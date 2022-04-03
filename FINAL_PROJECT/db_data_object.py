@@ -48,3 +48,7 @@ class DbDataObject:
                     airlines: {self.airlines}\n\
                     flights_per_airline: {self.flights_per_company}\n\
                     tickets_per_customer: {self.tickets_per_customer}}}'
+
+do = DbDataObject(customers=3, airlines=3, flights_per_company=3, tickets_per_customer=2)
+print(do)
+do.generate(3,3,3,2)

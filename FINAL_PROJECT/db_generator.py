@@ -40,20 +40,22 @@ class MyWidget(Widget):
     def __init__(self, **kwa):
         super(MyWidget, self).__init__(**kwa)
         self.progress_bar = ProgressBar()
-        self.popup = Popup(title ='Importing', content = self.progress_bar)
+        self.popup = Popup(title ='Importing' if self.ids.rbutton2.state == 'normal' else 'Refreshing DB', content = self.progress_bar)
         self.popup.bind(on_open = self.puopen)
         
     def pop(self):
-        data_object = DbDataObject( customers=int(self.customers.text), 
-                                    airlines=int(self.airline_companies.text),
-                                    flights_per_company=int(self.flights_per_company.text),
-                                    tickets_per_customer=int(self.tickets_per_customer.text))
-        data_object.validate()
-        self.rabbit_producer.publish(json.dumps(data_object.__dict__()))
-        print(  "Airline Companies:", self.airline_companies.text,
-                "Customers:", self.customers.text,
-                "Flights Per Company:", self.flights_per_company.text,
-                "Tickets Per Customer:", self.tickets_per_customer.text)
+        if self.ids.rbutton2.state == 'down': self.repo.reset_db()
+        else:
+            data_object = DbDataObject( customers=int(self.customers.text), 
+                                        airlines=int(self.airline_companies.text),
+                                        flights_per_company=int(self.flights_per_company.text),
+                                        tickets_per_customer=int(self.tickets_per_customer.text))
+            data_object.validate()
+            self.rabbit_producer.publish(json.dumps(data_object.__dict__()))
+            print(  "Airline Companies:", self.airline_companies.text,
+                    "Customers:", self.customers.text,
+                    "Flights Per Company:", self.flights_per_company.text,
+                    "Tickets Per Customer:", self.tickets_per_customer.text)
         self.progress_bar.value = 0
         self.popup.open()
       
@@ -64,21 +66,22 @@ class MyWidget(Widget):
     def switchstate1(self):
         self.ids.rbutton1.state = 'down'
         self.ids.rbutton2.state = 'normal'
-
+        
     def switchstate2(self):
         self.ids.rbutton2.state = 'down'
         self.ids.rbutton1.state = 'normal'
 
-#Builder.load_file('my.kv')
+Builder.load_file('my.kv')
 
 class MyApp(App):
     def build(self): return MyWidget()
 
+def callback(ch, method, properties, body):
+    print(f" [x] Received: {body.decode()}")
+
 if __name__ in ("__main__"): 
     repo = DbRepo(local_session)
-    repo_thread = threading.Thread(target=repo.reset_auto_inc)
-    repo_thread.start()
-    rabbit_consumer = DbRabbitConsumer(queue_name='GeneratedData')
+    rabbit_consumer = DbRabbitConsumer(queue_name='GeneratedData', callback=callback)
     t1 = threading.Thread(target=rabbit_consumer.consume)
     t1.setDaemon(True)
     t1.start()
