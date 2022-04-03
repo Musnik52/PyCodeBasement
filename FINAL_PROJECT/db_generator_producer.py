@@ -5,7 +5,6 @@ from db_repo import DbRepo
 from db_config import local_session
 from db_data_object import DbDataObject
 from db_rabbit_producer import DbRabbitProducer
-from db_rabbit_consumer import DbRabbitConsumer
 from kivy.app import App
 from kivy.uix.popup import Popup
 from kivy.uix.widget import Widget
@@ -45,7 +44,7 @@ class MyWidget(Widget):
         
     def pop(self):
         if self.ids.rbutton2.state == 'down': self.repo.reset_db()
-        else:
+        try:
             data_object = DbDataObject( customers=int(self.customers.text), 
                                         airlines=int(self.airline_companies.text),
                                         flights_per_company=int(self.flights_per_company.text),
@@ -53,9 +52,10 @@ class MyWidget(Widget):
             data_object.validate()
             self.rabbit_producer.publish(json.dumps(data_object.__dict__()))
             print(  "Airline Companies:", self.airline_companies.text,
-                    "Customers:", self.customers.text,
-                    "Flights Per Company:", self.flights_per_company.text,
-                    "Tickets Per Customer:", self.tickets_per_customer.text)
+                    ", Customers:", self.customers.text,
+                    ", Flights Per Company:", self.flights_per_company.text,
+                    ", Tickets Per Customer:", self.tickets_per_customer.text)
+        except: return "Invalid Input"
         self.progress_bar.value = 0
         self.popup.open()
       
@@ -76,13 +76,4 @@ Builder.load_file('my.kv')
 class MyApp(App):
     def build(self): return MyWidget()
 
-def callback(ch, method, properties, body):
-    print(f" [x] Received: {body.decode()}")
-
-if __name__ in ("__main__"): 
-    repo = DbRepo(local_session)
-    rabbit_consumer = DbRabbitConsumer(queue_name='GeneratedData', callback=callback)
-    t1 = threading.Thread(target=rabbit_consumer.consume)
-    t1.setDaemon(True)
-    t1.start()
-    MyApp().run()
+if __name__ in ("__main__"): MyApp().run()

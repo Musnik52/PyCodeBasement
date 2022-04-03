@@ -1,6 +1,4 @@
-import json
 from db_data_gen import DbDataGen
-from db_rabbit_producer import DbRabbitProducer
 from errors.error_invalid_input import InvalidInput
 
 class DbDataObject:
@@ -11,7 +9,6 @@ class DbDataObject:
         self.flights_per_company = flights_per_company
         self.tickets_per_customer = tickets_per_customer
         self.db_gen = DbDataGen()
-        self.rabbit_producer = DbRabbitProducer('GeneratedData')
 
     def validate(self):
         if  not isinstance(self.customers,int) or \
@@ -25,22 +22,17 @@ class DbDataObject:
             self.airlines > 150 or \
             (self.airlines * self.flights_per_company) < self.tickets_per_customer: raise InvalidInput
     
-    def generate(self, airlines, customers, flights_per_company, tickets_per_customer):
+    def generate(self):
         self.db_gen.generate_admin()
-        self.rabbit_producer.publish(json.dumps({'Admins': 30}))
-        self.db_gen.generate_airline_companies(airlines)
-        self.rabbit_producer.publish(json.dumps({'Airline Companies': 50}))
-        self.db_gen.generate_customers(customers)
-        self.rabbit_producer.publish(json.dumps({'Customers': 70}))
-        self.db_gen.generate_flights_per_company(flights_per_company)
-        self.rabbit_producer.publish(json.dumps({'Flights': 90}))
-        self.db_gen.generate_tickets_per_customer(tickets_per_customer)
-        self.rabbit_producer.publish(json.dumps({'Tickets': 100}))
+        self.db_gen.generate_airline_companies(self.airlines)
+        self.db_gen.generate_customers(self.customers)
+        self.db_gen.generate_flights_per_company(self.flights_per_company)
+        self.db_gen.generate_tickets_per_customer(self.tickets_per_customer)
 
     def __dict__(self):
         return {    'customers': self.customers, 
                     'airlines': self.airlines,
-                    'flights_per_airline': self.flights_per_company,
+                    'flights_per_company': self.flights_per_company,
                     'tickets_per_customer': self.tickets_per_customer}
 
     def __str__(self):
@@ -49,6 +41,6 @@ class DbDataObject:
                     flights_per_airline: {self.flights_per_company}\n\
                     tickets_per_customer: {self.tickets_per_customer}}}'
 
-do = DbDataObject(customers=3, airlines=3, flights_per_company=3, tickets_per_customer=2)
+'''do = DbDataObject(customers=3, airlines=3, flights_per_company=3, tickets_per_customer=2)
 print(do)
-do.generate(3,3,3,2)
+do.generate()'''
