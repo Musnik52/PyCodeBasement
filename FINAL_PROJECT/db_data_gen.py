@@ -12,6 +12,7 @@ from tables.tickets import Tickets
 from tables.customers import Customers
 from tables.administrators import Administrators
 from tables.airline_companies import AirlineCompanies
+from werkzeug.security import generate_password_hash
 
 class DbDataGen(BaseDbDataGen):
 
@@ -56,7 +57,7 @@ class DbDataGen(BaseDbDataGen):
     def create_user(self, j_son, user_role):
         username, password, email = self.get_user_data(j_son)
         inserted_user = Users(  username=username,
-                                password=password,
+                                password=generate_password_hash(password),
                                 email=email,
                                 user_role=user_role)
         self.repo.add(inserted_user)

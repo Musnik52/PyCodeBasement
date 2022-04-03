@@ -1,6 +1,7 @@
 import json
 from logger import Logger
 from datetime import datetime
+from db_config import create_all_entities, config
 from sqlalchemy import asc
 from tables.users import Users
 from tables.flights import Flights
@@ -10,7 +11,6 @@ from tables.countries import Countries
 from tables.user_roles import UserRoles
 from tables.administrators import Administrators
 from tables.airline_companies import AirlineCompanies
-from db_config import create_all_entities, config
 
 
 class DbRepo:

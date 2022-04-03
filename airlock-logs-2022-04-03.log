@@ -432,3 +432,37 @@
 2022-04-03 19:56:59,114:db_repo:WARNING:deleting table users.
 2022-04-03 19:56:59,119:db_repo:WARNING:deleting table user_roles.
 2022-04-03 19:57:00,192:db_repo:DEBUG:From C:\git\pyCodeBasement\FINAL_PROJECT\sp_file.sql - All SP were created.
+2022-04-03 20:36:30,408:facade_anonymus:DEBUG:Attempting Logging-in...
+2022-04-03 20:36:30,461:facade_anonymus:INFO:Welcome, Admin l10r
+2022-04-03 20:36:30,465:facade_anonymus:DEBUG:Attempting Logging-in...
+2022-04-03 20:36:30,467:facade_anonymus:INFO:Welcome, Airline m4x1m
+2022-04-03 20:36:30,470:facade_anonymus:DEBUG:Attempting Logging-in...
+2022-04-03 20:36:30,472:facade_anonymus:INFO:Welcome, Customer 3m1l
+2022-04-03 20:36:30,478:db_repo:DEBUG:Reseting initial DB.
+2022-04-03 20:36:30,479:db_repo:WARNING:deleting all tables.
+2022-04-03 20:36:30,479:db_repo:WARNING:deleting table countries.
+2022-04-03 20:36:30,490:db_repo:WARNING:deleting table flights.
+2022-04-03 20:36:30,520:db_repo:WARNING:deleting table tickets.
+2022-04-03 20:36:30,529:db_repo:WARNING:deleting table airline_companies.
+2022-04-03 20:36:30,542:db_repo:WARNING:deleting table administrators.
+2022-04-03 20:36:30,562:db_repo:WARNING:deleting table customers.
+2022-04-03 20:36:30,579:db_repo:WARNING:deleting table users.
+2022-04-03 20:36:30,592:db_repo:WARNING:deleting table user_roles.
+2022-04-03 20:36:31,625:db_repo:DEBUG:From C:\git\pyCodeBasement\FINAL_PROJECT\sp_file.sql - All SP were created.
+2022-04-03 20:52:38,751:facade_anonymus:DEBUG:Attempting Logging-in...
+2022-04-03 20:52:38,816:facade_anonymus:INFO:Welcome, Admin l10r
+2022-04-03 20:52:38,824:facade_anonymus:DEBUG:Attempting Logging-in...
+2022-04-03 20:52:38,826:facade_anonymus:INFO:Welcome, Airline m4x1m
+2022-04-03 20:52:38,831:facade_anonymus:DEBUG:Attempting Logging-in...
+2022-04-03 20:52:38,832:facade_anonymus:INFO:Welcome, Customer 3m1l
+2022-04-03 20:52:38,836:db_repo:DEBUG:Reseting initial DB.
+2022-04-03 20:52:38,836:db_repo:WARNING:deleting all tables.
+2022-04-03 20:52:38,836:db_repo:WARNING:deleting table countries.
+2022-04-03 20:52:38,848:db_repo:WARNING:deleting table flights.
+2022-04-03 20:52:38,853:db_repo:WARNING:deleting table tickets.
+2022-04-03 20:52:38,858:db_repo:WARNING:deleting table airline_companies.
+2022-04-03 20:52:38,866:db_repo:WARNING:deleting table administrators.
+2022-04-03 20:52:38,873:db_repo:WARNING:deleting table customers.
+2022-04-03 20:52:38,881:db_repo:WARNING:deleting table users.
+2022-04-03 20:52:38,887:db_repo:WARNING:deleting table user_roles.
+2022-04-03 20:52:39,925:db_repo:DEBUG:From C:\git\pyCodeBasement\FINAL_PROJECT\sp_file.sql - All SP were created.
