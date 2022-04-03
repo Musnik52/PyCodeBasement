@@ -8,7 +8,7 @@ class DbRepoConnectionPool(object):
     _instance = None
     _lock = threading.Lock()
     _lock_pool = threading.Lock()
-    _max_connections = int(config["limits"]["max_conn"])
+    _max_connections = int(config["db"]["max_conn"])
 
     def __init__(self):
         raise RuntimeError('Call instance() instead')
