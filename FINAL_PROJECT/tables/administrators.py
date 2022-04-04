@@ -1,6 +1,6 @@
 from db_files.db_config import Base
-from sqlalchemy import Column, UniqueConstraint, BigInteger, Text, ForeignKey
 from sqlalchemy.orm import backref, relationship
+from sqlalchemy import Column, UniqueConstraint, BigInteger, Text, ForeignKey
 
 class Administrators(Base):
     __tablename__ = 'administrators'

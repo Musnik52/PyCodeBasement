@@ -1,6 +1,6 @@
 from db_files.db_config import Base
-from sqlalchemy import Column, UniqueConstraint, ForeignKey, BigInteger
 from sqlalchemy.orm import relationship, backref
+from sqlalchemy import Column, UniqueConstraint, ForeignKey, BigInteger
 
 class Tickets(Base):
     __tablename__ = 'tickets'

@@ -1,5 +1,5 @@
-from sqlalchemy.orm import backref, relationship
 from db_files.db_config import Base
+from sqlalchemy.orm import backref, relationship
 from sqlalchemy import Column, Integer, DateTime, BigInteger, ForeignKey
 
 class Flights(Base):

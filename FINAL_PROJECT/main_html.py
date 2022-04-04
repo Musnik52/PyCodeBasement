@@ -1,10 +1,10 @@
+import uuid
+import flask
 from flask import Flask, render_template, request, session, url_for, request
-from werkzeug.security import generate_password_hash, check_password_hash
+from tables.users import Users
 from db_files.db_repo import DbRepo
 from db_files.db_config import local_session
-from tables.users import Users
-import flask
-import uuid
+from werkzeug.security import generate_password_hash, check_password_hash
 
 repo = DbRepo(local_session)
 app = Flask(__name__)

@@ -1,14 +1,12 @@
 import logging
-from configparser import ConfigParser
-from datetime import datetime 
 import threading
+from datetime import datetime 
+from db_files.db_config import config
 
 class Logger():
     
     _instance = None
     _lock = threading.Lock()
-    config = ConfigParser()
-    config.read("c:/git/pyCodeBasement/final_project/config.conf")
     LOG_LEVEL = config["logging"]["level"]
     LOG_FILE_NAME_PREFIX = config["logging"]["logfile_name_prefix"] 
     LOG_FILE_NAME_EXT = config["logging"]["logfile_name_ext"]

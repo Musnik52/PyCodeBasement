@@ -9,8 +9,8 @@ from kivy.app import App
 from kivy.uix.popup import Popup
 from kivy.uix.widget import Widget
 from kivy.properties import ObjectProperty
-from kivy.uix.progressbar import ProgressBar
 from kivy.lang.builder import Builder
+from kivy.uix.progressbar import ProgressBar
 
 class myThread(threading.Thread):
     

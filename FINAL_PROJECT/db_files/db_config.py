@@ -1,9 +1,9 @@
 from sqlalchemy import create_engine
-from sqlalchemy.orm import declarative_base, sessionmaker
 from configparser import ConfigParser
+from sqlalchemy.orm import declarative_base, sessionmaker
 
 config = ConfigParser()
-config.read("c:/git/pyCodeBasement/FINAL_PROJECT/config.conf")
+config.read("C:\git\pyCodeBasement\FINAL_PROJECT\db_files\config.conf")
 connection_string = config["db"]["conn_string"]
 Base = declarative_base()
 engine = create_engine(connection_string, echo=True)
