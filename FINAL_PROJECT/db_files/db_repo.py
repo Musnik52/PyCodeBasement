@@ -107,9 +107,9 @@ class DbRepo:
         data = json.load(countries)
         for i in data: self.add(Countries(name=i['name']))
         countries.close()
-        self.add_all([  UserRoles(role_name='administrator'),
-                        UserRoles(role_name='airline company'), 
-                        UserRoles(role_name='customer')])
+        self.add_all([  UserRoles(role_name=config['user_roles']['1']),
+                        UserRoles(role_name=config['user_roles']['2']), 
+                        UserRoles(role_name=config['user_roles']['3'])])
         self.add_all([  Users(username='b0r1s', password='boris1992', email='boris@jb.com', user_role=config['user_roles']['airline']), 
                         Users(username='m4x1m', password='2themax', email='max@jb.com', user_role=config['user_roles']['airline']),
                         Users(username='l10r', password='lior1999', email='lior@jb.com', user_role=config['user_roles']['admin']),
