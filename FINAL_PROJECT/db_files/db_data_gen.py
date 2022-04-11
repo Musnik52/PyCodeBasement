@@ -2,6 +2,7 @@ import random
 import httpx
 import json
 import trio
+import uuid
 from faker import Faker
 from datetime import timedelta
 from db_files.db_config import config
@@ -59,6 +60,7 @@ class DbDataGen(BaseDbDataGen):
         inserted_user = Users(  username=username,
                                 password=generate_password_hash(password),
                                 email=email,
+                                public_id=str(uuid.uuid4()),
                                 user_role=user_role)
         self.repo.add(inserted_user)
         return inserted_user

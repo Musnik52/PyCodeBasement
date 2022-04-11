@@ -1,3 +1,4 @@
+from werkzeug.security import check_password_hash
 from tables.users import Users
 from db_files.logger import Logger
 from tables.customers import Customers
@@ -35,7 +36,7 @@ class AnonymusFacade(FacadeBase):
         if not user:
             self.logger.logger.error(f'{UsernameNotFound} - Login attempt failed - username: {username}')
             raise UsernameNotFound(f'User not found - Login attempt failed - username: {username}')
-        elif user[0].password != password: 
+        elif not check_password_hash(user[0].password, password): 
             self.logger.logger.error(f'{InvalidPassword} - Login attempt failed - username: {username}')
             raise InvalidPassword(f'Invalid password - Login attempt failed - username: {username}')
         else:

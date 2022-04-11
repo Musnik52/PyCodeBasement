@@ -39,7 +39,6 @@ def get_or_post_customer():
                     c["address"].find(search_args["address"]) < 0:
                 continue
             results.append(c)
-
         return jsonify(results)
 
     if request.method == 'POST':
@@ -92,5 +91,5 @@ def get_customer_by_id(id):
         customers = [c for c in customers if c["id"] != id]
         return jsonify(customers)
 
-app.run(debug=True, port=5000)
+app.run(debug=True, port=5001)
 
