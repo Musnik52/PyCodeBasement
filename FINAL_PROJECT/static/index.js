@@ -44,8 +44,29 @@ function get_customer_by_id() {
                 });
 }
 
-function update_customer(customer) {
-    // homework
+function update_customer(id) {
+    customer = {
+        id: $('#txt_id_u').val(),
+        first_name: $('#txt_fname_u').val(),
+        last_name: $('#txt_lname_u').val(),
+        address: $('#txt_address_u').val(),
+        phone_number: $('#txt_phone_u').val(),
+        credit_card_number: $('#txt_ccn_u').val()
+    }
+    $.ajax({
+        type: "PATCH",
+        url: "/customers/" + customer.id,
+        data: JSON.stringify(customer),
+        dataType: "JSON",
+        contentType: 'application/json',
+        success: function(data, status){
+            console.log('status', status)
+            console.log('data', data)
+            get_all_customers(true)
+        },
+        error: function (xhr, desc, err) {
+        }
+        });
 }
 
 function delete_customer(id) {

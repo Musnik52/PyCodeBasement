@@ -1,10 +1,4 @@
-import jwt
-import uuid
-import json
-from flask import Flask, request, jsonify, make_response, render_template
-from datetime import datetime, timedelta
-from functools import wraps
-from werkzeug.security import generate_password_hash, check_password_hash
+from flask import Flask, request, jsonify, render_template
 from db_files.db_repo import DbRepo
 from db_files.db_config import local_session
 from tables.users import Users
@@ -29,13 +23,13 @@ def add_customer_user(_input):
                         email=_input['email'],
                         user_role=3))
     user = repo.get_by_column_value(Users, Users.username, _input['username'])
-    repo.add(Customers( first_name=_input['first_name'], 
+    customer = repo.add(Customers( first_name=_input['first_name'], 
                         last_name=_input['last_name'], 
                         address=_input['address'], 
                         phone_number=_input['phone_number'], 
                         credit_card_number=_input['credit_card_number'], 
                         user_id=user[0].id))
-    return "{'customer': 'added'}"
+    return jsonify(customer)
 
 def update_customer(_input, id):
     customers_json = convert_to_json(repo.get_all(Customers))
@@ -48,7 +42,7 @@ def update_customer(_input, id):
             c["phone_number"] = _input["phone_number"] if "phone_number" in _input.keys() else None
             c["credit_card_number"] = _input["credit_card_number"] if "credit_card_number" in _input.keys() else None
             repo.update_by_id(Customers, Customers.id, id, c)
-    return f"{'customer': 'updated'}"
+    return jsonify(c)
 
 @app.route("/")
 def home():
@@ -101,4 +95,4 @@ def get_customer_by_id(id):
                 return f'{jsonify(deleted_customer)} deleted'
         return '{}'
 
-if __name__ == "__main__": app.run(debug=True)
+if __name__ == "__main__": app.run(debug=True, port=5003)
