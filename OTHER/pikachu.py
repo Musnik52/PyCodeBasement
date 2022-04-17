@@ -528,6 +528,7 @@ class Cartoon:
     def start(self):
         self.jiu()
 
+
 def main():
     print('Painting the Cartoon... ')
     turtle.screensize(800, 600)
@@ -535,6 +536,7 @@ def main():
     cartoon = Cartoon()
     cartoon.start()
     turtle.mainloop()
+
 
 if __name__ == '__main__':
     main()
