@@ -9,7 +9,7 @@ def callback(ch, method, properties, body):
     data = json.loads(body)
     repo = DbRepo(local_session)
     anonymus_facade = AnonymusFacade(repo, config)
-    '''data_dict = {   'GET': lambda:,
+    '''data_dict = {'GET': lambda:,
                     'POST': lambda:,
                     'PUT': lambda:,
                     'DELETE': lambda:}'''
