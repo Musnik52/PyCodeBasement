@@ -1,0 +1,7 @@
+// Targil:
+// bring the logger from the example
+// create a divide_by_zero to event_emitter
+// in the on method - log CANNOT DIVIDE [the-number] by ZERO
+// input 2 numbers from the user (a,b)
+// print the divide of a / b
+// but before check if b is zero- if so, do the emit 
