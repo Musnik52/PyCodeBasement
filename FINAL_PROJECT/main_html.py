@@ -12,7 +12,6 @@ app.secret_key = 'secret'
 app.config["SESSION_PERMANENT"] = False
 app.config["SESSION_TYPE"] = "filesystem"
 
-
 # localhost:5000/
 @app.route("/")
 def home():

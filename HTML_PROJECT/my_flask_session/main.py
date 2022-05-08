@@ -1,5 +1,4 @@
-from flask import Flask, render_template, url_for, request
-from flask import Flask, render_template, request, jsonify, make_response, session
+from flask import Flask, render_template, url_for, request, session
 from flask_session import Session
 
 app = Flask(__name__)
@@ -11,6 +10,7 @@ Session(app)
 @app.route("/")
 def home():
     return render_template('home.html')
+
 
 @app.route("/counter")
 def counter_page():
@@ -24,10 +24,12 @@ def counter_page():
         session['counter'] = counter
         return str(counter)
 
+
 @app.route('/process_form', methods=['POST'])
 def process_form():
     print(request.form)
     return f'GOT it <br /> {str(request.form)}'
-    #return f'Your name is {request.form["txt_name"]}'
+    # return f'Your name is {request.form["txt_name"]}'
+
 
 app.run()
