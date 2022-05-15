@@ -1,0 +1,66 @@
+{
+  message: '====== System startup ========',
+  level: 'info',
+  label: 'main module',
+  timestamp: '2022-05-11T17:43:47.511Z'
+}
+{
+  message: '====== System startup ========',
+  level: 'debug',
+  label: 'main module',
+  timestamp: '2022-05-11T17:44:37.307Z'
+}
+{
+  message: '====== System startup ========',
+  level: 'debug',
+  label: 'main module',
+  timestamp: '2022-05-11T17:44:57.758Z'
+}
+{
+  message: '====== System startup ========',
+  level: 'debug',
+  label: 'main module',
+  timestamp: '2022-05-11T17:45:11.666Z'
+}
+{
+  message: '====== System startup ========',
+  level: 'debug',
+  label: 'main module',
+  timestamp: '2022-05-11T17:45:27.192Z'
+}
+{
+  message: '====== System startup ========',
+  level: 'debug',
+  label: 'main module',
+  timestamp: '2022-05-11T17:45:45.016Z'
+}
+{
+  message: 'cannot connect to db. Error: Error: SQLITE_CANTOPEN: unable to open database file',
+  level: 'error',
+  label: 'main module',
+  timestamp: '2022-05-11T17:45:45.022Z'
+}
+{
+  message: '====== System startup ========',
+  level: 'debug',
+  label: 'main module',
+  timestamp: '2022-05-11T17:49:41.788Z'
+}
+{
+  message: 'cannot connect to db. Error: null',
+  level: 'error',
+  label: 'main module',
+  timestamp: '2022-05-11T17:49:41.797Z'
+}
+{
+  message: '====== System startup ========',
+  level: 'debug',
+  label: 'main module',
+  timestamp: '2022-05-11T17:49:55.929Z'
+}
+{
+  message: '====== System startup ========',
+  level: 'debug',
+  label: 'main module',
+  timestamp: '2022-05-11T18:07:28.273Z'
+}

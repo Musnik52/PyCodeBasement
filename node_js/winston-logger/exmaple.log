@@ -1,0 +1,14 @@
+{
+  message: 'Hello Winston !',
+  level: 'info',
+  name: 'boris',
+  label: 'main module',
+  timestamp: '2022-05-11T17:39:12.254Z'
+}
+{
+  message: 'Hello Winston !',
+  level: 'info',
+  name: 'boris',
+  label: 'main module',
+  timestamp: '2022-05-11T18:06:36.270Z'
+}
