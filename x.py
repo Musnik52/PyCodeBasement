@@ -1,1 +1,1 @@
-mongo_conn = 'mongodb+srv://Admin:<password>@cluster0.1uhrh.mongodb.net/?retryWrites=true&w=majority'
+print('x'/2)
