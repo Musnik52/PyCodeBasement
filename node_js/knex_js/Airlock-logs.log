@@ -1,0 +1,36 @@
+{
+  message: '====== System startup ========',
+  level: 'debug',
+  label: 'main module',
+  timestamp: '2022-05-17T06:04:24.734Z'
+}
+{
+  message: 'Listening to localhost:8080',
+  level: 'info',
+  label: 'main module',
+  timestamp: '2022-05-17T06:04:24.740Z'
+}
+{
+  message: '====== System startup ========',
+  level: 'debug',
+  label: 'main module',
+  timestamp: '2022-05-17T06:05:41.072Z'
+}
+{
+  message: 'Listening to https://localhost:8080',
+  level: 'info',
+  label: 'main module',
+  timestamp: '2022-05-17T06:05:41.081Z'
+}
+{
+  message: '====== System startup ========',
+  level: 'debug',
+  label: 'main module',
+  timestamp: '2022-05-17T06:08:01.652Z'
+}
+{
+  message: 'Listening to https://localhost:8080',
+  level: 'info',
+  label: 'main module',
+  timestamp: '2022-05-17T06:08:01.659Z'
+}

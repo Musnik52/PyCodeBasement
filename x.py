@@ -1,2 +1,1 @@
-list1, list2 = [1,2], [4,5]
-print([[i,j] for i in list1 for j in list2])
+mongo_conn = 'mongodb+srv://Admin:<password>@cluster0.1uhrh.mongodb.net/?retryWrites=true&w=majority'
