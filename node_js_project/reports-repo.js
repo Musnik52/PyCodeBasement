@@ -8,6 +8,14 @@ function getReportByid(id) {
   return connectedKnex("reports").select("*").where("id", id).first();
 }
 
+function getReportByParams(license_plate, driver_id, speed) {
+  return connectedKnex("reports")
+    .select("*")
+    .where("license_plate", license_plate)
+    .orWhere("driver_id", driver_id)
+    .orWhere("speed", speed);
+}
+
 function getRaw(query) {
   return connectedKnex.raw(query);
 }
@@ -27,6 +35,7 @@ function deleteReport(id) {
 module.exports = {
   getAllReports,
   getReportByid,
+  getReportByParams,
   getRaw,
   addReport,
   updateReport,

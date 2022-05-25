@@ -18,12 +18,19 @@ app.use(express.urlencoded({ extended: true }));
 var swaggerUi = require("swagger-ui-express"),
   swaggerDocument = require("./swagger.json");
 
-// http://localhost:8080/api-docs/#/
 app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerDocument));
-//app.use('/api/v1', router);
+
+// app.get("/reports", async (req, res) => {
+//   const reports = await reports_repo.getAllReports();
+//   res.status(200).json({ reports });
+// });
 
 app.get("/reports", async (req, res) => {
-  const reports = await reports_repo.getAllReports();
+  const reports = await reports_repo.getReportByParams(
+    String(req.query.license_plate),
+    Number(req.query.driver_id),
+    Number(req.query.speed)
+  );
   res.status(200).json({ reports });
 });
 

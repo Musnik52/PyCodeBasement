@@ -1,0 +1,35 @@
+Boris Musnikov
+Education:
+Full-Stack Python development - currently learning, John-Bryce academy.
+SQL - Conceiving and applying complex queries and data-base creations, Udemy certified.
+B.A. in Economics and Business Administration, with an emphasis on the capital market, 
+                              Ben-Gurion University of the Negev, Beer-Sheva.
+	Certified Electronics Practical Engineer, Air Force Technological College, Haifa.
+
+Technologies & skills:
+Back-end:	Python (Flask, threading, trio, pymongo, SQLalchemy, regex, Selenium), Node.js (express, knex).
+Front-end:	JavaScript, HTML5, CSS3, React.
+Databases:	SQL (SQLite, PostgreSQL, MySQL), NoSQL(MongoDB).
+Additional:	Docker, Git, Postman, Microservices (RabbitMQ).
+Languages: 	Hebrew, English and Russian - Full native level mastery; speaking, reading, and writing.
+
+Occupational Experience:
+		Economist & Consultant, "Mashik Management Consulting" 
+	Assessment, analysis, and evaluation of future financial decisions based on data received from clients.
+	Conducting yearly quality controls of the companies' various work-processes. 
+	Overseeing and maintaining online auctions in real time.
+ Customer Success Manager, "Smarti Pension Clearing"
+	Quality management of over 150 business-owners' and workers' insurance company portfolios, 40% higher than the company's average.
+	Dynamic handling and support with insurance-related challenges to key factors in various companies, resulting in improving business relationships between the company and its customers.
+	Monthly & yearly evaluation of received data from clients, and conceiving requested statistical reports. 
+	Operational and administrative mediation between executives and insurance companies, whilst adjusting to the  Ministry of Finance's updated guidelines.
+Technical Support Representative, "Partner Communications"
+	Providing technical support to customers on various communication and TV issues via phone medium.
+	Fulfilling monthly goals, working under pressure, meeting timeframes, and maintaining a high productivity whilst providing a courteous and professional service.
+	Usage of creative thinking in favor of finding solutions to a variety of situations.
+
+Military Experience:
+    Avionics Maintenance Squadron Technician, Air Force, Hatzerim Base 
+    Avionics Team Leader, additional service.
+	Management of 50-soldier teams, in the field and the laboratory, while meeting expectations and goals.
+	Active participation in operation 'Tzuk Eitan', during which I managed the work of the corps soldiers in missile factories and armament aircraft.

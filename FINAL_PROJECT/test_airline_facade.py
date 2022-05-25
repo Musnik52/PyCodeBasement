@@ -1,4 +1,5 @@
 import pytest
+from werkzeug.security import generate_password_hash
 from datetime import datetime
 from db_files.db_config import local_session, config
 from db_files.db_repo import DbRepo

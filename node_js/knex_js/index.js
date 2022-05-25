@@ -23,12 +23,12 @@ app.get("/", (req, resp) => {
   resp.end("This will be THE HOME PAGE");
 });
 
-app.get("/login", (req, resp) => {
-  resp.sendFile(path.join(__dirname, "static/login.html"), {
-    try_again: false,
-    registered_success: false,
-  });
-});
+// app.get("/login", (req, resp) => {
+//   resp.sendFile(path.join(__dirname, "static/login.html"), {
+//     try_again: false,
+//     registered_success: false,
+//   });
+// });
 
 app.get("/customers", async (req, res) => {
   const customers = await airlock_repo.getAll("customers");
@@ -114,5 +114,5 @@ app.post("/customers", async (req, res) => {
 });
 
 app.listen(port, () => {
-  logger.info(`Listening to https://localhost:${port}`);
+  logger.info(`Listening to http://localhost:${port}`);
 });

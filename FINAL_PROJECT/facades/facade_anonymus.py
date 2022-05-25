@@ -47,12 +47,12 @@ class AnonymusFacade(FacadeBase):
             raise InvalidPassword(
                 f'Invalid password - Login attempt failed - username: {username}')
         try:
-            user_role_dict = {int(self.admin_role_number): lambda: AdministratorFacade(self.repo, self.config, LoginToken(id=user[0].administrators.user_id, name=user[0].administrators.first_name, role='Administrator')),
-                              int(self.airline_role_number): lambda: AirlineFacade(self.repo, self.config, LoginToken(id=user[0].airline_companies.user_id, name=user[0].airline_companies.name, role='Airline')),
-                              int(self.customer_role_number): lambda: CustomerFacade(self.repo, self.config, LoginToken(id=user[0].customers.user_id, name=user[0].customers.first_name, role='Customer'))}
+            user_role_dict = {self.admin_role_number: lambda: AdministratorFacade(self.repo, self.config, LoginToken(id=user[0].administrators.user_id, name=user[0].administrators.first_name, role='Administrator')),
+                              self.airline_role_number: lambda: AirlineFacade(self.repo, self.config, LoginToken(id=user[0].airline_companies.user_id, name=user[0].airline_companies.name, role='Airline')),
+                              self.customer_role_number: lambda: CustomerFacade(self.repo, self.config, LoginToken(id=user[0].customers.user_id, name=user[0].customers.first_name, role='Customer'))}
             self.logger.logger.info(
                 f'Welcome, {user[0].username}')
-            return user_role_dict[user[0].user_role]
+            return user_role_dict[str(user[0].user_role)]()
         except:
             raise InvalidUserRole
 

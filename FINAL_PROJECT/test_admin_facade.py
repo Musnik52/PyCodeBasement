@@ -1,4 +1,6 @@
 import pytest
+import uuid
+from werkzeug.security import generate_password_hash
 from db_files.db_config import local_session, config
 from db_files.db_repo import DbRepo
 from facades.facade_anonymus import AnonymusFacade
@@ -28,7 +30,7 @@ def admin_facade_clean():
     repo.reset_db()
 
 
-def get_all_customers(admin_facade_object):
+def test_get_all_customers(admin_facade_object):
     assert admin_facade_object.get_all_customers() == repo.get_all(Customers)
 
 
@@ -36,7 +38,7 @@ def test_add_administrator(admin_facade_object):
     expected_admin = Administrators(
         first_name='testlior', last_name='testmusnik', user_id=8)
     expected_user = Users(
-        username='testl10r', password='testlior1999', email='testlior@jb.com', user_role=1)
+        username='testl10r', password=generate_password_hash('testlior1999'), email='testlior@jb.com', public_id=str(uuid.uuid4()), user_role=1)
     admin_facade_object.add_administrator(expected_admin, expected_user)
     check_admin = repo.get_by_id(Administrators, 3)
     check_user = repo.get_by_id(Users, 8)
