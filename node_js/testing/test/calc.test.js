@@ -35,7 +35,3 @@ describe("Test calculator basics with chai", () => {
   });
 });
 
-// test min - assert
-// test div - equal
-
-// npm test
