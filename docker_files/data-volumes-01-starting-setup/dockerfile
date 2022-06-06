@@ -1,15 +1,20 @@
+# קביעת תשתית - שפת התכנות FROM baseImage:tag
 FROM node:14
-
+# הגדרת נתיב בו תתבצע הפעולה WORKDIR /the/workdir/path
 WORKDIR /app
-
-COPY 'package.json' .
-
+# הגדרת הקבצים שיועתקו למכולה (מקור ויעד) COPY source destination
+COPY package.json .
+# הגדרת פעולה תחילית להרצה RUN command
 RUN npm install
-
+# הגדרת הקבצים שיועתקו למכולה (מקור ויעד) COPY source destination
 COPY . .
-
-EXPOSE 80
-
-VOLUME [ "/app/feedback" ]
-
-CMD ["node", "server.js"]
+# הגדרה של נתון לטובת עיבודו בהרצה ARG name=defaultValue
+ARG DEFAULT_PORT=80
+# הגדרת נתון סביבת-עבודה ENV key=value
+ENV PORT $DEFAULT_PORT
+# מתן הרשאה לצאת מגבולות הבידוד של המכולה EXPOSE port
+EXPOSE $PORT
+# הרצה של כרך אנונימי מובנה VOLUME [ "/data" ]
+#VOLUME [ "/app/node_modules" ]
+# הרצת פעולה פנימית בתוכן המכולה CMD [ "executable" ]
+CMD [ "npm", "start" ]

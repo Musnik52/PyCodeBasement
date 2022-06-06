@@ -6,7 +6,7 @@ const connectedKnex = knex({
   client: db_conn.client,
   version: db_conn.version,
   connection: {
-    filename: db_conn.filename,
+    filename: db_conn.filename
   },
 });
 

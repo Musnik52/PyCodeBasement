@@ -5,11 +5,11 @@ const path = require("path");
 
 logger.debug("====== System startup ========");
 
-const port = 8080;
+const port = 8081;
 
 const app = express();
 
-app.use(express.static(path.join(".", " /static")));
+app.use(express.static(path.join(".", "/static")));
 
 app.use(express.json());
 
@@ -20,10 +20,10 @@ var swaggerUi = require("swagger-ui-express"),
 
 app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 
-// app.get("/reports", async (req, res) => {
-//   const reports = await reports_repo.getAllReports();
-//   res.status(200).json({ reports });
-// });
+app.get("/", (req, res) => {
+  res.sendFile(path.join(__dirname, "index.html"));
+  
+});
 
 app.get("/reports", async (req, res) => {
   const reports = await reports_repo.getReportByParams(

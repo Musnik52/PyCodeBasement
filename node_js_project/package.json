@@ -1,14 +1,14 @@
 {
   "name": "express_rest",
   "version": "1.0.0",
-  "description": "",
-  "main": "index.js",
+  "description": "node.js project",
+  "main": "app.js",
   "scripts": {
-    "start": "npx nodemon index.js",
-    "test": "mocha calc.test.js"
+    "start": "npx nodemon app.js",
+    "test": "mocha test/app.test.js"
   },
   "keywords": [],
-  "author": "",
+  "author": "boris_m",
   "license": "ISC",
   "dependencies": {
     "config": "^3.3.7",
@@ -16,9 +16,11 @@
     "knex": "^2.0.0",
     "sqlite3": "^5.0.8",
     "swagger-ui-express": "^4.4.0",
-    "winston": "^3.7.2","chai": "^4.3.6",
+    "winston": "^3.7.2",
+    "chai": "^4.3.6",
     "mocha": "^10.0.0",
     "should": "^13.2.3",
+    "supertest": "^6.2.3",
     "superset": "^2.0.1"
   }
 }

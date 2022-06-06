@@ -9,11 +9,15 @@ function getReportByid(id) {
 }
 
 function getReportByParams(license_plate, driver_id, speed) {
-  return connectedKnex("reports")
-    .select("*")
-    .where("license_plate", license_plate)
-    .orWhere("driver_id", driver_id)
-    .orWhere("speed", speed);
+  if (license_plate | driver_id | speed) {
+    return connectedKnex("reports")
+      .select("*")
+      .where("license_plate", license_plate)
+      .orWhere("driver_id", driver_id)
+      .orWhere("speed", speed);
+  } else {
+    return connectedKnex("reports").select("*");
+  }
 }
 
 function getRaw(query) {
