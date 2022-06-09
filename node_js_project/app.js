@@ -5,7 +5,7 @@ const path = require("path");
 
 logger.debug("====== System startup ========");
 
-const port = 8081;
+const port = 8080;
 
 const app = express();
 
@@ -22,7 +22,6 @@ app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 
 app.get("/", (req, res) => {
   res.sendFile(path.join(__dirname, "index.html"));
-  
 });
 
 app.get("/reports", async (req, res) => {
