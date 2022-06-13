@@ -2,114 +2,113 @@
   "swagger": "2.0",
   "info": {
     "version": "1.0.0",
-    "title": "Yet Another Node.js Blogg Application API",
-    "description": "Yet Another Node.js Blogg Application API",
+    "title": "Boris Group LTD - Reports With Swagger",
+    "description": "Boris Group LTD - Reports With Swagger",
     "license": {
       "name": "MIT",
       "url": "https://opensource.org/licenses/MIT"
     }
   },
-  "host": "localhost:8080",
-  "basePath": "/api/v1",
+  "host": "localhost:8083",
   "tags": [
     {
-      "name": "Movies",
-      "description": "API for users in the system"
+      "name": "Reports",
+      "description": "API for reports in the system"
     }
   ],
   "schemes": ["http"],
   "consumes": ["application/json"],
   "produces": ["application/json"],
   "paths": {
-    "/movies": {
+    "/reports": {
       "post": {
-        "tags": ["Movies"],
-        "description": "Create new user in system",
+        "tags": ["Reports"],
+        "description": "Create new report in system",
         "parameters": [
           {
-            "name": "user",
+            "name": "report",
             "in": "body",
-            "description": "User that we want to create",
+            "description": "Report that we want to create",
             "schema": {
-              "$ref": "#/definitions/User"
+              "$ref": "#/definitions/Report"
             }
           }
         ],
         "produces": ["application/json"],
         "responses": {
           "200": {
-            "description": "New user is created",
+            "description": "New report is created",
             "schema": {
-              "$ref": "#/definitions/User"
+              "$ref": "#/definitions/Report"
             }
           }
         }
       },
       "get": {
-        "tags": ["Users"],
-        "summary": "Get all users in system",
+        "tags": ["Reports"],
+        "summary": "Get all reports in system",
         "responses": {
           "200": {
             "description": "OK",
             "schema": {
-              "$ref": "#/definitions/Users"
+              "$ref": "#/definitions/Report"
             }
           }
         }
       }
     },
-    "/users/{userId}": {
+    "/reports/{report_id}": {
       "parameters": [
         {
-          "name": "userId",
+          "name": "report_id",
           "in": "path",
           "required": true,
-          "description": "ID of user that we want to find",
-          "type": "string"
+          "description": "ID of report that we want to find",
+          "type": "integer"
         }
       ],
       "get": {
-        "tags": ["Users"],
-        "summary": "Get user with given ID",
+        "tags": ["Reports"],
+        "summary": "Get report with given ID",
         "responses": {
           "200": {
-            "description": "User is found",
+            "description": "Report is found",
             "schema": {
-              "$ref": "#/definitions/User"
+              "$ref": "#/definitions/Report"
             }
           }
         }
       },
       "delete": {
-        "summary": "Delete user with given ID",
-        "tags": ["Users"],
+        "summary": "Delete report with given ID",
+        "tags": ["Reports"],
         "responses": {
           "200": {
-            "description": "User is deleted",
+            "description": "Report is deleted",
             "schema": {
-              "$ref": "#/definitions/User"
+              "$ref": "#/definitions/Report"
             }
           }
         }
       },
       "put": {
-        "summary": "Update user with give ID",
-        "tags": ["Users"],
+        "summary": "Update report with give ID",
+        "tags": ["Reports"],
         "parameters": [
           {
-            "name": "user",
+            "name": "report",
             "in": "body",
-            "description": "User with new values of properties",
+            "description": "Report with new values of properties",
             "schema": {
-              "$ref": "#/definitions/User"
+              "$ref": "#/definitions/Report"
             }
           }
         ],
         "responses": {
           "200": {
-            "description": "User is updated",
+            "description": "Report is updated",
             "schema": {
-              "$ref": "#/definitions/User"
+              "$ref": "#/definitions/Report"
             }
           }
         }
@@ -117,28 +116,24 @@
     }
   },
   "definitions": {
-    "Movie": {
-      "required": ["title"],
+    "Report": {
+      "required": ["id"],
       "properties": {
         "id": {
           "type": "integer",
           "uniqueItems": true
         },
-        "title": {
+        "license_plate": {
           "type": "string",
           "uniqueItems": true
         },
-        "price": {
-          "type": "double"
+        "driver_id": {
+          "type": "string"
         },
-        "rating": {
+        "speed": {
           "type": "integer"
         }
       }
-    },
-    "Users": {
-      "type": "array",
-      "$ref": "#/definitions/User"
     }
   }
 }

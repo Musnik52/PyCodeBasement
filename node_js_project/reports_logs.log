@@ -2,11 +2,77 @@
   message: '====== System startup ========',
   level: 'debug',
   label: 'main module',
-  timestamp: '2022-06-09T05:24:40.672Z'
+  timestamp: '2022-06-12T13:24:42.409Z'
 }
 {
-  message: 'Listening on port http://localhost:8080',
+  message: 'Listening on http://localhost:8083',
   level: 'info',
   label: 'main module',
-  timestamp: '2022-06-09T05:24:41.839Z'
+  timestamp: '2022-06-12T13:24:42.583Z'
+}
+{
+  message: 'user requested all reports.',
+  level: 'debug',
+  label: 'main module',
+  timestamp: '2022-06-12T13:24:58.030Z'
+}
+{
+  message: '====== System startup ========',
+  level: 'debug',
+  label: 'main module',
+  timestamp: '2022-06-12T13:26:31.187Z'
+}
+{
+  message: 'Listening on http://localhost:8083',
+  level: 'info',
+  label: 'main module',
+  timestamp: '2022-06-12T13:26:31.402Z'
+}
+{
+  message: 'user requested all reports.',
+  level: 'debug',
+  label: 'main module',
+  timestamp: '2022-06-12T13:26:43.165Z'
+}
+{
+  message: 'user deleted report 11.',
+  level: 'debug',
+  label: 'main module',
+  timestamp: '2022-06-12T13:27:25.503Z'
+}
+{
+  message: 'user deleted report 10.',
+  level: 'debug',
+  label: 'main module',
+  timestamp: '2022-06-12T13:27:55.015Z'
+}
+{
+  message: 'user deleted report 9.',
+  level: 'debug',
+  label: 'main module',
+  timestamp: '2022-06-12T13:27:59.487Z'
+}
+{
+  message: 'user requested all reports.',
+  level: 'debug',
+  label: 'main module',
+  timestamp: '2022-06-12T13:28:05.585Z'
+}
+{
+  message: '====== System startup ========',
+  level: 'debug',
+  label: 'main module',
+  timestamp: '2022-06-12T16:25:04.885Z'
+}
+{
+  message: 'Listening on http://localhost:8083',
+  level: 'info',
+  label: 'main module',
+  timestamp: '2022-06-12T16:25:05.238Z'
+}
+{
+  message: 'user requested all reports.',
+  level: 'debug',
+  label: 'main module',
+  timestamp: '2022-06-12T16:25:24.607Z'
 }

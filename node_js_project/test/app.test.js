@@ -1,65 +1,44 @@
 const index = require("../app");
-const supertest = require("supertest");
 const should = require("should");
 const assert = require("assert");
 const expect = require("chai").expect;
+const axios = require("axios").default;
+const supertest = require("supertest");
 
-const server = supertest.agent("localhost:8085");
+const server = supertest.agent("localhost:8081");
 
-describe('Test REST api "app.js"', () => {
-  it("test getAllReports", (done) => {
+describe("Test REST api", () => {
+  it("testing GET", (done) => {
     server.get("/reports").end((err, res) => {
       res.status.should.equal(200);
-      res.body.reports.should.equal("getAllReports");
       done();
     });
   });
-  it("test getAllReports with speed query param", (done) => {
-    server.get("/reports?speed=2").end((err, res) => {
-      res.status.should.equal(200);
-      res.body.reports.should.equal("getReportsByCondition");
-      done();
-    });
+  it("testing POST", (done) => {
+    server
+      .post("/reports")
+      .send({ license_plate: "10-101-11", driver_id: 1220, speed: 139 })
+      .end((err, res) => {
+        res.status.should.equal(201);
+        done();
+      });
   });
-  it("test getAllReports with speed query param not valid", (done) => {
-    server.get("/reports?speed=notanumber").end((err, res) => {
-      res.status.should.equal(400);
-      res.body.answer.should.equal("notanumber is not a number");
-      done();
-    });
+  it("testing PUT", (done) => {
+    server
+      .put("/reports/5")
+      .send({ license_plate: "55-535-11", driver_id: 1420, speed: 121 })
+      .end((err, res) => {
+        res.status.should.equal(200);
+        done();
+      });
   });
-  it("test getReportById", (done) => {
-    server.get("/reports/1").end((err, res) => {
-      res.status.should.equal(200);
-      res.body.report.should.equal("getReportById");
-      done();
-    });
-  });
-  it("test addReport", (done) => {
-    server.post("/reports").end((err, res) => {
-      res.status.should.equal(201);
-      res.body.res.should.equal("success");
-      res.body.url.should.equal("localhost:8080/reports/a");
-      res.body.result.should.equal("addReport");
-      done();
-    });
-  });
-  it("test updateReport", (done) => {
-    server.put("/reports/1").end((err, res) => {
-      res.status.should.equal(201);
-      res.body.res.should.equal("success");
-      res.body.url.should.equal("localhost:8080/reports/1");
-      res.body.result.should.equal("updateReport");
-      done();
-    });
-  });
-  it("test deleteReport", (done) => {
-    server.delete("/reports/1").end((err, res) => {
-      res.status.should.equal(200);
-      res.body.res.should.equal("success");
-      res.body.url.should.equal("localhost:8080/reports/1");
-      res.body.result.should.equal("deleteReport");
-      done();
-    });
+  it("testing DELETE", (done) => {
+    server
+      .delete("/reports/5")
+      .send({ license_plate: "55-535-11", driver_id: 1420, speed: 121 })
+      .end((err, res) => {
+        res.status.should.equal(200);
+        done();
+      });
   });
 });

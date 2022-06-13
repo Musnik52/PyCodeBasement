@@ -5,7 +5,7 @@ const path = require("path");
 
 logger.debug("====== System startup ========");
 
-const port = 8080;
+const port = 8083;
 
 const app = express();
 
@@ -108,5 +108,5 @@ app.post("/reports", async (req, res) => {
 });
 
 app.listen(port, () => {
-  logger.info(`Listening on port http://localhost:${port}`);
+  logger.info(`Listening on http://localhost:${port}`);
 });
