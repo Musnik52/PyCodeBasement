@@ -1,16 +1,15 @@
 const airlock_repo = require("./airlock-repo");
 
-async function syncData() {
+async function myFunction() {
   try {
     const users = await airlock_repo.getAll("users");
     //update mongo
-    console.log(users);
-    return {};
+    return document.getElementById("demo").innerHTML = users[1];
   } catch (err) {
-    return err;
+    return document.getElementById("demo").innerHTML = err;
   }
 }
 
 module.exports = {
-  syncData,
+  myFunction,
 };

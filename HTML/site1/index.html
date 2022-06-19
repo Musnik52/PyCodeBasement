@@ -5,6 +5,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
+    <link rel="stylesheet" href="mystyle.css"/>
 </head>
 <body>
     <hr>
@@ -24,7 +25,14 @@
             <label for="python">PYTHON</label><br />
             &nbsp;&nbsp; <input type="radio" name="fav_lang" id="javascript" value="JAVASCRIPT">
             <label for="javascript">JAVASCRIPT</label><br />
-
+            <label for="bio">
+                Bio:<br />
+                <textarea id="bio" name="bio">
+                    This is a default text
+                </textarea>
+            </label><br />
+            <label for="file">FILE:</label>
+            <input id="file" name="file" type="file"><br />
             <label for="cars">Choose a car:</label>
             <select name="cars" id="cars">
                 <option value="empty">--please choose --</option>
@@ -32,10 +40,10 @@
                 <option value="volvo">Volvo</option>
                 <option value="subaru">Subaru</option>
                 <option value="skoda">Skoda</option>
-            </select>
-
-            <br /><br /><input type="submit">
-
+            </select><br />
+            <br /><br /><button type="submit">SUBMIT</button>
+            <br /><br /><button type="reset">RESET</button>
+            <br /><br /><button type="button">BUTTON</button>
         </form>
     </hr>
 </body>
