@@ -4,7 +4,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Airlock Hub</title>
     <link rel="stylesheet" href="/styles.css" />
-    <script src="/sync.js"></script>
   </head>
   <body>
     <nav>
@@ -34,12 +33,17 @@
       </ul>
     </nav>
     <script>
-      const airlock_repo = require("/airlock-repo");
+      document.addEventListener("click", myFunction);
       async function myFunction() {
+        //the ajax (to be adjusted)
         try {
-          const users = await airlock_repo.getAll("users");
-          //update mongo
-          document.getElementById("demo").innerHTML = users;
+          const res = await fetch("/export", {
+            method: "GET",
+            headers: { "Content-Type": "text" },
+          });
+          const data = await res.json();
+          console.log(data);
+          document.getElementById("demo").innerHTML = data[0].username;
         } catch (err) {
           document.getElementById("demo").innerHTML = err;
         }

@@ -31,7 +31,11 @@
         method: "POST",
         body: JSON.stringify({ email, password }),
         headers: { "Content-Type": "application/json" },
-      });
+      }); // see? here firing ajax ... that's the way to do it ... becasue server-side commands
+      // are not visible to the client-sdie
+      // only during page loading you can do stuff like that 
+      // so create a server-side listener for the sync-user command
+      // could be get/post/update whatever you want and then fire ajax to it upon button click
       const data = await res.json();
       console.log(data);
       if (data.errors) {
