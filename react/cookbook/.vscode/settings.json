@@ -1,0 +1,17 @@
+{
+    "marquee.widgets.npm-stats.packageNames": [
+        "cook-book"
+    ],
+    "git.ignoreLimitWarning": true,
+    "sqltools.connections": [
+        {
+            "previewLimit": 50,
+            "server": "localhost",
+            "port": 5432,
+            "askForPassword": true,
+            "driver": "PostgreSQL",
+            "connectString": "postgresql+psycopg2://postgres:admin@localhost/Airlock",
+            "name": "postgresql"
+        }
+    ]
+}
