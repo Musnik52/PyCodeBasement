@@ -59,10 +59,25 @@ const updateCustomer = async (req, res) => {
 
 const addCustomer = async (req, res) => {
   try {
-    user = {username: req.body.username, password: req.body.password, email: req.body.email, user_role: 3}
-    const resultUser = await connectedKnex("users").insert(user)
-    customer = {first_name: req.body.first_name, last_name: req.body.last_name, address: req.body.address, phone_number: req.body.phone_number, credit_card_number: req.body.credit_card_number, user_id: resultUser.id};
-    const resultCustomer = await connectedKnex("customers").insert(customer);
+    user = {
+      username: req.body.username,
+      password: req.body.password,
+      email: req.body.email,
+      user_role: 3,
+    };
+    const resultUser = await connectedKnex("users").insert(user);
+    const newUser = await connectedKnex("users")
+      .select("*")
+      .where("username", req.body.username)
+      .first();
+    const resultCustomer = await connectedKnex("customers").insert({
+      first_name: req.body.first_name,
+      last_name: req.body.last_name,
+      address: req.body.address,
+      phone_number: req.body.phone_number,
+      credit_card_number: req.body.credit_card_number,
+      user_id: newUser.id,
+    });
     res.status(201).json({
       res: "success",
       url: `/customers/${resultCustomer[0]}`,
