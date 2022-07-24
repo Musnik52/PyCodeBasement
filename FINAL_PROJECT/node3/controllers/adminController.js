@@ -18,7 +18,14 @@ const getAdminById = async (req, res) => {
 const deleteAdmin = async (req, res) => {
   const id = req.params.id;
   try {
-    const admin = connectedKnex("administrators").where("id", id).del();
+    const admin = await connectedKnex("administrators")
+      .select("*")
+      .where("id", id)
+      .first();
+    const userDel = await connectedKnex("users")
+      .where("id", admin.user_id)
+      .del();
+    const adminDel = connectedKnex("administrators").where("id", id).del();
     res.status(200).json({ num_records_deleted: admin });
   } catch (e) {
     logger.error(`failed to delete an admin. Error: ${e}`);
@@ -52,11 +59,25 @@ const updateAdmin = async (req, res) => {
 
 const addAdmin = async (req, res) => {
   try {
-    admin = req.body;
-    const result = await connectedKnex("administrators").insert(admin);
+    user = {
+      username: req.body.username,
+      password: req.body.password,
+      email: req.body.email,
+      user_role: 3,
+    };
+    const resultUser = await connectedKnex("users").insert(user);
+    const newUser = await connectedKnex("users")
+      .select("*")
+      .where("username", req.body.username)
+      .first();
+    const resultAdmin = await connectedKnex("administrators").insert({
+      first_name: req.body.first_name,
+      last_name: req.body.last_name,
+      user_id: newUser.id,
+    });
     res.status(201).json({
       res: "success",
-      url: `/admins/${result[0]}`,
+      url: `/admins/${resultAdmin[0]}`,
       result,
     });
   } catch (e) {
