@@ -77,6 +77,9 @@ class AnonymusFacade(FacadeBase):
             raise PasswordTooShort
         else:
             self.create_user(user)
+            new_user = list(self.repo.get_by_column_value(
+                Users, Users.username, user.username))
+            customer.user_id = new_user[0].id
             self.logger.logger.info(f'User {user.username} created!')
             self.repo.add(customer)
             self.logger.logger.info(

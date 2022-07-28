@@ -1,18 +1,23 @@
 const amqp = require("amqplib");
 
-async function connect(queue = "queue_name") {
+async function recieveMsg(queue, res) {
   try {
     const connection = await amqp.connect("amqp://localhost:5672");
     const channel = await connection.createChannel();
     await channel.assertQueue(queue);
-    channel.consume(queue, (message) => {
-      const input = JSON.parse(message.content.toString());
-      console.log(`Received from ${queue}: ${input.queue}`);
-      channel.ack(message);
+    channel.consume(queue, (msg) => {
+      const input = JSON.parse(msg.content.toString());
+      console.log(`Received from ${queue}: ${JSON.stringify(input)}`);
+      channel.ack(msg);
+      res.status(201).json({
+        res: "success",
+        url: `/customers/`,
+      });
     });
     console.log(`Waiting for messages...`);
-  } catch (ex) {
-    console.error(ex);
+  } catch (err) {
+    console.error(err);
   }
 }
-connect();
+
+module.exports.recieveMsg = recieveMsg;
