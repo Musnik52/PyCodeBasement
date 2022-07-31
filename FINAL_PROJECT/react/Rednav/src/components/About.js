@@ -7,10 +7,16 @@ const About = (props) => {
       <div className="container">
         <h4 className="center">About</h4>
         <p>
-          Lorem ipsum dolor sit amet, consectetur adipisicing elit. Assumenda in
-          voluptas dolorem recusandae quae expedita similique nobis neque
-          accusamus, architecto suscipit saepe odio aliquam nostrum ducimus
-          laborum esse optio voluptate.
+          Our Company, Airlock, was founded by Boris Group LTD in 2022. <br />
+          Ever since its inception, Airlock managged to book a flight for every
+          single customer. <br />
+          <ul>
+          Among our numerous achievements are:
+            <li>Solving world hunger.</li>
+            <li>Bringing equal rights to 9.9 billion people.</li>
+            <li>Finding Waldo.</li>
+            <li>Counting to infinity. Twice.</li>
+          </ul>
         </p>
       </div>
     </div>

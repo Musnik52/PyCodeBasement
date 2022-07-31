@@ -4,21 +4,20 @@ import Button from "../UI/Button/Button";
 import "./Login.css";
 
 const Login = (props) => {
-  console.log(props);
-
-  const [enteredEmail, setEnteredEmail] = useState("");
-  const [emailIsValid, setEmailIsValid] = useState();
+  const [enteredUsername, setEnteredUsername] = useState("");
+  const [usernameIsValid, setUsernameIsValid] = useState();
   const [enteredPassword, setEnteredPassword] = useState("");
   const [passwordIsValid, setPasswordIsValid] = useState();
   const [formIsValid, setFormIsValid] = useState(false);
+  
 
-  const emailChangeHandler = (event) => {
+  const usernameChangeHandler = (event) => {
     // live update of input
-    setEnteredEmail(event.target.value);
+    setEnteredUsername(event.target.value);
 
     setFormIsValid(
       // valodate email includes @ and password length is more than 6
-      event.target.value.includes("@") && enteredPassword.trim().length > 6
+      enteredPassword.trim().length > 6
     );
   };
 
@@ -28,12 +27,12 @@ const Login = (props) => {
 
     setFormIsValid(
       // valodate email includes @ and password length is more than 6
-      event.target.value.trim().length > 6 && enteredEmail.includes("@")
+      event.target.value.trim().length > 6
     );
   };
 
-  const validateEmailHandler = () => {
-    setEmailIsValid(enteredEmail.includes("@"));
+  const validateUsernameHandler = () => {
+    setUsernameIsValid(enteredUsername.length > 0);
   };
 
   const validatePasswordHandler = () => {
@@ -43,25 +42,35 @@ const Login = (props) => {
   const submitHandler = (event) => {
     // page doesn't refresh on submit
     event.preventDefault();
-    props.onLogin(enteredEmail, enteredPassword);
+    const loginData = {
+      username: enteredUsername,
+      password: enteredPassword,
+    };
+    console.log(loginData);
+    // RABBITMQ HERE TO LOGIN
+    props.onLogin(enteredUsername, enteredPassword);
   };
 
   return (
-    <div>
-      <div className="container">
+    <React.Fragment>
+      <div
+        className="container"
+      >
         <h4 className="center">Login</h4>
         <Card className="login">
           <form onSubmit={submitHandler}>
             <div
-              className={`control ${emailIsValid === false ? "invalid" : ""}`}
+              className={`control ${
+                usernameIsValid === false ? "invalid" : ""
+              }`}
             >
-              <label htmlFor="email">E-Mail</label>
+              <label htmlFor="text">Username</label>
               <input
-                type="email"
-                id="email"
-                value={enteredEmail}
-                onChange={emailChangeHandler}
-                onBlur={validateEmailHandler}
+                type="text"
+                id="text"
+                value={enteredUsername}
+                onChange={usernameChangeHandler}
+                onBlur={validateUsernameHandler}
               />
             </div>
             <div
@@ -86,7 +95,7 @@ const Login = (props) => {
           </form>
         </Card>
       </div>
-    </div>
+    </React.Fragment>
   );
 };
 

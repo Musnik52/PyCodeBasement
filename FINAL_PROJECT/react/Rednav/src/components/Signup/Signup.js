@@ -6,10 +6,9 @@ const Signup = (props) => {
   const saveCustomerDataHandler = (enteredCustomerData) => {
     const customerData = {
       ...enteredCustomerData,
-      id: Math.random().toString(),
     };
-    props.onAddCustomer(customerData);
-    
+    console.log(customerData)
+    // RABBITMQ HERE TO ADD CUSTOMER
   };
 
   return (
