@@ -1,8 +1,8 @@
 // import logo from "./logo.svg";
 import "./App.css";
 import Home from "./components/Home";
-import Login from "./components/Login";
-import Signup from "./components/Signup";
+import Login from "./components/Login/Login";
+import Signup from "./components/Signup/Signup";
 import Navbar from "./components/Navbar";
 import About from "./components/About";
 import Contact from "./components/Contact";
