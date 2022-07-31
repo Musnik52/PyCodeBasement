@@ -40,17 +40,20 @@ const deleteCustomer = async (req, res) => {
 };
 
 const updateCustomer = async (req, res) => {
-  const id = req.params.id;
+  const qResName = `customer ${uuid.v4()}`;
   try {
-    customer = req.body;
-    const result = await connectedKnex("customers")
-      .where("id", id)
-      .update(customer);
-    res.status(200).json({
-      res: "success",
-      url: `/customers/${id}`,
-      result,
-    });
+    reqMsg = {
+      action: 'update',
+      id: req.body.id,
+      first_name: req.body.first_name,
+      last_name: req.body.last_name,
+      address: req.body.address,
+      phone_number: req.body.phone_number,
+      credit_card_number: req.body.credit_card_number,
+      queue_name: `response ${qResName}`,
+    };
+    recieveMsg(reqMsg.queue_name, res); 
+    await sendMsg("customer", reqMsg); 
   } catch (e) {
     logger.error(`failed to update customer. Error: ${e}`);
     res.status(400).send({
@@ -61,9 +64,10 @@ const updateCustomer = async (req, res) => {
 };
 
 const addCustomer = async (req, res) => {
-  const qResName = `createCustomer ${uuid.v4()}`;
+  const qResName = `customer ${uuid.v4()}`;
   try {
     reqMsg = {
+      action: 'add',
       username: req.body.username,
       password: req.body.password,
       email: req.body.email,
@@ -74,8 +78,8 @@ const addCustomer = async (req, res) => {
       credit_card_number: req.body.credit_card_number,
       queue_name: `response ${qResName}`,
     };
-    recieveMsg(reqMsg.queue_name, res); //reqMsg.queue_name
-    await sendMsg("createCustomer", reqMsg); //qResName
+    recieveMsg(reqMsg.queue_name, res); 
+    await sendMsg("customer", reqMsg); 
   } catch (e) {
     logger.error(`failed to add a customer. Error: ${e}`);
     res.status(400).send({

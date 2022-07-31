@@ -1,14 +1,14 @@
 import React from "react";
 
 import Card from "../UI/Card/Card";
-import "./Home.css";
+import "./MyPage.css";
 
-const Home = (props) => {
+const MyPage = (props) => {
   return (
-    <Card className="home">
+    <Card className="MyPage">
       <h1>Welcome back!</h1>
     </Card>
   );
 };
 
-export default Home;
+export default MyPage;

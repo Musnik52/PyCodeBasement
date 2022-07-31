@@ -2,6 +2,7 @@
 import "./App.css";
 import Home from "./components/Home";
 import Login from "./components/Login";
+import Signup from "./components/Signup";
 import Navbar from "./components/Navbar";
 import About from "./components/About";
 import Contact from "./components/Contact";
@@ -16,6 +17,7 @@ function App() {
           <Navbar />
           <Route exact path="/" component={Home} />
           <Route exact path="/login" component={Login} />
+          <Route exact path="/signup" component={Signup} />
           <Route exact path="/contact" component={Contact} />
           <Route exact path="/about" component={About} />
           <Route path="/posts/:post_id" component={Post} />

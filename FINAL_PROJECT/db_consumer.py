@@ -18,30 +18,37 @@ anonymus_facade = AnonymusFacade(repo, config)
 
 
 def customer_callback(ch, method, properties, body):
-    #if method POST
     data = json.loads(body)
-    new_user = Users(username=data["username"],
-                     password=generate_password_hash(data["password"]),
-                     email=data["email"],
-                     public_id=str(uuid.uuid4()),
-                     user_role=config["user_roles"]["customer"])
-    new_customer = Customers(first_name=data["first_name"],
-                             last_name=data["last_name"],
-                             address=data["address"],
-                             phone_number=data["phone_number"],
-                             credit_card_number=data["credit_card_number"],
-                             user_id=new_user.id)
-    anonymus_facade.add_customer(new_customer, new_user)
+    if data["action"] == 'add':
+        new_user = Users(username=data["username"],
+                         password=generate_password_hash(data["password"]),
+                         email=data["email"],
+                         public_id=str(uuid.uuid4()),
+                         user_role=config["user_roles"]["customer"])
+        new_customer = Customers(first_name=data["first_name"],
+                                 last_name=data["last_name"],
+                                 address=data["address"],
+                                 phone_number=data["phone_number"],
+                                 credit_card_number=data["credit_card_number"],
+                                 user_id=new_user.id)
+        anonymus_facade.add_customer(new_customer, new_user)
+    elif data["action"] == "update":
+        customer_facade = anonymus_facade.login('qwertytre', '123456789')
+        customer_id = int(data["id"])
+        customer_updates = {"first_name": data["first_name"],
+                            "last_name": data["last_name"],
+                            "address": data["address"],
+                            "phone_number": data["phone_number"],
+                            "credit_card_number": data["credit_card_number"]}
+        customer_facade.update_customer(customer_updates, customer_id)
+    elif data["action"] == "remove":
+        pass
+
     rabbit_producer = DbRabbitProducer(data["queue_name"])
-    rabbit_producer.publish(json.dumps(
-        {"status": "SUCCESS", "name": data["first_name"], "user": data["username"]}))
-
-
-def main():
-    customer_rabbit = DbRabbitConsumer(
-        queue_name='createCustomer', callback=customer_callback)
-    customer_rabbit.consume()
+    rabbit_producer.publish(json.dumps({"status": "SUCCESS"}))
 
 
 if __name__ == '__main__':
-    main()
+    customer_rabbit = DbRabbitConsumer(
+        queue_name='customer', callback=customer_callback)
+    customer_rabbit.consume()

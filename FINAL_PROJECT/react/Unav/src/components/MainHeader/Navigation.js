@@ -1,6 +1,6 @@
-import React from 'react';
+import React from "react";
 
-import './Navigation.css';
+import "./Navigation.css";
 
 const Navigation = (props) => {
   return (
@@ -8,17 +8,23 @@ const Navigation = (props) => {
       <ul>
         {props.isLoggedIn && (
           <li>
-            <a href="/">Users</a>
+            <a href="/my_info">My Info</a>
           </li>
         )}
         {props.isLoggedIn && (
           <li>
-            <a href="/">Admin</a>
+            <a href="/flights">Flights</a>
           </li>
         )}
-        {props.isLoggedIn && (
+        {props.isLoggedIn ? (
           <li>
             <button onClick={props.onLogout}>Logout</button>
+          </li>
+        ) : (
+          <li>
+            <button onClick={props.onLogout}>
+              <a href="/login">Login</a>
+            </button>
           </li>
         )}
       </ul>
