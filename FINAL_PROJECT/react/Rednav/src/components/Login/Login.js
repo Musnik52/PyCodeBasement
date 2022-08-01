@@ -9,7 +9,6 @@ const Login = (props) => {
   const [enteredPassword, setEnteredPassword] = useState("");
   const [passwordIsValid, setPasswordIsValid] = useState();
   const [formIsValid, setFormIsValid] = useState(false);
-  
 
   const usernameChangeHandler = (event) => {
     // live update of input
@@ -53,9 +52,7 @@ const Login = (props) => {
 
   return (
     <React.Fragment>
-      <div
-        className="container"
-      >
+      <div className="container">
         <h4 className="center">Login</h4>
         <Card className="login">
           <form onSubmit={submitHandler}>
@@ -92,6 +89,13 @@ const Login = (props) => {
                 Login
               </Button>
             </div>
+            <p>
+              {" "}
+              Don't have an account? <br />
+              <span className="line">
+                <a href="/signup">Sign up</a>
+              </span>
+            </p>
           </form>
         </Card>
       </div>

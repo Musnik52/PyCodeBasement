@@ -1,4 +1,5 @@
 import "./App.css";
+import React, { useState } from "react";
 import Home from "./components/Home";
 import Login from "./components/Login/Login";
 import Signup from "./components/Signup/Signup";
@@ -9,11 +10,22 @@ import Post from "./components/Post";
 import { BrowserRouter, Route } from "react-router-dom";
 
 function App() {
+
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+
+  const loginHandler = (username, password) => {
+    // check username and password
+    setIsLoggedIn(true);
+  };
+
+  const logoutHandler = () => {
+    setIsLoggedIn(false);
+  };
   return (
     <BrowserRouter>
       <div className="App">
         <header className="App">
-          <Navbar />
+          <Navbar isLoggedIn={isLoggedIn} />
           <Route exact path="/home" component={Home} />
           <Route exact path="/login" component={Login} />
           <Route exact path="/signup" component={Signup} />

@@ -1,18 +1,7 @@
-import React, { useState } from "react";
 import { NavLink, withRouter } from "react-router-dom";
 
 const Navbar = (props) => {
   console.log(props);
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
-
-  const loginHandler = (username, password) => {
-    // check username and password
-    setIsLoggedIn(true);
-  };
-
-  const logoutHandler = () => {
-    setIsLoggedIn(false);
-  };
 
   return (
     <nav className="nav-wrapper black">
@@ -23,14 +12,9 @@ const Navbar = (props) => {
             <NavLink to="/home">Home</NavLink>
           </li>
           <li>
-            <NavLink to="/login">Login</NavLink>
+            {!props.isLoggedIn && <NavLink to="/login">Login/Signup</NavLink>}
           </li>
-          <li>
-            <NavLink to="/signup">Signup</NavLink>
-          </li>
-          <li>
-            <NavLink to="/">Signout</NavLink>
-          </li>
+          <li>{props.isLoggedIn && <NavLink to="/">Logout</NavLink>}</li>
           <li>
             <NavLink to="/about">About</NavLink>
           </li>
