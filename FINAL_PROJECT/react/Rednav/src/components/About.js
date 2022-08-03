@@ -6,7 +6,7 @@ const About = (props) => {
     <div>
       <div className="container">
         <h4 className="center">About</h4>
-        <p>
+        <span>
           Our Company, Airlock, was founded by Boris Group LTD in 2022. <br />
           Ever since its inception, Airlock managged to book a flight for every
           single customer. <br />
@@ -17,7 +17,7 @@ const About = (props) => {
             <li>Finding Waldo.</li>
             <li>Counting to infinity. Twice.</li>
           </ul>
-        </p>
+        </span>
       </div>
     </div>
   );

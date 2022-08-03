@@ -8,13 +8,16 @@ const Navbar = (props) => {
       <div className="container">
         <div className="brand-logo center">Airlock</div>
         <ul className="right">
+        <li>
+            <NavLink to="/">Home</NavLink>
+          </li>
           <li>
-            <NavLink to="/home">Home</NavLink>
+            <NavLink to="/flights">Flights</NavLink>
           </li>
           <li>
             {!props.isLoggedIn && <NavLink to="/login">Login/Signup</NavLink>}
           </li>
-          <li>{props.isLoggedIn && <NavLink to="/">Logout</NavLink>}</li>
+          <li>{props.isLoggedIn &&  <NavLink to="/" onClick={props.onLogout}>Logout</NavLink>}</li>
           <li>
             <NavLink to="/about">About</NavLink>
           </li>
