@@ -34,5 +34,5 @@ mongoose
   })
   .catch((err) => logger.info(err));
 
-// routes
+// // routes
 app.get("/", (req, res) => res.status(200).render("index"));

@@ -8,30 +8,25 @@ const Login = (props) => {
   const [usernameIsValid, setUsernameIsValid] = useState();
   const [enteredPassword, setEnteredPassword] = useState("");
   const [passwordIsValid, setPasswordIsValid] = useState();
+  const [enteredRole, setEnteredRole] = useState("customer");
   const [formIsValid, setFormIsValid] = useState(false);
 
   const usernameChangeHandler = (event) => {
-    // live update of input
     setEnteredUsername(event.target.value);
-
-    setFormIsValid(
-      // valodate email includes @ and password length is more than 6
-      enteredPassword.trim().length > 6
-    );
+    setFormIsValid(enteredPassword.trim().length > 6);
   };
 
   const passwordChangeHandler = (event) => {
-    // live update of input
     setEnteredPassword(event.target.value);
+    setFormIsValid(event.target.value.trim().length > 6);
+  };
 
-    setFormIsValid(
-      // valodate email includes @ and password length is more than 6
-      event.target.value.trim().length > 6
-    );
+  const roleChangeHandler = (event) => {
+    setEnteredRole(event.target.value);
   };
 
   const validateUsernameHandler = () => {
-    setUsernameIsValid(enteredUsername.length > 0);
+    setUsernameIsValid(enteredUsername.length > 3);
   };
 
   const validatePasswordHandler = () => {
@@ -39,11 +34,11 @@ const Login = (props) => {
   };
 
   const submitHandler = (event) => {
-    // page doesn't refresh on submit
     event.preventDefault();
     const loginData = {
       username: enteredUsername,
       password: enteredPassword,
+      role: enteredRole,
     };
     console.log(loginData);
     // RABBITMQ HERE TO LOGIN
@@ -53,7 +48,8 @@ const Login = (props) => {
   return (
     <React.Fragment>
       <div className="container">
-        <h4 className="center">Login</h4>
+        <br />
+        <h3 className="center">Login</h3>
         <Card className="login">
           <form onSubmit={submitHandler}>
             <div
@@ -61,8 +57,11 @@ const Login = (props) => {
                 usernameIsValid === false ? "invalid" : ""
               }`}
             >
-              <label htmlFor="text">Username</label>
+              <label calssName="control" htmlFor="text">
+                Username{" "}
+              </label>
               <input
+                calssName="control"
                 type="text"
                 id="text"
                 value={enteredUsername}
@@ -75,8 +74,12 @@ const Login = (props) => {
                 passwordIsValid === false ? "invalid" : ""
               }`}
             >
-              <label htmlFor="password">Password</label>
+              <br />
+              <label calssName="control" htmlFor="password">
+                Password{" "}
+              </label>
               <input
+                calssName="control"
                 type="password"
                 id="password"
                 value={enteredPassword}
@@ -84,7 +87,23 @@ const Login = (props) => {
                 onBlur={validatePasswordHandler}
               />
             </div>
+            <div calssName="control">
+              <label calssName="control">Sign in as:</label>
+              <select
+                className="form-select"
+                id="floatingSelect"
+                aria-label="Floating label select example"
+                onChange={roleChangeHandler}
+              >
+                <option defaultValue value="customer">
+                  A Customer
+                </option>
+                <option value="airline">An Airport Company</option>
+                <option value="admin">An Admin</option>
+              </select>
+            </div>
             <div className="actions">
+              <br />
               <Button type="submit" disabled={!formIsValid}>
                 Login
               </Button>
