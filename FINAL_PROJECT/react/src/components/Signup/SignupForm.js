@@ -56,7 +56,6 @@ const SignupForm = (props) => {
       username: enteredUsername,
       password: enteredPassword,
       email: enteredEmail,
-      role: "customer",
     };
     props.onSaveCustomerData(customerData);
     setEnteredFirstName("");

@@ -19,13 +19,15 @@ anonymus_facade = AnonymusFacade(repo, config)
 
 def customer_callback(ch, method, properties, body):
     data = json.loads(body)
-    print(data)
+    # print ("#"*50)
+    # print(data)
+    # print ("#"*50)
     if data["action"] == 'add':
         new_user = Users(username=data["username"],
                          password=generate_password_hash(data["password"]),
                          email=data["email"],
                          public_id=str(uuid.uuid4()),
-                         user_role=config["user_roles"][data["role"]])
+                         user_role=config["user_roles"]["customer"])
         new_customer = Customers(first_name=data["first_name"],
                                  last_name=data["last_name"],
                                  address=data["address"],
@@ -34,7 +36,8 @@ def customer_callback(ch, method, properties, body):
                                  user_id=new_user.id)
         anonymus_facade.add_customer(new_customer, new_user)
     elif data["action"] == "update":
-        customer_facade = anonymus_facade.login('qwertytre', '123456789')
+        customer_facade = anonymus_facade.login(
+            data["usernme"], data["password"])
         customer_id = int(data["id"])
         customer_updates = {"first_name": data["first_name"],
                             "last_name": data["last_name"],

@@ -43,7 +43,7 @@ const updateCustomer = async (req, res) => {
   const qResName = `customer ${uuid.v4()}`;
   try {
     reqMsg = {
-      action: 'update',
+      action: "update",
       id: req.body.id,
       first_name: req.body.first_name,
       last_name: req.body.last_name,
@@ -52,8 +52,8 @@ const updateCustomer = async (req, res) => {
       credit_card_number: req.body.credit_card_number,
       queue_name: `response ${qResName}`,
     };
-    recieveMsg(reqMsg.queue_name, res); 
-    await sendMsg("customer", reqMsg); 
+    recieveMsg(reqMsg.queue_name, res);
+    await sendMsg("customer", reqMsg);
   } catch (e) {
     logger.error(`failed to update customer. Error: ${e}`);
     res.status(400).send({
@@ -67,19 +67,19 @@ const addCustomer = async (req, res) => {
   const qResName = `customer ${uuid.v4()}`;
   try {
     reqMsg = {
-      action: 'add',
+      action: "add",
       username: req.body.username,
       password: req.body.password,
       email: req.body.email,
-      first_name: req.body.first_name,
-      last_name: req.body.last_name,
+      first_name: req.body.firstName,
+      last_name: req.body.lastName,
       address: req.body.address,
-      phone_number: req.body.phone_number,
-      credit_card_number: req.body.credit_card_number,
+      phone_number: req.body.phone,
+      credit_card_number: req.body.ccn,
       queue_name: `response ${qResName}`,
     };
-    recieveMsg(reqMsg.queue_name, res); 
-    await sendMsg("customer", reqMsg); 
+    recieveMsg(reqMsg.queue_name, res);
+    await sendMsg("customer", reqMsg);
   } catch (e) {
     logger.error(`failed to add a customer. Error: ${e}`);
     res.status(400).send({

@@ -14,8 +14,9 @@ logger.debug("====== System startup ======");
 const app = express();
 
 // middleware
-app.use(cors());
+app.use(cors({origin: "*"}));
 app.use(express.static("public"));
+app.use(express.json())
 app.use(express.urlencoded({ extended: false }));
 app.use("/admins", adminRoutes);
 app.use("/flights", flightRoutes);

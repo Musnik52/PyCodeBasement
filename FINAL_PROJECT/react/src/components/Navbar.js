@@ -1,5 +1,4 @@
 import { NavLink, withRouter } from "react-router-dom";
-import airlock_logo from "../Assets/airlock.png";
 
 const Navbar = (props) => {
   console.log(props);
@@ -32,17 +31,6 @@ const Navbar = (props) => {
               <li className="nav-item">
                 <NavLink className="nav-link active" to="/login">
                   Login/Sign-Up
-                </NavLink>
-              </li>
-            )}
-            {props.isLoggedIn && (
-              <li className="nav-item">
-                <NavLink
-                  className="nav-link active"
-                  to="/flights"
-                  onClick={props.onLogout}
-                >
-                  Logout
                 </NavLink>
               </li>
             )}
@@ -80,6 +68,25 @@ const Navbar = (props) => {
               <a className="nav-link disabled">Teleporting: Coming Soon</a>
             </li>
           </ul>
+          {props.isLoggedIn && (
+            <button className="btn btn-outline-light btn-dark">
+              <NavLink className="nav-link active" to="/my_profile">
+                My Profile
+              </NavLink>
+            </button>
+          )}
+          <br/>
+          {props.isLoggedIn && (
+            <button className="btn btn-dark">
+              <NavLink
+                className="nav-link active"
+                to="/"
+                onClick={props.onLogout}
+              >
+                Logout
+              </NavLink>
+            </button>
+          )}
         </div>
       </div>
     </nav>
