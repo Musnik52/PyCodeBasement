@@ -1,7 +1,12 @@
+import { useState } from "react";
 import { NavLink, withRouter } from "react-router-dom";
 
 const Navbar = (props) => {
-  console.log(props);
+  const [userType, setUserType] = useState("customer");
+
+  const userLogerHandler = (loggedUser) => {
+    setUserType(loggedUser);
+  };
 
   return (
     <nav className="navbar navbar-dark navbar-expand-lg bg-light bg-dark">
@@ -70,7 +75,7 @@ const Navbar = (props) => {
           </ul>
           {props.isLoggedIn && (
             <button className="btn btn-outline-light btn-dark">
-              <NavLink className="nav-link active" to="/profile/customer">
+              <NavLink className="nav-link active" to={`/${userType}`}>
                 My Profile
               </NavLink>
             </button>

@@ -120,7 +120,8 @@ class DbRepo:
         self.add_all([UserRoles(role_name=config['user_roles']['1']),
                       UserRoles(role_name=config['user_roles']['2']),
                       UserRoles(role_name=config['user_roles']['3'])])
-        self.add_all([Users(username='b0r1s', password=generate_password_hash('boris1992'), email='boris@jb.com', public_id=str(uuid.uuid4()), user_role=config['user_roles']['airline']),
+        self.add_all([Users(username='b0r1s', password=generate_password_hash('boris1992'),
+                            email='boris@jb.com', public_id=str(uuid.uuid4()), user_role=config['user_roles']['airline']),
                       Users(username='m4x1m', password=generate_password_hash(
                             '2themax'), email='max@jb.com', public_id=str(uuid.uuid4()), user_role=config['user_roles']['airline']),
                       Users(username='l10r', password=generate_password_hash(

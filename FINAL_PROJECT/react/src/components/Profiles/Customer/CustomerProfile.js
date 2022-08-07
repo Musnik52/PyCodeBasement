@@ -9,15 +9,15 @@ const CustomerProfile = (props) => {
         <h4 className="">Welcome, {props.login_name}</h4>
         <img src={customer_pic} alt="customer" />
         <br />
-        <div class="btn-group" role="group" aria-label="Basic example">
-          <button type="button" class="btn btn-secondary">
-            Left
+        <div className="btn-group" role="group" aria-label="Basic example">
+          <button type="button" className="btn btn-outline-success">
+            My Tickets
           </button>
-          <button type="button" class="btn btn-secondary">
-            Middle
+          <button type="button" className="btn btn-outline-success">
+            Book a Flight
           </button>
-          <button type="button" class="btn btn-secondary">
-            Right
+          <button type="button" className="btn btn-outline-success">
+            User Settings
           </button>
         </div>
       </Card>

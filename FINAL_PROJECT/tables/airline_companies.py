@@ -25,7 +25,7 @@ class AirlineCompanies(Base):
                      unique=True)
 
     country = relationship("Countries", backref=backref(
-        "airline_companies", uselist=True, passive_deletes=True))
+        "airline_companies", uselist=False, passive_deletes=True))
     user = relationship("Users", backref=backref(
         "airline_companies", uselist=False, passive_deletes=True))
 

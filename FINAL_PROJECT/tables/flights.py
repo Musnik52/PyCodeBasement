@@ -35,21 +35,21 @@ class Flights(Base):
     remaining_tickets = Column(Integer())
 
     company = relationship("AirlineCompanies",
-                           uselist=True,
+
                            backref=backref(
                                "flights",
+                               uselist=False,
                                passive_deletes=True))
     origin = relationship("Countries",
-                          uselist=True,
                           foreign_keys=[
                               origin_country_id],
-                          backref=backref("oc_flights"))
+                          backref=backref("oc_flights",
+                                          uselist=False))
     destination = relationship("Countries",
-                               uselist=True,
                                foreign_keys=[
                                    destination_country_id],
-                               backref=backref("dc_flights"))
-                               
+                               backref=backref("dc_flights",
+                                               uselist=False))
 
     def data_for_web(self):
         return {'id': self.id, 'airline_company': self.company.name,

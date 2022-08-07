@@ -28,12 +28,12 @@ class Tickets(Base):
     flights = relationship('Flights',
                            backref=backref(
                                'tickets',
-                               uselist=True,
+                               uselist=False,
                                passive_deletes=True))
     customers = relationship('Customers',
                              backref=backref(
                                  'tickets',
-                                 uselist=True,
+                                 uselist=False,
                                  passive_deletes=True))
 
     def data_for_web(self):

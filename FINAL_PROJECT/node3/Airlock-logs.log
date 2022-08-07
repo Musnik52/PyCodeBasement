@@ -3670,3 +3670,15 @@
   label: 'main module',
   timestamp: '2022-08-07T08:44:31.395Z'
 }
+{
+  message: '====== System startup ======',
+  level: 'debug',
+  label: 'main module',
+  timestamp: '2022-08-07T14:40:02.518Z'
+}
+{
+  message: 'Listening to http://localhost:8080',
+  level: 'info',
+  label: 'main module',
+  timestamp: '2022-08-07T14:40:04.053Z'
+}

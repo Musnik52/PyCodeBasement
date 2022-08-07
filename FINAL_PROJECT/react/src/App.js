@@ -2,6 +2,8 @@ import "./App.css";
 import React, { useState } from "react";
 import airlock_img from "./Assets/airlock1.png";
 import customer_bg from "./Assets/abs_bg.jpg";
+import airline_bg from "./Assets/abs_bg.jpg";
+import admin_bg from "./Assets/abs_bg.jpg";
 import Flights from "./components/Flights/Flights";
 import Login from "./components/Login/Login";
 import Signup from "./components/Signup/Signup";
@@ -21,8 +23,8 @@ function App() {
 
   const loginHandler = (username, password) => {
     // check username and password
-    console.log(username)
-    setLoggedUser(username)
+    console.log(username, password);
+    setLoggedUser(username);
     setIsLoggedIn(true);
   };
 
@@ -56,14 +58,14 @@ function App() {
             <Route exact path="/Reviews">
               <Reviews />
             </Route>
-            <Route exact path="/profile/customer">
-              <CustomerProfile img={customer_bg} login_name={loggedUser}/>
+            <Route exact path="/customer">
+              <CustomerProfile img={customer_bg} login_name={loggedUser} />
             </Route>
-            <Route exact path="/profile/airline">
-              <AirlineProfile />
+            <Route exact path="/airline">
+              <AirlineProfile img={airline_bg} login_name={loggedUser} />
             </Route>
-            <Route exact path="/profile/admin">
-              <AdminProfile />
+            <Route exact path="/admin">
+              <AdminProfile img={admin_bg} login_name={loggedUser} />
             </Route>
           </Switch>
         </header>
