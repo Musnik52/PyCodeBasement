@@ -30,12 +30,7 @@ const Login = (props) => {
 
   const submitHandler = (event) => {
     event.preventDefault();
-    const loginData = {
-      username: enteredUsername,
-      password: enteredPassword,
-    };
-    console.log(loginData);
-    // RABBITMQ HERE TO LOGIN
+    console.log(enteredUsername, enteredPassword);
     props.onLogin(enteredUsername, enteredPassword);
   };
 

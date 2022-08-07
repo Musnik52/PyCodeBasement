@@ -70,12 +70,12 @@ const Navbar = (props) => {
           </ul>
           {props.isLoggedIn && (
             <button className="btn btn-outline-light btn-dark">
-              <NavLink className="nav-link active" to="/my_profile">
+              <NavLink className="nav-link active" to="/profile/customer">
                 My Profile
               </NavLink>
             </button>
           )}
-          <br/>
+          <br />
           {props.isLoggedIn && (
             <button className="btn btn-dark">
               <NavLink

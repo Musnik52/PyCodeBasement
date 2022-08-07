@@ -2,7 +2,20 @@ const connectedKnex = require("../knex-connector");
 const { logger } = require("../logger");
 
 const getAllFlights = async (req, res) => {
-  const flights = await connectedKnex("flights").select("*");
+  const flights = await connectedKnex("flights")
+    .select(
+      "flights.id",
+      "flights.airline_company_id",
+      "countries.name",
+      "flights.destination_country_id", //"countries.name as c2"
+      "flights.departure_time",
+      "flights.landing_time",
+      "flights.remaining_tickets"
+    )
+    .orderBy("flights.id", "asc")
+    .join("countries", function () {
+      this.on("flights.origin_country_id", "=", "countries.id");
+    });
   res.status(200).json({ flights });
 };
 

@@ -1,46 +1,37 @@
 import React from "react";
-import Card from "../UI/Card/Card";
 import "./About.css";
 import airlock_logo from "../../Assets/airlock.png";
+import Award from "../../Assets/award.jpg";
 
-const About = (props) => {
-  console.log(props);
+const About = () => {
   return (
-    <div>
-      <div className="container">
-        <br />
-        <h4 className="center">About</h4>
-        <span className="text-decoration-underline">
-          Our Company, Airlock, was founded by Boris Group LTD in 2022. <br />
-          Ever since its inception, Airlock managged to book a flight for every
-          single customer.
-        </span>
-        <br /> <br />
-        <Card className="achievements">
-          <ul className="list-group list-group-flush">
-            <li className="list-group-item active" aria-current="true">
-              Among our numerous achievements are:
-            </li>
-            <li className="list-group-item list-group-item-action">
-              Solving world hunger.
-            </li><li className="list-group-item list-group-item-action">
-            Deviding by 0.
-          </li>
-          <li className="list-group-item list-group-item-action">
-              Understanding the movie "Matrix" on the first watch.
-            </li>
-            <li className="list-group-item list-group-item-action">
-              Bringing equal rights to 9.9 billion people.
-            </li>
-            <li className="list-group-item list-group-item-action">
-              Finding Waldo.
-            </li>
-            <li className="list-group-item list-group-item-action">
-              Counting to infinity. Twice!.
-            </li>
-          </ul>
-          <img className="" src={airlock_logo} />
-        </Card>
+    <div className="a">
+      <div className="a-left">
+        <div className="a-card bg"></div>
+        <div className="a-card">
+          <img src={airlock_logo} alt="airlock logo" className="a-img" />
+        </div>
+      </div>
+      <div className="a-right">
+        <h1 className="a-title">About Airlock</h1>
+        <p className="a-sub">
+          Airlock is the biggest company to ever come out of the Boris Group
+          LTD's brightest minds. In just 4 months since its conception, Airlock
+          managed to provide over 4 billion passengers the utmost comfort, fun
+          and efficient business and pleasure transactions (traveling-wise!)
+        </p>
+        <p className="a-desc">
+          "Give me Airlock tickets or give me death!" -Plato
+        </p>
+        <div className="a-award">
+          <img src={Award} alt="" className="a-award-img" />
+          <div className="a-award-texts">
+            <h4 className="a-award-title">Inter-dimentional Time Traveler Awards 2064</h4>
+            <p className="a-award-desc">
+              Winner of the soon-to-be time travel compatition
+            </p>
+          </div>
+        </div>
       </div>
     </div>
   );
