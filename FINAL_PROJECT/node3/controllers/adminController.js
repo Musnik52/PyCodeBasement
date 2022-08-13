@@ -170,6 +170,41 @@ const getCustomerById = async (req, res) => {
   res.status(200).json({ customer });
 };
 
+const getAllUsers = async (req, res) => {
+  const users = await connectedKnex("users").select("*");
+  res.status(200).json({ users });
+};
+
+const getUserById = async (req, res) => {
+  const id = req.params.id;
+  const user = await connectedKnex("users")
+    .select("*")
+    .where("id", id)
+    .first();
+  res.status(200).json({ user });
+};
+
+const updateUser = async (req, res) => {
+  const id = req.params.id;
+  try {
+    user = req.body;
+    const result = await connectedKnex("users")
+      .where("id", id)
+      .update(user);
+    res.status(200).json({
+      res: "success",
+      url: `/users/${id}`,
+      result,
+    });
+  } catch (e) {
+    logger.error(`failed to update user. Error: ${e}`);
+    res.status(400).send({
+      status: "error",
+      message: e.message,
+    });
+  }
+};
+
 module.exports = {
   getAllCustomers,
   getCustomerById,
@@ -182,4 +217,7 @@ module.exports = {
   getAirlineById,
   deleteAirline,
   addAirline,
+  getUserById,
+  updateUser,
+  getAllUsers,
 };
