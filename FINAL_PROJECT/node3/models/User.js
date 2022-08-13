@@ -19,8 +19,8 @@ const userSchema = new mongoose.Schema({
     unique: true,
     lowercase: true,
   },
-  publicId: { type: String },
-  role: { type: String },
+  public_id: { type: String },
+  user_role: { type: String },
 });
 
 // fire a function before doc saved to db

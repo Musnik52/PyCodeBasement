@@ -14,11 +14,4 @@ customer_facade = anonymus_facade.login('3m1l', 'e0m1i2l')
 
 # db_refresh
 repo.reset_db()
-some_flight = Flights(id=222, airline_company_id=2, origin_country_id=31, destination_country_id=2, departure_time=datetime(2025, 1, 1, 10, 10, 10), landing_time=datetime(2026, 1, 24, 10, 29, 1), remaining_tickets=3)
-# some_ticket = Tickets(flight_id=222, customer_id=2)
-repo.add(some_flight)
-print("#"*55)
-me = repo.get_by_id("flights", 222)
-print(me)
-# print(some_ticket.data_for_web())
 print('DONE')

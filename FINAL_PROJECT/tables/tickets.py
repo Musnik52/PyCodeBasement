@@ -36,12 +36,6 @@ class Tickets(Base):
                                  uselist=False,
                                  passive_deletes=True))
 
-    def data_for_web(self):
-        return{"id": self.id,
-               "first_name": self.customers,
-               "last_name": self.customers,
-               "flight_id": self.flight_id}
-
     def __repr__(self):
         return f'\n<Ticket id={self.id} Flight id={self.flight_id} Customer id={self.customer_id}>'
 

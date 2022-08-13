@@ -13,7 +13,7 @@ const Signup = (props) => {
     };
     console.log(dataCustomer);
     axios
-      .post("http://localhost:8080/signup", dataCustomer)
+      .post("http://localhost:8080/sync", dataCustomer)
       .then((res) => {
         console.log(res.data);
       })

@@ -45,19 +45,19 @@ const createToken = (id) => {
 };
 
 const Login = async (req, res) => {
-    const { username, password } = req.body;
-  
-    try {
-      const user = await User.login(username, password);
-      const token = createToken(user._id);
-      res.cookie("jwt", token, { httpOnly: true, maxAge: maxAge * 1000 });
-      res.status(200).json({ user: user.username, role: user.role });
-    } catch (err) {
-      const errors = handleErrors(err);
-      res.status(400).json({ errors });
-    }
-  };
-  
+  const { username, password } = req.body;
+
+  try {
+    const user = await User.login(username, password);
+    const token = createToken(user._id);
+    res.cookie("jwt", token, { httpOnly: true, maxAge: maxAge * 1000 });
+    res.status(200).json({ user: user.username, role: user.role });
+  } catch (err) {
+    const errors = handleErrors(err);
+    res.status(400).json({ errors });
+  }
+};
+
 //   const logout = (req, res) => {
 //     res.cookie("jwt", "", { maxAge: 1 });
 //     res.redirect("/");
@@ -129,16 +129,22 @@ const getAllFlights = async (req, res) => {
   const flights = await connectedKnex("flights")
     .select(
       "flights.id",
-      "flights.airline_company_id",
-      "countries.name",
-      "flights.destination_country_id", //"countries.name as c2"
+      "airline_companies.name as airline",
+      "c1.name as origin_country",
+      "c2.name as destination_country",
       "flights.departure_time",
       "flights.landing_time",
       "flights.remaining_tickets"
     )
     .orderBy("flights.id", "asc")
-    .join("countries", function () {
-      this.on("flights.origin_country_id", "=", "countries.id");
+    .join("countries as c1", function () {
+      this.on("flights.origin_country_id", "=", "c1.id");
+    })
+    .join("countries as c2", function () {
+      this.on("flights.destination_country_id", "=", "c2.id");
+    })
+    .join("airline_companies", function () {
+      this.on("flights.airline_company_id", "=", "airline_companies.id");
     });
   res.status(200).json({ flights });
 };
@@ -146,13 +152,52 @@ const getAllFlights = async (req, res) => {
 const getFlightById = async (req, res) => {
   const id = req.params.id;
   const flight = await connectedKnex("flights")
-    .select("*")
-    .where("id", id)
+    .select(
+      "flights.id",
+      "airline_companies.name as airline",
+      "c1.name as origin_country",
+      "c2.name as destination_country",
+      "flights.departure_time",
+      "flights.landing_time",
+      "flights.remaining_tickets"
+    )
+    .where("flights.id", id)
+    .join("countries as c1", function () {
+      this.on("flights.origin_country_id", "=", "c1.id");
+    })
+    .join("countries as c2", function () {
+      this.on("flights.destination_country_id", "=", "c2.id");
+    })
+    .join("airline_companies", function () {
+      this.on("flights.airline_company_id", "=", "airline_companies.id");
+    })
     .first();
   res.status(200).json({ flight });
 };
 
+const Sync = async (req, res) => {
+  const { username, password, email, public_id, user_role } = await connectedKnex("users").select("*").first();
+  try {
+    const user = await User.create({
+        username,
+        password,
+        email,
+        public_id,
+        user_role,
+    });
+    const token = createToken(user._id);
+    res.cookie("jwt", token, { httpOnly: true, maxAge: maxAge * 1000 });
+    res
+      .status(201)
+      .json({ id: user._id, user: user.username, role: user.user_role });
+  } catch (err) {
+    const errors = handleErrors(err);
+    res.status(400).json({ errors });
+  }
+};
+
 module.exports = {
+  Sync,
   Login,
   Signup,
   addCustomer,

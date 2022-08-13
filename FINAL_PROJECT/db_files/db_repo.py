@@ -120,15 +120,19 @@ class DbRepo:
         self.add_all([UserRoles(role_name=config['user_roles']['1']),
                       UserRoles(role_name=config['user_roles']['2']),
                       UserRoles(role_name=config['user_roles']['3'])])
-        self.add_all([Users(username='b0r1s', password=generate_password_hash('boris1992'),
+        self.add_all([Users(username='b0r1s', 
+                            password=generate_password_hash('boris1992'),
                             email='boris@jb.com', public_id=str(uuid.uuid4()), user_role=config['user_roles']['airline']),
-                      Users(username='m4x1m', password=generate_password_hash(
+                      Users(username='m4x1m', 
+                            password=generate_password_hash(
                             '2themax'), email='max@jb.com', public_id=str(uuid.uuid4()), user_role=config['user_roles']['airline']),
                       Users(username='l10r', password=generate_password_hash(
                             'lior1999'), email='lior@jb.com', public_id=str(uuid.uuid4()), user_role=config['user_roles']['admin']),
-                      Users(username='sh4ch4r', password=generate_password_hash(
+                      Users(username='sh4ch4r',
+                            password=generate_password_hash(
                           '18031991'), email='shachar@jb.com', public_id=str(uuid.uuid4()), user_role=config['user_roles']['admin']),
-                      Users(username='k0st4', password=generate_password_hash(
+                      Users(username='k0st4', 
+                            password=generate_password_hash(
                             '1kosta1'), email='kosta@jb.com', public_id=str(uuid.uuid4()), user_role=config['user_roles']['customer']),
                       Users(username='3m1l', password=generate_password_hash('e0m1i2l'), email='emil@jb.com',
                             public_id=str(uuid.uuid4()), user_role=config['user_roles']['customer']),

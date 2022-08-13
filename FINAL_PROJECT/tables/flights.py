@@ -51,10 +51,6 @@ class Flights(Base):
                                backref=backref("dc_flights",
                                                uselist=False))
 
-    def data_for_web(self):
-        return {'id': self.id, 'airline_company': self.company.name,
-                'origin_country': self.origin.name, "destination_country": self.destination.name, "departure_time": self.departure_time, "landing_time": self.landing_time, "remaining_tickets": self.remaining_tickets}
-
     def __repr__(self):
         return f'\n<Flight id={self.id} Airline Co. id={self.airline_company_id} Origin country id={self.origin_country_id} Desitnation country id={self.destination_country_id} Departure time={self.departure_time} Landing time={self.landing_time} Remaining tickets={self.remaining_tickets}>'
 
