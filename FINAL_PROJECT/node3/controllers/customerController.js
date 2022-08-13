@@ -4,20 +4,6 @@ const { sendMsg } = require("../producer");
 const { recieveMsg } = require("../consumer");
 const uuid = require("uuid");
 
-const getAllCustomers = async (req, res) => {
-  const customers = await connectedKnex("customers").select("*");
-  res.status(200).json({ customers });
-};
-
-const getCustomerById = async (req, res) => {
-  const id = req.params.id;
-  const customer = await connectedKnex("customers")
-    .select("*")
-    .where("id", id)
-    .first();
-  res.status(200).json({ customer });
-};
-
 const deleteCustomer = async (req, res) => {
   const id = req.params.id;
   try {
@@ -63,36 +49,17 @@ const updateCustomer = async (req, res) => {
   }
 };
 
-const addCustomer = async (req, res) => {
-  const qResName = `customer ${uuid.v4()}`;
-  try {
-    reqMsg = {
-      action: "add",
-      username: req.body.username,
-      password: req.body.password,
-      email: req.body.email,
-      first_name: req.body.firstName,
-      last_name: req.body.lastName,
-      address: req.body.address,
-      phone_number: req.body.phone,
-      credit_card_number: req.body.ccn,
-      queue_name: `response ${qResName}`,
-    };
-    recieveMsg(reqMsg.queue_name, res);
-    await sendMsg("customer", reqMsg);
-  } catch (e) {
-    logger.error(`failed to add a customer. Error: ${e}`);
-    res.status(400).send({
-      status: "error",
-      message: e.message,
-    });
-  }
-};
+// const getMyTickets = async (req, res) => {
+//   const id = req.params.id;
+//   const customer = await connectedKnex("customers")
+//       .select("*")
+//       .where("id", id)
+//       .first();
+//   const tickets = await connectedKnex("tickets").select("*").where("customer_id", customer.id);
+// };
 
 module.exports = {
-  getAllCustomers,
-  getCustomerById,
   deleteCustomer,
   updateCustomer,
-  addCustomer,
+  // getMyTickets,
 };

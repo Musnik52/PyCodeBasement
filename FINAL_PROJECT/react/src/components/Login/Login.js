@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import Card from "../UI/Card/Card";
 import Button from "../UI/Button/Button";
 import "./Login.css";
+import axios from "axios";
 
 const Login = (props) => {
   const [enteredUsername, setEnteredUsername] = useState("");
@@ -30,8 +31,15 @@ const Login = (props) => {
 
   const submitHandler = (event) => {
     event.preventDefault();
-    console.log(enteredUsername, enteredPassword);
-    props.onLogin(enteredUsername, enteredPassword);
+    axios
+      .post("http://localhost:8080/login", {
+        username: enteredUsername,
+        password: enteredPassword,
+      })
+      .then((res) => {
+        props.onLogin(res.data.user, res.data.role);
+      })
+      .catch((err) => console.log(err));
   };
 
   return (

@@ -20,12 +20,13 @@ import AdminProfile from "./components/Profiles/Admin/AdminProfile";
 function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [loggedUser, setLoggedUser] = useState("");
+  const [userType, setUserType] = useState("");
 
-  const loginHandler = (username, password) => {
-    // check username and password
-    console.log(username, password);
+  const loginHandler = (username, role) => {
+    console.log(username, role);
     setLoggedUser(username);
     setIsLoggedIn(true);
+    setUserType(role);
   };
 
   const logoutHandler = () => {
@@ -35,7 +36,12 @@ function App() {
     <BrowserRouter>
       <div className="App">
         <header className="App">
-          <Navbar isLoggedIn={isLoggedIn} onLogout={logoutHandler} />
+          <Navbar
+            isLoggedIn={isLoggedIn}
+            onLogout={logoutHandler}
+            userType={userType}
+            login_name={loggedUser}
+          />
           <Switch className="App">
             <Route exact path="/">
               <LandingPage img={airlock_img} />

@@ -1,41 +1,6 @@
 const connectedKnex = require("../knex-connector");
 const { logger } = require("../logger");
 
-const getAllAirlines = async (req, res) => {
-  const airlines = await connectedKnex("airline_companies").select("*");
-  res.status(200).json({ airlines });
-};
-
-const getAirlineById = async (req, res) => {
-  const id = req.params.id;
-  const airline = await connectedKnex("airline_companies")
-    .select("*")
-    .where("id", id)
-    .first();
-  res.status(200).json({ airline });
-};
-
-const deleteAirline = async (req, res) => {
-  const id = req.params.id;
-  try {
-    const airline = await connectedKnex("airline_companies")
-      .select("*")
-      .where("id", id)
-      .first();
-    const userDel = await connectedKnex("users")
-      .where("id", customer.user_id)
-      .del();
-    const airlineDel = connectedKnex("airline_companies").where("id", id).del();
-    res.status(200).json({ num_records_deleted: airlineDel });
-  } catch (e) {
-    logger.error(`failed to delete an airline. Error: ${e}`);
-    res.status(400).send({
-      status: "error",
-      message: e.message,
-    });
-  }
-};
-
 const updateAirline = async (req, res) => {
   const id = req.params.id;
   try {
@@ -57,31 +22,71 @@ const updateAirline = async (req, res) => {
   }
 };
 
-const addAirline = async (req, res) => {
-  try {
-    user = {
-      username: req.body.username,
-      password: req.body.password,
-      email: req.body.email,
-      user_role: 3,
-    };
-    const resultUser = await connectedKnex("users").insert(user);
-    const newUser = await connectedKnex("users")
-      .select("*")
-      .where("username", req.body.username)
-      .first();
-    const resultAirline = await connectedKnex("airline_companies").insert({
-      name: req.body.name,
-      country_id: req.body.country_id,
-      user_id: newUser.id,
+const getMyFlights = async (req, res) => {
+  const flights = await connectedKnex("flights")
+    .select(
+      "flights.id",
+      "flights.airline_company_id",
+      "countries.name",
+      "flights.destination_country_id", //"countries.name as c2"
+      "flights.departure_time",
+      "flights.landing_time",
+      "flights.remaining_tickets"
+    )
+    .where("airline_company_id", id)
+    .orderBy("flights.id", "asc")
+    .join("countries", function () {
+      this.on("flights.origin_country_id", "=", "countries.id");
     });
-    res.status(201).json({
+  res.status(200).json({ flights });
+};
+
+const deleteFlight = async (req, res) => {
+  const id = req.params.id;
+  try {
+    const flights = connectedKnex("flights").where("id", id).del();
+    res.status(200).json({ num_records_deleted: flights });
+  } catch (e) {
+    logger.error(`failed to delete a flight. Error: ${e}`);
+    res.status(400).send({
+      status: "error",
+      message: e.message,
+    });
+  }
+};
+
+const updateFlight = async (req, res) => {
+  const id = req.params.id;
+  try {
+    flight = req.body;
+    const result = await connectedKnex("flights")
+      .where("id", id)
+      .update(flight);
+    res.status(200).json({
       res: "success",
-      url: `/airlines/${resultAirline[0]}`,
-      resultAirline,
+      url: `/flights/${id}`,
+      result,
     });
   } catch (e) {
-    logger.error(`failed to add an airline. Error: ${e}`);
+    logger.error(`failed to update flight. Error: ${e}`);
+    res.status(400).send({
+      status: "error",
+      message: e.message,
+    });
+  }
+};
+
+const addFlight = async (req, res) => {
+  try {
+    flight = req.body;
+    const result = await connectedKnex("flights").insert(flight);
+    res.status(201).json({
+      res: "success",
+      url: `/flights/${result[0]}`,
+      result,
+    });
+  } catch (e) {
+    logger.error(`failed to add a flight. Error: ${e}`);
     res.status(400).send({
       status: "error",
       message: e.message,
@@ -90,9 +95,9 @@ const addAirline = async (req, res) => {
 };
 
 module.exports = {
-  getAllAirlines,
-  getAirlineById,
-  deleteAirline,
+  getMyFlights,
   updateAirline,
-  addAirline,
+  deleteFlight,
+  updateFlight,
+  addFlight,
 };

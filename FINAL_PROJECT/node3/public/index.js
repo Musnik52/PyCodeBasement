@@ -3,7 +3,7 @@ var x = {};
 function get_all_customers(draw_last_only) {
   var customers_table = $("#customers"); //cache
   if (!draw_last_only) customers_table.find("tr:gt(0)").remove();
-  $.ajax({ url: "/customers" }).then(
+  $.ajax({ url: "/admins/customers/" }).then(
     function (_customers) {
       x.result = _customers;
       console.log(_customers);
@@ -32,7 +32,7 @@ function get_all_customers(draw_last_only) {
 
 function add_customer() {
   console.log("==========================");
-  $.ajax({ url: "/customers/" });
+  $.ajax({ url: "/admins/customers/" });
   customer = {
     first_name: $("#txt_fname").val(),
     last_name: $("#txt_lname").val(),
@@ -45,7 +45,7 @@ function add_customer() {
   };
   $.ajax({
     type: "POST",
-    url: "/customers",
+    url: "/admins/customers/",
     data: customer,
     success: function (data, status) {
       console.log("status", status);
@@ -58,7 +58,7 @@ function add_customer() {
   });
 }
 function get_customer_by_id() {
-  $.ajax({ url: "/customers/" + $("#txt_id_u").val() }).then(function (
+  $.ajax({ url: "/admins/customers/" + $("#txt_id_u").val() }).then(function (
     one_customer
   ) {
     console.log(one_customer);
@@ -81,7 +81,7 @@ function update_customer() {
   };
   $.ajax({
     type: "PUT",
-    url: `/customers/${customer.id}`,
+    url: `/admins/customers/${customer.id}`,
     data: customer,
     success: function (data, status) {
       console.log("status", status);
@@ -98,7 +98,7 @@ function delete_customer(id) {
   console.log(`send ajax to delete where customer id = ${id}`);
   $.ajax({
     type: "DELETE",
-    url: `/customers/${id}`,
+    url: `/admins/customers/${id}`,
     success: function (data, status) {
       console.log("status", status);
       console.log("data", data);

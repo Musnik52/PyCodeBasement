@@ -2,12 +2,18 @@ import SignupForm from "./SignupForm";
 import Card from "../UI/Card/Card";
 import axios from "axios";
 import "./Signup.css";
+const uuid = require("uuid");
 
 const Signup = (props) => {
   const saveCustomerDataHandler = async (enteredCustomerData) => {
-    console.log(enteredCustomerData);
+    const dataCustomer = {
+      ...enteredCustomerData,
+      publivId: uuid.v4(),
+      role: "customer",
+    };
+    console.log(dataCustomer);
     axios
-      .post("http://localhost:8080/customers", enteredCustomerData)
+      .post("http://localhost:8080/signup", dataCustomer)
       .then((res) => {
         console.log(res.data);
       })
