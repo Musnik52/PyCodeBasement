@@ -1,4 +1,4 @@
-from werkzeug.security import check_password_hash
+import bcrypt
 from tables.users import Users
 from db_files.logger import Logger
 from tables.customers import Customers
@@ -31,17 +31,17 @@ class AnonymusFacade(FacadeBase):
             self.logger.logger.error(
                 f'{InvalidInput} - username must be string!')
             raise InvalidInput('username must be string!')
-        elif not isinstance(password, str):
-            self.logger.logger.error(
-                f'{InvalidInput} - password must be string!')
-            raise InvalidInput('password must be a string!')
+        # elif not isinstance(password, str):
+        #     self.logger.logger.error(
+        #         f'{InvalidInput} - password must be string!')
+        #     raise InvalidInput('password must be a string!')
         user = self.repo.get_by_column_value(Users, Users.username, username)
         if not user:
             self.logger.logger.error(
                 f'{UsernameNotFound} - Login attempt failed - username: {username}')
             raise UsernameNotFound(
                 f'User not found - Login attempt failed - username: {username}')
-        elif not check_password_hash(user[0].password, password):
+        elif not bcrypt.checkpw(password,user[0].password.encode('utf8')):
             self.logger.logger.error(
                 f'{InvalidPassword} - Login attempt failed - username: {username}')
             raise InvalidPassword(

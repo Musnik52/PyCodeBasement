@@ -34,24 +34,24 @@ const handleErrors = (err) => {
   };
 
 const Sync = async () => {
-  const { username, password, email, publicId, user_role } = await connectedKnex("users").select("*").first();
+  const { username, password, email, public_id, user_role } = await connectedKnex("users").select("*");
   console.log(user_role);
   try {
     const user = await User.create({
         username,
         password,
         email,
-        publicId,
+        public_id,
         user_role,
     });
     const token = createToken(user._id);
-    res.cookie("jwt", token, { httpOnly: true, maxAge: maxAge * 1000 });
-    res
-      .status(201)
-      .json({ id: user._id, user: user.username, role: user.user_role });
+    // res.cookie("jwt", token, { httpOnly: true, maxAge: maxAge * 1000 });
+    // res
+    //   .status(201)
+    //   .json({ id: user._id, user: user.username, role: user.user_role });
   } catch (err) {
     const errors = handleErrors(err);
-    res.status(400).json({ errors });
+    console.log(errors)
   }
 };
 

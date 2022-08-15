@@ -79,14 +79,14 @@ const Login = async (req, res) => {
 // };
 
 const Signup = async (req, res) => {
-  const { username, password, email, publicId, role } = req.body;
+  const { username, password, email, public_id, user_role } = req.body;
   try {
     const user = await User.create({
       username,
       password,
       email,
-      publicId,
-      role,
+      public_id,
+      user_role,
     });
     const token = createToken(user._id);
     res.cookie("jwt", token, { httpOnly: true, maxAge: maxAge * 1000 });
