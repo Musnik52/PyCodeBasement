@@ -1,5 +1,6 @@
 import json
 import uuid
+import bcrypt
 from facades.facade_anonymus import AnonymusFacade
 from tables.users import Users
 from tables.flights import Flights
@@ -9,7 +10,6 @@ from tables.administrators import Administrators
 from tables.airline_companies import AirlineCompanies
 from db_files.db_repo import DbRepo
 from db_files.db_config import local_session, config
-from werkzeug.security import generate_password_hash
 from db_files.db_rabbit_consumer import DbRabbitConsumer
 from db_files.db_rabbit_producer import DbRabbitProducer
 
@@ -23,8 +23,10 @@ def customer_callback(ch, method, properties, body):
     # print(data)
     # print ("#"*50)
     if data["action"] == 'add':
+        salt = bcrypt.gensalt()
         new_user = Users(username=data["username"],
-                         password=generate_password_hash(data["password"]),
+                         password=bcrypt.hashpw(data["password"].encode(
+                                'utf8'), salt).decode('utf8'),
                          email=data["email"],
                          public_id=str(uuid.uuid4()),
                          user_role=config["user_roles"]["customer"])

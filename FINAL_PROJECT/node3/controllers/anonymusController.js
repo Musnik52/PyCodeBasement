@@ -5,6 +5,7 @@ const { recieveMsg } = require("../consumer");
 const uuid = require("uuid");
 const User = require("../models/User");
 const jwt = require("jsonwebtoken");
+const bcrypt = require("bcrypt");
 
 // handle errors
 const handleErrors = (err) => {
@@ -51,7 +52,7 @@ const Login = async (req, res) => {
     const user = await User.login(username, password);
     const token = createToken(user._id);
     res.cookie("jwt", token, { httpOnly: true, maxAge: maxAge * 1000 });
-    res.status(200).json({ user: user.username, role: user.role });
+    res.status(200).json({ user: user.username, role: user.user_role });
   } catch (err) {
     const errors = handleErrors(err);
     res.status(400).json({ errors });
@@ -63,55 +64,43 @@ const Login = async (req, res) => {
 //     res.redirect("/");
 //   };
 
-// const Login = (req, res) => {
+// const Signup = async (req, res) => {
+//   const { username, password, email, public_id, user_role } = req.body;
 //   try {
-//     const username = req.body.username;
-//     const password = req.body.password;
-//     const user = connectedKnex("users")
-//       .select("*")
-//       .where("username", username)
-//       .first();
-//     console.log(user);
-//     console.log(user.password);
+//     const user = await User.create({
+//       username,
+//       password,
+//       email,
+//       public_id,
+//       user_role,
+//     });
+//     const token = createToken(user._id);
+//     res.cookie("jwt", token, { httpOnly: true, maxAge: maxAge * 1000 });
+//     res
+//       .status(201)
+//       .json({ id: user._id, user: user.username, role: user.role });
 //   } catch (err) {
-//     logger.error(err);
+//     const errors = handleErrors(err);
+//     res.status(400).json({ errors });
 //   }
 // };
 
-const Signup = async (req, res) => {
-  const { username, password, email, public_id, user_role } = req.body;
-  try {
-    const user = await User.create({
-      username,
-      password,
-      email,
-      public_id,
-      user_role,
-    });
-    const token = createToken(user._id);
-    res.cookie("jwt", token, { httpOnly: true, maxAge: maxAge * 1000 });
-    res
-      .status(201)
-      .json({ id: user._id, user: user.username, role: user.role });
-  } catch (err) {
-    const errors = handleErrors(err);
-    res.status(400).json({ errors });
-  }
-};
-
 const addCustomer = async (req, res) => {
   const qResName = `customer ${uuid.v4()}`;
+  const salt = await bcrypt.genSalt();
+  const { username, email, firstName, lastName, address, phone, ccn } =
+    req.body;
   try {
     reqMsg = {
       action: "add",
-      username: req.body.username,
-      password: req.body.password,
-      email: req.body.email,
-      first_name: req.body.firstName,
-      last_name: req.body.lastName,
-      address: req.body.address,
-      phone_number: req.body.phone,
-      credit_card_number: req.body.ccn,
+      username: username,
+      password: password,
+      email: email,
+      first_name: firstName,
+      last_name: lastName,
+      address: address,
+      phone_number: phone,
+      credit_card_number: ccn,
       queue_name: `response ${qResName}`,
     };
     recieveMsg(reqMsg.queue_name, res);
@@ -176,14 +165,26 @@ const getFlightById = async (req, res) => {
 };
 
 const Sync = async (req, res) => {
-  const { username, password, email, public_id, user_role } = await connectedKnex("users").select("*").first();
+  const { username, password, email, public_id, user_role } =
+    await connectedKnex("users")
+      .select(
+        "username",
+        "password",
+        "email",
+        "public_id",
+        "role.role_name as user_role"
+      )
+      .join("user_roles as role", function () {
+        this.on("users.user_role", "=", "role.id");
+      })
+      .first(); // NEEDS TO CHANGE TO ALL
   try {
     const user = await User.create({
-        username,
-        password,
-        email,
-        public_id,
-        user_role,
+      username,
+      password,
+      email,
+      public_id,
+      user_role,
     });
     const token = createToken(user._id);
     res.cookie("jwt", token, { httpOnly: true, maxAge: maxAge * 1000 });
@@ -199,7 +200,6 @@ const Sync = async (req, res) => {
 module.exports = {
   Sync,
   Login,
-  Signup,
   addCustomer,
   getAllFlights,
   getFlightById,

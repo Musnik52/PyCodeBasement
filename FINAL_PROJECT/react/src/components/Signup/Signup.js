@@ -9,11 +9,11 @@ const Signup = (props) => {
     const dataCustomer = {
       ...enteredCustomerData,
       publivId: uuid.v4(),
-      role: "customer",
+      user_role: "customer",
     };
     console.log(dataCustomer);
     axios
-      .post("http://localhost:8080/sync", dataCustomer)
+      .post("http://localhost:8080/", dataCustomer)
       .then((res) => {
         console.log(res.data);
       })
