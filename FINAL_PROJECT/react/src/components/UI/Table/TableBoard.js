@@ -1,16 +1,6 @@
 import React from "react";
 // import TimeFilter from "./TimeFilter";
-const FlightBoard = (props) => {
-  const colNames = [
-    "id",
-    "airline",
-    "origin country",
-    "destination country",
-    "departure time",
-    "landing time",
-    "remaining tickets",
-  ];
-
+const TableBoard = (props) => {
   return (
     <div style={{ width: "100%", boxShadow: "3px 6px 3px #cccd" }}>
       {props.list.length > 0 && (
@@ -21,7 +11,7 @@ const FlightBoard = (props) => {
         >
           <thead style={{ backgroundColor: "black", color: "white" }}>
             <tr>
-              {colNames.map((headerItem, index) => (
+              {props.tableCol.map((headerItem, index) => (
                 <th key={index}>{headerItem.toUpperCase()}</th>
               ))}
             </tr>
@@ -41,4 +31,4 @@ const FlightBoard = (props) => {
   );
 };
 
-export default FlightBoard;
+export default TableBoard;

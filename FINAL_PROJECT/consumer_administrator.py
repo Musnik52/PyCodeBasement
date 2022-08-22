@@ -1,5 +1,4 @@
 import json
-import uuid
 import bcrypt
 from facades.facade_anonymus import AnonymusFacade
 from tables.users import Users
@@ -17,12 +16,31 @@ repo = DbRepo(local_session)
 anonymus_facade = AnonymusFacade(repo, config)
 
 
-def customer_callback(ch, method, properties, body):
+def admin_callback(ch, method, properties, body):
     data = json.loads(body)
-    # print ("#"*50)
-    # print(data)
-    # print ("#"*50)
-    if data["action"] == 'add':
+    print("#"*50)
+    print(data)
+    print("#"*50)
+    if data["action"] == 'addAirline':
+        salt = bcrypt.gensalt()
+        new_user = Users(username=data["username"],
+                         password=bcrypt.hashpw(data["password"].encode(
+                             'utf8'), salt).decode('utf8'),
+                         email=data["email"],
+                         public_id=str(data['public_id']),
+                         user_role=config["user_roles"]["airline"])
+        mongo_insert({"username": data["username"],
+                      "password": bcrypt.hashpw(data["password"].encode(
+                          'utf8'), salt).decode('utf8'),
+                      "email": data["email"],
+                      "public_id": data["public_id"],
+                      "user_role": "airline"})
+        new_airline = AirlineCompanies(name=data["name"],
+                                       country_id=data["country_id"],
+                                       user_id=new_user.id)
+        anonymus_facade.add_airline(new_airline, new_user)
+
+    elif data["action"] == 'addAdmin':
         salt = bcrypt.gensalt()
         new_user = Users(username=data["username"],
                          password=bcrypt.hashpw(data["password"].encode(
@@ -36,24 +54,15 @@ def customer_callback(ch, method, properties, body):
                       "email": data["email"],
                       "public_id": data["public_id"],
                       "user_role": "customer"})
-        new_customer = Customers(first_name=data["first_name"],
-                                 last_name=data["last_name"],
-                                 address=data["address"],
-                                 phone_number=data["phone_number"],
-                                 credit_card_number=data["credit_card_number"],
-                                 user_id=new_user.id)
-        anonymus_facade.add_customer(new_customer, new_user)
-    elif data["action"] == "update":
-        customer_facade = anonymus_facade.login(
-            data["usernme"], data["password"])
-        customer_id = int(data["id"])
-        customer_updates = {"first_name": data["first_name"],
-                            "last_name": data["last_name"],
-                            "address": data["address"],
-                            "phone_number": data["phone_number"],
-                            "credit_card_number": data["credit_card_number"]}
-        customer_facade.update_customer(customer_updates, customer_id)
-    elif data["action"] == "remove":
+        new_admin = Administrators(first_name=data["first_name"],
+                                   last_name=data["last_name"],
+                                   user_id=new_user.id)
+        anonymus_facade.add_administrator(new_admin, new_user)
+
+    elif data["action"] == "removeAirline":
+        pass
+
+    elif data["action"] == "removeAdmin":
         pass
 
     rabbit_producer = DbRabbitProducer(data["queue_name"])
@@ -62,5 +71,5 @@ def customer_callback(ch, method, properties, body):
 
 if __name__ == '__main__':
     customer_rabbit = DbRabbitConsumer(
-        queue_name='customer', callback=customer_callback)
+        queue_name='admin', callback=admin_callback)
     customer_rabbit.consume()
