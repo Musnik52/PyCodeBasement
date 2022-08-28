@@ -15,7 +15,7 @@ app.use(cookieParser());
 app.set('view engine', 'ejs');
 
 
-const dbURI = 'mongodb+srv://__user__:__password__@cluster0.2heep.mongodb.net/node-auth';
+const dbURI = "mongodb+srv://admin:admin@cluster0.ougwlzb.mongodb.net/node-auth"
 
 mongoose.connect(dbURI, { useNewUrlParser: true, useUnifiedTopology: true})
   .then((result) => {
@@ -33,7 +33,7 @@ app.get('/smoothies', requireAuth, (req, res) => res.render('smoothies'));
 app.use(authRoutes);
 
 // cookies
-/*
+
 app.get('/set-cookies', (req, res) => {
   // res.setHeader('Set-Cookie', 'newUser=true');
   res.cookie('newUser', false);
@@ -46,4 +46,4 @@ app.get('/read-cookies', (req, res) => {
   console.log(cookies.newUser);
   res.json(cookies);
 });
-*/
+
