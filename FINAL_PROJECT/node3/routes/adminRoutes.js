@@ -3,7 +3,7 @@ const router = Router();
 const {
   updateAirline,
   addFlight,
-  deleteFlight,
+  removeFlight,
   updateFlight,
 } = require("../controllers/airlineController");
 const {
@@ -45,7 +45,7 @@ router
   router
   .route("/flights/:id")
   .get(getFlightById)
-  .delete(deleteFlight)
+  .delete(removeFlight)
   .put(updateFlight);
 router.route("/users/:id").get(getUserById).put(updateUser);
 router.route("/airlines/").get(getAllAirlines).post(addAirline);

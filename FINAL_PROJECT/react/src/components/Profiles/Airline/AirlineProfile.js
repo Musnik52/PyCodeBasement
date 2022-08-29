@@ -55,8 +55,8 @@ const AirlineProfile = (props) => {
           </button>
         </div>
       </Card>
-      {isMyFlights && <MyFlights username={props.login_name} />}
-      {isAddFlight && <NewFlight />}
+      {isMyFlights && <MyFlights username={props.login_name} pwd={props.pwd} />}
+      {isAddFlight && <NewFlight username={props.login_name} pwd={props.pwd} />}
       {isUserSettings && (
         <UserSettings
           username={props.login_name}

@@ -27,7 +27,8 @@ const NewTicket = (props) => {
   useEffect(() => {
     axios.get(`http://localhost:8080/countries`).then((res) => {
       setMyCountries(res.data.countries);
-    });
+    })
+    .catch((err) => console.log(err));
     axios
       .get(`http://localhost:8080/customers/${props.username}`)
       .then((res) => {
@@ -52,15 +53,13 @@ const NewTicket = (props) => {
         `http://localhost:8080/flights/${enteredOriginCountryId}/${enteredDestinationCountryId}`
       )
       .then((res) => {
-        setTicketList([res.data.flight]);
+        setTicketList(res.data.flight);
       })
       .catch((err) => console.log(err));
   };
 
   const ticketChangeHandler = (event) => {
     setMyTicket(event.target.value);
-    console.log(event.target.value);
-    console.log(myTicket);
   };
 
   const submitHandler = (event) => {
