@@ -46,8 +46,6 @@ const NewTicket = (props) => {
 
   const formHandler = async (event) => {
     setIsCounrtySelect(!isCounrtySelect);
-    console.log(enteredOriginCountryId);
-    console.log(enteredDestinationCountryId);
     axios
       .get(
         `http://localhost:8080/flights/${enteredOriginCountryId}/${enteredDestinationCountryId}`
@@ -136,12 +134,19 @@ const NewTicket = (props) => {
                 Back to Country Select
               </button>
 
-              <label className="control">Enter Flight ID:</label>
-              <input
-                className="control"
-                type="text"
+              <label className="control">Select Flight ID:</label>
+              <select
+                className="form-select"
+                aria-label="Default select example"
                 onChange={ticketChangeHandler}
-              />
+              >
+                <option selected value={"0"}/>
+                {ticketList.map((t) => (
+                  <option key={t.id} value={t.id}>
+                    {t.id}
+                  </option>
+                ))}
+              </select>
               <Button className="control" type="submit">
                 Add Ticket
               </Button>
