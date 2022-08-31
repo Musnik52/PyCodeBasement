@@ -74,30 +74,24 @@ const updateAdmin = async (req, res) => {
 };
 
 const addAdmin = async (req, res) => {
+  const qResName = `admin ${uuid.v4()}`;
   try {
-    user = {
+    reqMsg = {
+      action: "addAdmin",
       username: req.body.username,
       password: req.body.password,
-      email: req.body.email,
-      user_role: 3, // admin not 3
+      first_name: req.body.firstName,
+      last_name: req.body.lastName,
+      new_username:req.body.newUsername,
+      new_password:req.body.newPassword,
+      new_email:req.body.email,
+      public_id: uuid.v4(),
+      queue_name: `response ${qResName}`,
     };
-    const resultUser = await connectedKnex("users").insert(user);
-    const newUser = await connectedKnex("users")
-      .select("*")
-      .where("username", req.body.username)
-      .first();
-    const resultAdmin = await connectedKnex("administrators").insert({
-      first_name: req.body.first_name,
-      last_name: req.body.last_name,
-      user_id: newUser.id,
-    });
-    res.status(201).json({
-      res: "success",
-      url: `${resultAdmin[0]}`,
-      result,
-    });
+    recieveMsg(reqMsg.queue_name, res);
+    await sendMsg("admin", reqMsg);
   } catch (e) {
-    logger.error(`failed to add an admin. Error: ${e}`);
+    logger.error(`failed to add admin. Error: ${e}`);
     res.status(400).send({
       status: "error",
       message: e.message,
@@ -213,24 +207,7 @@ const getUserById = async (req, res) => {
   res.status(200).json({ user });
 };
 
-const updateUser = async (req, res) => {
-  const id = req.params.id;
-  try {
-    user = req.body;
-    const result = await connectedKnex("users").where("id", id).update(user);
-    res.status(200).json({
-      res: "success",
-      url: `/users/${id}`,
-      result,
-    });
-  } catch (e) {
-    logger.error(`failed to update user. Error: ${e}`);
-    res.status(400).send({
-      status: "error",
-      message: e.message,
-    });
-  }
-};
+
 
 module.exports = {
   getAllCustomers,
@@ -245,6 +222,5 @@ module.exports = {
   deleteAirline,
   addAirline,
   getUserById,
-  updateUser,
   getAllUsers,
 };

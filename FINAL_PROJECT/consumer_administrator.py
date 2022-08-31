@@ -41,23 +41,25 @@ def admin_callback(ch, method, properties, body):
         anonymus_facade.add_airline(new_airline, new_user)
 
     elif data["action"] == 'addAdmin':
+        admin_facade = anonymus_facade.login(
+            data["username"], data["password"].encode('utf8'))
         salt = bcrypt.gensalt()
-        new_user = Users(username=data["username"],
-                         password=bcrypt.hashpw(data["password"].encode(
+        new_user = Users(username=data["new_username"],
+                         password=bcrypt.hashpw(data["new_password"].encode(
                              'utf8'), salt).decode('utf8'),
-                         email=data["email"],
+                         email=data["new_email"],
                          public_id=str(data['public_id']),
-                         user_role=config["user_roles"]["airline"])
-        mongo_insert({"username": data["username"],
-                      "password": bcrypt.hashpw(data["password"].encode(
+                         user_role=int(config["user_roles"]["admin"]))
+        mongo_insert({"username": data["new_username"],
+                      "password": bcrypt.hashpw(data["new_password"].encode(
                           'utf8'), salt).decode('utf8'),
-                      "email": data["email"],
+                      "email": data["new_email"],
                       "public_id": data["public_id"],
-                      "user_role": "airline"})
+                      "user_role": "admin"})
         new_admin = Administrators(first_name=data["first_name"],
                                    last_name=data["last_name"],
                                    user_id=new_user.id)
-        anonymus_facade.add_administrator(new_admin, new_user)
+        admin_facade.add_administrator(new_admin, new_user)
 
     elif data["action"] == "updateAdmin":
         admin_facade = anonymus_facade.login(

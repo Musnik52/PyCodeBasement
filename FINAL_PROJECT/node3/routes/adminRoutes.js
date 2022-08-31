@@ -28,7 +28,6 @@ const {
   deleteAirline,
   addAirline,
   getUserById,
-  updateUser,
   getAllUsers,
 } = require("../controllers/adminController");
 
@@ -42,12 +41,12 @@ router
   .get(getCustomerById)
   .delete(deleteCustomer)
   .put(updateCustomer);
-  router
+router
   .route("/flights/:id")
   .get(getFlightById)
   .delete(removeFlight)
   .put(updateFlight);
-router.route("/users/:id").get(getUserById).put(updateUser);
+router.route("/users/:id").get(getUserById);
 router.route("/airlines/").get(getAllAirlines).post(addAirline);
 router.route("/customers/").get(getAllCustomers).post(addCustomer);
 router.route("/flights/").get(getAllFlights).post(addFlight);

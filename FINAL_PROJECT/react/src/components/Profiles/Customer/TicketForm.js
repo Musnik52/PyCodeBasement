@@ -71,7 +71,7 @@ const TicketForm = (props) => {
             aria-label="Default select example"
             onChange={originCountryIdHandler}
           >
-            <option selected value={"*"}>
+            <option selected value={0}>
               Fly From: All Countries
             </option>
             {myCountries.map((c) => (

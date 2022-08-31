@@ -51,6 +51,9 @@ class AdministratorFacade(FacadeBase):
             raise UserAlreadyExists
         elif user.user_role == int(self.admin_role_number):
             self.create_user(user)
+            new_user = list(self.repo.get_by_column_value(
+                Users, Users.username, user.username))
+            administrator.user_id = new_user[0].id
             self.logger.logger.info(f'User {user.username} created!')
             self.repo.add(administrator)
             self.logger.logger.info(
