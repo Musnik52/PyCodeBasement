@@ -9,6 +9,26 @@ const getAllAdmins = async (req, res) => {
   res.status(200).json({ admins });
 };
 
+const getCustomerById = async (req, res) => {
+  const id = req.params.id;
+  const customer = await connectedKnex("customers")
+    .select("*")
+    .where("id", id)
+    .first();
+  res.status(200).json({ customer });
+};
+
+const getAllUsers = async (req, res) => {
+  const users = await connectedKnex("users").select("*");
+  res.status(200).json({ users });
+};
+
+const getUserById = async (req, res) => {
+  const id = req.params.id;
+  const user = await connectedKnex("users").select("*").where("id", id).first();
+  res.status(200).json({ user });
+};
+
 const getMyData = async (req, res) => {
   const myUser = await connectedKnex("users")
     .select("*")
@@ -19,6 +39,55 @@ const getMyData = async (req, res) => {
     .where("user_id", myUser.id)
     .first();
   res.status(200).json({ admin });
+};
+
+const getAllAirlines = async (req, res) => {
+  const airlines = await connectedKnex("airline_companies")
+    .select("airline_companies.id", "airline_companies.name", "users.username")
+    .orderBy("airline_companies.id", "asc")
+    .join("users", function () {
+      this.on("airline_companies.user_id", "=", "users.id");
+    });
+  res.status(200).json({ airlines });
+};
+
+const getAirlineById = async (req, res) => {
+  const id = req.params.id;
+  const airline = await connectedKnex("airline_companies")
+    .select("*")
+    .where("id", id)
+    .first();
+  res.status(200).json({ airline });
+};
+
+const deleteCustomer = async (req, res) => {
+  const qResName = `admin ${uuid.v4()}`;
+  const customer = await connectedKnex("customers")
+    .select("*")
+    .where("id", req.body.delData.id)
+    .first();
+  const delUser = await connectedKnex("users")
+    .select("*")
+    .where("id", customer.user_id)
+    .first();
+  try {
+    reqMsg = {
+      action: "deleteCustomer",
+      id: req.body.delData.id,
+      username: req.body.delData.username,
+      password: req.body.delData.password,
+      customer_username: delUser.username,
+      queue_name: `response ${qResName}`,
+    };
+    recieveMsg(reqMsg.queue_name, res);
+    await sendMsg("admin", reqMsg);
+  } catch (e) {
+    logger.error(`failed to delete customer. Error: ${e}`);
+    res.status(400).send({
+      status: "error",
+      message: e.message,
+    });
+  }
 };
 
 const deleteAdmin = async (req, res) => {
@@ -38,11 +107,32 @@ const deleteAdmin = async (req, res) => {
       username: req.params.user,
       password: req.body.pwd,
       queue_name: `response ${qResName}`,
-    }
+    };
     recieveMsg(reqMsg.queue_name, res);
     await sendMsg("admin", reqMsg);
   } catch (e) {
     logger.error(`failed to delete admin. Error: ${e}`);
+    res.status(400).send({
+      status: "error",
+      message: e.message,
+    });
+  }
+};
+
+const deleteAirline = async (req, res) => {
+  const id = req.params.id;
+  try {
+    const airline = await connectedKnex("airline_companies")
+      .select("*")
+      .where("id", id)
+      .first();
+    const userDel = await connectedKnex("users")
+      .where("id", customer.user_id)
+      .del();
+    const airlineDel = connectedKnex("airline_companies").where("id", id).del();
+    res.status(200).json({ num_records_deleted: airlineDel });
+  } catch (e) {
+    logger.error(`failed to delete an airline. Error: ${e}`);
     res.status(400).send({
       status: "error",
       message: e.message,
@@ -82,9 +172,9 @@ const addAdmin = async (req, res) => {
       password: req.body.password,
       first_name: req.body.firstName,
       last_name: req.body.lastName,
-      new_username:req.body.newUsername,
-      new_password:req.body.newPassword,
-      new_email:req.body.email,
+      new_username: req.body.newUsername,
+      new_password: req.body.newPassword,
+      new_email: req.body.email,
       public_id: uuid.v4(),
       queue_name: `response ${qResName}`,
     };
@@ -92,46 +182,6 @@ const addAdmin = async (req, res) => {
     await sendMsg("admin", reqMsg);
   } catch (e) {
     logger.error(`failed to add admin. Error: ${e}`);
-    res.status(400).send({
-      status: "error",
-      message: e.message,
-    });
-  }
-};
-
-const getAllAirlines = async (req, res) => {
-  const airlines = await connectedKnex("airline_companies")
-    .select("airline_companies.id", "airline_companies.name", "users.username")
-    .orderBy("airline_companies.id", "asc")
-    .join("users", function () {
-      this.on("airline_companies.user_id", "=", "users.id");
-    });
-  res.status(200).json({ airlines });
-};
-
-const getAirlineById = async (req, res) => {
-  const id = req.params.id;
-  const airline = await connectedKnex("airline_companies")
-    .select("*")
-    .where("id", id)
-    .first();
-  res.status(200).json({ airline });
-};
-
-const deleteAirline = async (req, res) => {
-  const id = req.params.id;
-  try {
-    const airline = await connectedKnex("airline_companies")
-      .select("*")
-      .where("id", id)
-      .first();
-    const userDel = await connectedKnex("users")
-      .where("id", customer.user_id)
-      .del();
-    const airlineDel = connectedKnex("airline_companies").where("id", id).del();
-    res.status(200).json({ num_records_deleted: airlineDel });
-  } catch (e) {
-    logger.error(`failed to delete an airline. Error: ${e}`);
     res.status(400).send({
       status: "error",
       message: e.message,
@@ -172,42 +222,22 @@ const addAirline = async (req, res) => {
 };
 
 const getAllCustomers = async (req, res) => {
-  const customers = await connectedKnex("customers").select(
-    "customers.id",
-    "first_name",
-    "last_name",
-    "address",
-    "phone_number",
-    "users.email",
-    "credit_card_number",
-    "users.username"
-  ).join("users", function () {
-    this.on("customers.user_id", "=", "users.id");
-  });
+  const customers = await connectedKnex("customers")
+    .select(
+      "customers.id",
+      "first_name",
+      "last_name",
+      "address",
+      "phone_number",
+      "users.email",
+      "credit_card_number",
+      "users.username"
+    )
+    .join("users", function () {
+      this.on("customers.user_id", "=", "users.id");
+    });
   res.status(200).json({ customers });
 };
-
-const getCustomerById = async (req, res) => {
-  const id = req.params.id;
-  const customer = await connectedKnex("customers")
-    .select("*")
-    .where("id", id)
-    .first();
-  res.status(200).json({ customer });
-};
-
-const getAllUsers = async (req, res) => {
-  const users = await connectedKnex("users").select("*");
-  res.status(200).json({ users });
-};
-
-const getUserById = async (req, res) => {
-  const id = req.params.id;
-  const user = await connectedKnex("users").select("*").where("id", id).first();
-  res.status(200).json({ user });
-};
-
-
 
 module.exports = {
   getAllCustomers,
@@ -223,4 +253,5 @@ module.exports = {
   addAirline,
   getUserById,
   getAllUsers,
+  deleteCustomer,
 };

@@ -64,23 +64,27 @@ def admin_callback(ch, method, properties, body):
     elif data["action"] == "updateAdmin":
         admin_facade = anonymus_facade.login(
             data["username"], data["password"].encode('utf8'))
-        admin_id = int(data["id"])
         admin_updates = {"first_name": data["first_name"],
                          "last_name": data["last_name"], }
-        admin_facade.update_admin(admin_updates, admin_id)
+        admin_facade.update_admin(admin_updates, int(data["id"]))
 
     elif data["action"] == "deleteAdmin":
         admin_facade = anonymus_facade.login(
             data["username"], data["password"].encode('utf8'))
-        admin_id = int(data["id"])
-        admin_facade.remove_admin(admin_id)
+        admin_facade.remove_admin(int(data["id"]))
         mongo_delete_one(data["username"])
 
     elif data["action"] == "deleteAirline":
-        pass
+        admin_facade = anonymus_facade.login(
+            data["username"], data["password"].encode('utf8'))
+        admin_facade.remove_airline(int(data["id"]))
+        mongo_delete_one(data["airline_username"])
 
     elif data["action"] == "deleteCustomer":
-        pass
+        admin_facade = anonymus_facade.login(
+            data["username"], data["password"].encode('utf8'))
+        admin_facade.remove_customer(int(data["id"]))
+        mongo_delete_one(data["customer_username"])
 
     rabbit_producer = DbRabbitProducer(data["queue_name"])
     rabbit_producer.publish(json.dumps({"status": "SUCCESS"}))

@@ -12,10 +12,10 @@ const {
   getFlightById,
 } = require("../controllers/anonymusController");
 const {
-  deleteCustomer,
   updateCustomer,
 } = require("../controllers/customerController");
 const {
+  deleteCustomer,
   getAllCustomers,
   getCustomerById,
   getAllAdmins,
