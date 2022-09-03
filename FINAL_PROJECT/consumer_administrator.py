@@ -68,6 +68,23 @@ def admin_callback(ch, method, properties, body):
                          "last_name": data["last_name"], }
         admin_facade.update_admin(admin_updates, int(data["id"]))
 
+    elif data["action"] == "updateAirline":
+        admin_facade = anonymus_facade.login(
+            data["username"], data["password"].encode('utf8'))
+        airline_updates = {"name": data["name"],
+                           "country_id": data["country_id"], }
+        admin_facade.update_airline(airline_updates, int(data["id"]))
+
+    elif data["action"] == "updateFlight":
+        admin_facade = anonymus_facade.login(
+            data["username"], data["password"].encode('utf8'))
+        flight_data = {"origin_country_id": data["originId"],
+                       "destination_country_id": data["destinationId"],
+                       "departure_time": data["departurTime"],
+                       "landing_time": data["landingTime"],
+                       "remaining_tickets": int(data["remainingTickets"])}
+        admin_facade.update_flight(flight_data, int(data["flightId"]))
+
     elif data["action"] == "deleteAdmin":
         admin_facade = anonymus_facade.login(
             data["username"], data["password"].encode('utf8'))
@@ -85,6 +102,11 @@ def admin_callback(ch, method, properties, body):
             data["username"], data["password"].encode('utf8'))
         admin_facade.remove_customer(int(data["id"]))
         mongo_delete_one(data["customer_username"])
+
+    elif data["action"] == "removeFlight":
+        admin_facade = anonymus_facade.login(
+            data["username"], data["password"].encode('utf8'))
+        admin_facade.remove_flight(int(data["id"]))
 
     rabbit_producer = DbRabbitProducer(data["queue_name"])
     rabbit_producer.publish(json.dumps({"status": "SUCCESS"}))

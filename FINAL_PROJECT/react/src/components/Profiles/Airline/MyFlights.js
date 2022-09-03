@@ -16,8 +16,8 @@ const MyFlights = (props) => {
   ];
   const [myFlights, setMyFlights] = useState([]);
   const [updateFlightId, setUpdateFlightId] = useState("");
-  const [isUpdateAction, setIsUpdateAction] = useState(false);
   const [isRemoveAction, setIsRemoveAction] = useState(false);
+  const [isUpdateAction, setIsUpdateAction] = useState(false);
   const [isReturnAction, setIsReturnAction] = useState(true);
 
   useEffect(() => {
@@ -30,22 +30,21 @@ const MyFlights = (props) => {
 
   const updateFlightHandler = (event) => {
     setUpdateFlightId(event.target.value);
-    console.log(updateFlightId);
   };
 
-  const updateActionHandler = (event) => {
+  const updateActionHandler = () => {
     setIsRemoveAction(false);
     setIsReturnAction(false);
     setIsUpdateAction(true);
   };
 
-  const removeActionHandler = (event) => {
+  const removeActionHandler = () => {
     setIsUpdateAction(false);
     setIsReturnAction(false);
     setIsRemoveAction(true);
   };
 
-  const returnActionHandler = (event) => {
+  const returnActionHandler = () => {
     setIsUpdateAction(false);
     setIsRemoveAction(false);
     setIsReturnAction(true);
@@ -82,7 +81,6 @@ const MyFlights = (props) => {
     <React.Fragment>
       <div className="container">
         <h4 className="">My Flights</h4>
-        <TableBoard list={myFlights} tableCol={colNames} />
         {!isReturnAction && (
           <button
             className="btn btn-outline-info"
@@ -105,7 +103,7 @@ const MyFlights = (props) => {
           )}
           {isRemoveAction && (
             <RemoveForm
-            myFlights={myFlights}
+              myFlights={myFlights}
               username={props.username}
               pwd={props.pwd}
               onSubmit={submitRemoveHandler}
@@ -137,6 +135,7 @@ const MyFlights = (props) => {
             </div>
           )}
         </Card>
+        <TableBoard list={myFlights} tableCol={colNames} />
       </div>
     </React.Fragment>
   );

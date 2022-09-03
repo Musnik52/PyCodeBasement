@@ -1,12 +1,6 @@
 const { Router } = require("express");
 const router = Router();
 const {
-  updateAirline,
-  addFlight,
-  removeFlight,
-  updateFlight,
-} = require("../controllers/airlineController");
-const {
   addCustomer,
   getAllFlights,
   getFlightById,
@@ -15,6 +9,8 @@ const {
   updateCustomer,
 } = require("../controllers/customerController");
 const {
+  updateFlight,
+  updateAirline,
   deleteCustomer,
   getAllCustomers,
   getCustomerById,
@@ -29,6 +25,7 @@ const {
   addAirline,
   getUserById,
   getAllUsers,
+  removeFlight,
 } = require("../controllers/adminController");
 
 router
@@ -49,7 +46,7 @@ router
 router.route("/users/:id").get(getUserById);
 router.route("/airlines/").get(getAllAirlines).post(addAirline);
 router.route("/customers/").get(getAllCustomers).post(addCustomer);
-router.route("/flights/").get(getAllFlights).post(addFlight);
+router.route("/flights/").get(getAllFlights);
 router.route("/users/").get(getAllUsers);
 router.route("/:user").get(getMyData).delete(deleteAdmin).put(updateAdmin);
 router.route("/").get(getAllAdmins).post(addAdmin);

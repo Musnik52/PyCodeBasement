@@ -120,19 +120,49 @@ const deleteAdmin = async (req, res) => {
 };
 
 const deleteAirline = async (req, res) => {
-  const id = req.params.id;
+  const qResName = `admin ${uuid.v4()}`;
+  const airline = await connectedKnex("airline_companies")
+    .select("*")
+    .where("id", req.body.delData.id)
+    .first();
+  const delUser = await connectedKnex("users")
+    .select("*")
+    .where("id", airline.user_id)
+    .first();
   try {
-    const airline = await connectedKnex("airline_companies")
-      .select("*")
-      .where("id", id)
-      .first();
-    const userDel = await connectedKnex("users")
-      .where("id", customer.user_id)
-      .del();
-    const airlineDel = connectedKnex("airline_companies").where("id", id).del();
-    res.status(200).json({ num_records_deleted: airlineDel });
+    reqMsg = {
+      action: "deleteAirline",
+      id: req.body.delData.id,
+      username: req.body.delData.username,
+      password: req.body.delData.password,
+      airline_username: delUser.username,
+      queue_name: `response ${qResName}`,
+    };
+    recieveMsg(reqMsg.queue_name, res);
+    await sendMsg("admin", reqMsg);
   } catch (e) {
-    logger.error(`failed to delete an airline. Error: ${e}`);
+    logger.error(`failed to delete airline. Error: ${e}`);
+    res.status(400).send({
+      status: "error",
+      message: e.message,
+    });
+  }
+};
+
+const removeFlight = async (req, res) => {
+  const qResName = `admin ${uuid.v4()}`;
+  try {
+    reqMsg = {
+      action: "removeFlight",
+      id: req.body.delData.id,
+      username: req.body.delData.username,
+      password: req.body.delData.password,
+      queue_name: `response ${qResName}`,
+    };
+    recieveMsg(reqMsg.queue_name, res);
+    await sendMsg("admin", reqMsg);
+  } catch (e) {
+    logger.error(`failed to delete airline. Error: ${e}`);
     res.status(400).send({
       status: "error",
       message: e.message,
@@ -156,6 +186,57 @@ const updateAdmin = async (req, res) => {
     await sendMsg("admin", reqMsg);
   } catch (e) {
     logger.error(`failed to update admin. Error: ${e}`);
+    res.status(400).send({
+      status: "error",
+      message: e.message,
+    });
+  }
+};
+
+const updateAirline = async (req, res) => {
+  console.log(req.body)
+  const qResName = `admin ${uuid.v4()}`;
+  try {
+    reqMsg = {
+      action: "updateAirline",
+      username: req.body.username,
+      password: req.body.password,
+      id: req.body.id,
+      name: req.body.name,
+      country_id: req.body.countryId,
+      queue_name: `response ${qResName}`,
+    };
+    recieveMsg(reqMsg.queue_name, res);
+    await sendMsg("admin", reqMsg);
+  } catch (e) {
+    logger.error(`failed to update airline. Error: ${e}`);
+    res.status(400).send({
+      status: "error",
+      message: e.message,
+    });
+  }
+};
+
+const updateFlight = async (req, res) => {
+  const qResName = `admin ${uuid.v4()}`;
+  try {
+    reqMsg = {
+      action: "updateFlight",
+      username: req.body.username,
+      password: req.body.password,
+      airlineId: req.body.airlineId,
+      flightId: req.body.flightId,
+      originId: req.body.originId,
+      destinationId: req.body.destinationId,
+      departurTime: req.body.departurTime,
+      landingTime: req.body.landingTime,
+      remainingTickets: req.body.remainingTickets,
+      queue_name: `response ${qResName}`,
+    };
+    recieveMsg(reqMsg.queue_name, res);
+    await sendMsg("admin", reqMsg);
+  } catch (e) {
+    logger.error(`failed to update flight. Error: ${e}`);
     res.status(400).send({
       status: "error",
       message: e.message,
@@ -254,4 +335,7 @@ module.exports = {
   getUserById,
   getAllUsers,
   deleteCustomer,
+  removeFlight,
+  updateFlight,
+  updateAirline,
 };

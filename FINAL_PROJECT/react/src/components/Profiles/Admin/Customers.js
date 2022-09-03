@@ -4,7 +4,7 @@ import TableBoard from "../../UI/Table/TableBoard";
 import Card from "../../UI/Card/Card";
 import RemoveForm from "./RemoveForm";
 
-const Airlines = (props) => {
+const Customers = (props) => {
   const colNames = [
     "id",
     "first name",
@@ -25,7 +25,7 @@ const Airlines = (props) => {
     });
   }, []);
 
-  const removeActionHandler = (event) => {
+  const removeActionHandler = () => {
     setIsRemoveAction(true);
   };
 
@@ -44,7 +44,6 @@ const Airlines = (props) => {
     <React.Fragment>
       <div className="container">
         <h4 className="">Customers</h4>
-        <TableBoard list={customers} tableCol={colNames} />
         <Card className="">
           {!isRemoveAction && (
             <button className="btn btn-danger" onClick={removeActionHandler}>
@@ -60,9 +59,10 @@ const Airlines = (props) => {
             />
           )}
         </Card>
+        <TableBoard list={customers} tableCol={colNames} />
       </div>
     </React.Fragment>
   );
 };
 
-export default Airlines;
+export default Customers;

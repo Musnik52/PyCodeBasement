@@ -39,7 +39,7 @@ const RemoveForm = (props) => {
         ))}
       </select>
       <Button className="control" type="submit">
-        Remove Customer
+        Click to Remove
       </Button>
     </form>
   );
