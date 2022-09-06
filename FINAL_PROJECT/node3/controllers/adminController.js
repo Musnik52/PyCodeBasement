@@ -194,7 +194,7 @@ const updateAdmin = async (req, res) => {
 };
 
 const updateAirline = async (req, res) => {
-  console.log(req.body)
+  console.log(req.body);
   const qResName = `admin ${uuid.v4()}`;
   try {
     reqMsg = {
@@ -271,30 +271,24 @@ const addAdmin = async (req, res) => {
 };
 
 const addAirline = async (req, res) => {
+  const qResName = `admin ${uuid.v4()}`;
   try {
-    user = {
+    reqMsg = {
+      action: "addAirline",
       username: req.body.username,
       password: req.body.password,
-      email: req.body.email,
-      user_role: 3,
-    };
-    const resultUser = await connectedKnex("users").insert(user);
-    const newUser = await connectedKnex("users")
-      .select("*")
-      .where("username", req.body.username)
-      .first();
-    const resultAirline = await connectedKnex("airline_companies").insert({
       name: req.body.name,
-      country_id: req.body.country_id,
-      user_id: newUser.id,
-    });
-    res.status(201).json({
-      res: "success",
-      url: `/airlines/${resultAirline[0]}`,
-      resultAirline,
-    });
+      country_id: req.body.countryId,
+      new_username: req.body.airlineUsername,
+      new_password: req.body.airlinePassword,
+      new_email: req.body.email,
+      public_id: uuid.v4(),
+      queue_name: `response ${qResName}`,
+    };
+    recieveMsg(reqMsg.queue_name, res);
+    await sendMsg("admin", reqMsg);
   } catch (e) {
-    logger.error(`failed to add an airline. Error: ${e}`);
+    logger.error(`failed to add airline. Error: ${e}`);
     res.status(400).send({
       status: "error",
       message: e.message,

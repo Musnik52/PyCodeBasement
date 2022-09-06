@@ -18,31 +18,12 @@ anonymus_facade = AnonymusFacade(repo, config)
 
 def admin_callback(ch, method, properties, body):
     data = json.loads(body)
+    admin_facade = anonymus_facade.login(
+        data["username"], data["password"].encode('utf8'))
     print("#"*50)
     print(data)
     print("#"*50)
-    if data["action"] == 'addAirline':
-        salt = bcrypt.gensalt()
-        new_user = Users(username=data["username"],
-                         password=bcrypt.hashpw(data["password"].encode(
-                             'utf8'), salt).decode('utf8'),
-                         email=data["email"],
-                         public_id=str(data['public_id']),
-                         user_role=config["user_roles"]["airline"])
-        mongo_insert({"username": data["username"],
-                      "password": bcrypt.hashpw(data["password"].encode(
-                          'utf8'), salt).decode('utf8'),
-                      "email": data["email"],
-                      "public_id": data["public_id"],
-                      "user_role": "airline"})
-        new_airline = AirlineCompanies(name=data["name"],
-                                       country_id=data["country_id"],
-                                       user_id=new_user.id)
-        anonymus_facade.add_airline(new_airline, new_user)
-
-    elif data["action"] == 'addAdmin':
-        admin_facade = anonymus_facade.login(
-            data["username"], data["password"].encode('utf8'))
+    if data["action"] == 'addAdmin':
         salt = bcrypt.gensalt()
         new_user = Users(username=data["new_username"],
                          password=bcrypt.hashpw(data["new_password"].encode(
@@ -61,23 +42,36 @@ def admin_callback(ch, method, properties, body):
                                    user_id=new_user.id)
         admin_facade.add_administrator(new_admin, new_user)
 
+    elif data["action"] == 'addAirline':
+        salt = bcrypt.gensalt()
+        new_user = Users(username=data["new_username"],
+                         password=bcrypt.hashpw(data["new_password"].encode(
+                             'utf8'), salt).decode('utf8'),
+                         email=data["new_email"],
+                         public_id=str(data['public_id']),
+                         user_role=int(config["user_roles"]["airline"]))
+        mongo_insert({"username": data["new_username"],
+                      "password": bcrypt.hashpw(data["new_password"].encode(
+                          'utf8'), salt).decode('utf8'),
+                      "email": data["new_email"],
+                      "public_id": data["public_id"],
+                      "user_role": "airline"})
+        new_airline = AirlineCompanies(name=data["name"],
+                                       country_id=data["country_id"],
+                                       user_id=new_user.id)
+        admin_facade.add_airline(new_airline, new_user)
+
     elif data["action"] == "updateAdmin":
-        admin_facade = anonymus_facade.login(
-            data["username"], data["password"].encode('utf8'))
         admin_updates = {"first_name": data["first_name"],
                          "last_name": data["last_name"], }
         admin_facade.update_admin(admin_updates, int(data["id"]))
 
     elif data["action"] == "updateAirline":
-        admin_facade = anonymus_facade.login(
-            data["username"], data["password"].encode('utf8'))
         airline_updates = {"name": data["name"],
                            "country_id": data["country_id"], }
         admin_facade.update_airline(airline_updates, int(data["id"]))
 
     elif data["action"] == "updateFlight":
-        admin_facade = anonymus_facade.login(
-            data["username"], data["password"].encode('utf8'))
         flight_data = {"origin_country_id": data["originId"],
                        "destination_country_id": data["destinationId"],
                        "departure_time": data["departurTime"],
@@ -86,26 +80,18 @@ def admin_callback(ch, method, properties, body):
         admin_facade.update_flight(flight_data, int(data["flightId"]))
 
     elif data["action"] == "deleteAdmin":
-        admin_facade = anonymus_facade.login(
-            data["username"], data["password"].encode('utf8'))
         admin_facade.remove_admin(int(data["id"]))
         mongo_delete_one(data["username"])
 
     elif data["action"] == "deleteAirline":
-        admin_facade = anonymus_facade.login(
-            data["username"], data["password"].encode('utf8'))
         admin_facade.remove_airline(int(data["id"]))
         mongo_delete_one(data["airline_username"])
 
     elif data["action"] == "deleteCustomer":
-        admin_facade = anonymus_facade.login(
-            data["username"], data["password"].encode('utf8'))
         admin_facade.remove_customer(int(data["id"]))
         mongo_delete_one(data["customer_username"])
 
     elif data["action"] == "removeFlight":
-        admin_facade = anonymus_facade.login(
-            data["username"], data["password"].encode('utf8'))
         admin_facade.remove_flight(int(data["id"]))
 
     rabbit_producer = DbRabbitProducer(data["queue_name"])

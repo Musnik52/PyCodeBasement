@@ -50,8 +50,8 @@ const Login = async (req, res) => {
   try {
     const user = await User.login(username, password);
     const token = createToken(user._id);
-    res.cookie("jwt", token, { httpOnly: true, maxAge: maxAge * 1000 });
-    res
+    await res.cookie("jwt", token, { httpOnly: true, maxAge: maxAge * 1000 });
+    await res
       .status(200)
       .json({ user: user.username, role: user.user_role, password: password });
   } catch (err) {

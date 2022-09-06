@@ -4,6 +4,8 @@ import TableBoard from "../../UI/Table/TableBoard";
 import Card from "../../UI/Card/Card";
 import RemoveForm from "./RemoveForm";
 import UserSettings from "../Airline/UserSettings";
+import AddAirlineForm from "./AddAirlineForm";
+import "./UserUpdate.css";
 
 const Airlines = (props) => {
   const colNames = ["id", "airline name", "system username"];
@@ -12,6 +14,7 @@ const Airlines = (props) => {
   const [updateAirlineId, setUpdateAirlineId] = useState("");
   const [isRemoveAction, setIsRemoveAction] = useState(false);
   const [isUpdateAction, setIsUpdateAction] = useState(false);
+  const [isAddAction, setIsAddAction] = useState(false);
   const [isReturnAction, setIsReturnAction] = useState(true);
 
   useEffect(() => {
@@ -24,19 +27,29 @@ const Airlines = (props) => {
     setUpdateAirlineId(event.target.value);
   };
 
+  const addActionHandler = () => {
+    setIsUpdateAction(false);
+    setIsRemoveAction(false);
+    setIsReturnAction(false);
+    setIsAddAction(true);
+  };
+
   const updateActionHandler = () => {
+    setIsAddAction(false);
     setIsRemoveAction(false);
     setIsReturnAction(false);
     setIsUpdateAction(true);
   };
 
   const removeActionHandler = () => {
+    setIsAddAction(false);
     setIsUpdateAction(false);
     setIsReturnAction(false);
     setIsRemoveAction(true);
   };
 
   const returnActionHandler = () => {
+    setIsAddAction(false);
     setIsUpdateAction(false);
     setIsRemoveAction(false);
     setIsReturnAction(true);
@@ -69,6 +82,15 @@ const Airlines = (props) => {
       .catch((err) => console.log(err));
   };
 
+  const submitAddHandler = (addData) => {
+    axios
+      .post(`http://localhost:8080/admins/airlines/`, addData)
+      .then((res) => {
+        console.log(res.data);
+      })
+      .catch((err) => console.log(err));
+  };
+
   return (
     <React.Fragment>
       <div className="container">
@@ -81,7 +103,7 @@ const Airlines = (props) => {
             Return
           </button>
         )}
-        <Card className="">
+        <Card className="update">
           {isReturnAction && (
             <button className="btn btn-danger" onClick={removeActionHandler}>
               Remove an Airline
@@ -91,6 +113,12 @@ const Airlines = (props) => {
           {isReturnAction && (
             <button className="btn btn-success" onClick={updateActionHandler}>
               Update an Airline
+            </button>
+          )}
+          {isReturnAction && <br />}
+          {isReturnAction && (
+            <button className="btn btn-primary" onClick={addActionHandler}>
+              Add an Airline
             </button>
           )}
           {isRemoveAction && (
@@ -121,7 +149,6 @@ const Airlines = (props) => {
               </select>
             </div>
           )}
-        </Card>
         {isUpdateAction && (
           <UserSettings
             username={props.username}
@@ -129,6 +156,14 @@ const Airlines = (props) => {
             onUpdateAirline={submitUpdateHandler}
           />
         )}
+        {isAddAction && (
+          <AddAirlineForm
+            username={props.username}
+            pwd={props.pwd}
+            onAddAirline={submitAddHandler}
+          />
+        )}
+        </Card>
         <TableBoard list={airlineCompanies} tableCol={colNames} />
       </div>
     </React.Fragment>

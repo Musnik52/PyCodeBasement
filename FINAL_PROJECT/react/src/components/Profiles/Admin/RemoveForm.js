@@ -22,15 +22,10 @@ const RemoveForm = (props) => {
 
   return (
     <form onSubmit={submitHandler}>
-      <label className="text-decoration-underline">
-        Select ID # To Remove
-      </label>
+      <label className="text-decoration-underline">Select ID # To Remove</label>
       <br />
       <br />
-      <select
-        aria-label="Default select example"
-        onChange={removeHandler}
-      >
+      <select aria-label="Default select example" onChange={removeHandler}>
         <option selected value={0} />
         {myInput.map((c) => (
           <option key={c.id} value={c.id}>
@@ -38,7 +33,9 @@ const RemoveForm = (props) => {
           </option>
         ))}
       </select>
-      <Button className="control" type="submit">
+      <br />
+      <br />
+      <Button className="" type="submit">
         Click to Remove
       </Button>
     </form>
