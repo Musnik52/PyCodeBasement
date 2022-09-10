@@ -20,7 +20,6 @@ const MyTickets = (props) => {
       .get(`http://localhost:8080/customers/tickets/${props.username}`)
       .then((res) => {
         setTickets(res.data.tickets);
-        console.log(res.data.tickets);
       });
   }, []);
 

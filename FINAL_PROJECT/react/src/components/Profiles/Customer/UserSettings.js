@@ -17,7 +17,6 @@ const UserSettings = (props) => {
     axios
       .get(`http://localhost:8080/customers/${props.username}`)
       .then((res) => {
-        console.log(res.data.customer);
         setEnteredFirstName(res.data.customer.first_name);
         setEnteredLastName(res.data.customer.last_name);
         setEnteredAddress(res.data.customer.address);

@@ -24,7 +24,6 @@ function App() {
   const [userType, setUserType] = useState("");
 
   const loginHandler = (username, role, password) => {
-    console.log(username, role, password);
     setLoggedUser(username);
     setPwd(password);
     setIsLoggedIn(true);
@@ -34,6 +33,7 @@ function App() {
   const logoutHandler = () => {
     setIsLoggedIn(false);
   };
+
   return (
     <BrowserRouter>
       <div className="App">

@@ -194,7 +194,6 @@ const updateAdmin = async (req, res) => {
 };
 
 const updateAirline = async (req, res) => {
-  console.log(req.body);
   const qResName = `admin ${uuid.v4()}`;
   try {
     reqMsg = {
