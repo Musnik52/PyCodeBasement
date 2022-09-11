@@ -47,7 +47,6 @@ const MyTickets = (props) => {
   return (
     <React.Fragment>
       <div className="container">
-        <h4 className="">My Tickets</h4>
         <TableBoard list={myTickets} tableCol={colNames} />
         <Card className="">
           <form onSubmit={submitHandler}>

@@ -30,13 +30,24 @@ const Login = (props) => {
   };
 
   const submitHandler = (event) => {
-    event.preventDefault();
+    event.preventDefault(); // withCredentials: true
     axios
-      .post("http://localhost:8080/login", {
-        username: enteredUsername,
-        password: enteredPassword,
-      })
+      .post(
+        "http://localhost:8080/login",
+        {
+          username: enteredUsername,
+          password: enteredPassword,
+        }
+        // {
+        //   withCredentials: 'include',
+        //   headers: {
+        //     "Content-Type": "application/json",
+        //   },
+        // }
+      )
       .then((res) => {
+        console.log(res.headers["set-cookie"]);
+
         props.onLogin(res.data.user, res.data.role, res.data.password);
       })
       .catch((err) => console.log(err));
@@ -44,9 +55,8 @@ const Login = (props) => {
 
   return (
     <React.Fragment>
-      <div className="container">
-        <br />
-        <h3 className="center">Login</h3>
+      <div className="container__img">
+        <h3 className="center__headline">Login</h3>
         <Card className="login">
           <form onSubmit={submitHandler}>
             <div
@@ -55,7 +65,7 @@ const Login = (props) => {
               }`}
             >
               <label className="control" htmlFor="text">
-                Username{" "}
+                Username
               </label>
               <input
                 className="control"

@@ -16,7 +16,7 @@ logger.debug("====== System startup ======");
 const app = express();
 
 // middleware
-app.use(cors({ origin: "*", credentials: true }));
+app.use(cors({ origin: "http://localhost:3000", credentials: 'include' }));
 app.use(express.static("public"));
 app.use(express.json());
 app.use(cookieParser());

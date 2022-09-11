@@ -50,8 +50,8 @@ const Login = async (req, res) => {
   try {
     const user = await User.login(username, password);
     const token = createToken(user._id);
-    await res.cookie("jwt", token, { httpOnly: true, maxAge: maxAge * 1000 });
-    await res
+    res.cookie("jwt", token, { httpOnly: true, maxAge: maxAge * 1000 });
+    res
       .status(200)
       .json({ user: user.username, role: user.user_role, password: password });
   } catch (err) {
@@ -172,7 +172,7 @@ const getFlightByCountries = async (req, res) => {
       this.on("flights.origin_country_id", "=", "c1.id");
     })
     .join("countries as c2", function () {
-      this.on("flights.destination_country_id", "=", "c2.id"); 
+      this.on("flights.destination_country_id", "=", "c2.id");
     })
     .join("airline_companies", function () {
       this.on("flights.airline_company_id", "=", "airline_companies.id");

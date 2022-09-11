@@ -5,6 +5,7 @@ import UserSettings from "./UserSettings";
 import MyFlights from "./MyFlights";
 import airline_pic from "../../../Assets/airline_pic.jpg";
 import axios from "axios";
+import "./AirlineProfile.css"
 
 const AirlineProfile = (props) => {
   const [isMyFlights, setMyFlights] = useState(false);
@@ -38,6 +39,7 @@ const AirlineProfile = (props) => {
 
   return (
     <React.Fragment>
+    <div className="container__im4">
       <Card className="border border-primary">
         <h4 className="">Welcome, {props.login_name}</h4>
         <img src={airline_pic} alt="customer" />
@@ -75,6 +77,7 @@ const AirlineProfile = (props) => {
           onUpdateAirline={submitUpdateHandler}
         />
       )}
+      </div>
     </React.Fragment>
   );
 };

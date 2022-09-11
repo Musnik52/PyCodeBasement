@@ -4,6 +4,7 @@ import NewTicket from "./NewTicket";
 import UserSettings from "./UserSettings";
 import MyTickets from "./MyTickets";
 import customer_pic from "../../../Assets/customer_pic.jpg";
+import "./CustomerProfile.css"
 
 const CustomerProfile = (props) => {
   const [isMyTickets, setMyTickets] = useState(false);
@@ -28,6 +29,7 @@ const CustomerProfile = (props) => {
   };
   return (
     <React.Fragment>
+    <div className="container__im3">
       <Card className="border border-primary">
         <h4 className="">Welcome, {props.login_name}</h4>
         <img src={customer_pic} alt="customer" />
@@ -71,6 +73,7 @@ const CustomerProfile = (props) => {
           onLogout={props.onLogout}
         />
       )}
+      </div>
     </React.Fragment>
   );
 };
