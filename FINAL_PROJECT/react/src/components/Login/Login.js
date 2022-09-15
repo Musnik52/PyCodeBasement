@@ -30,25 +30,23 @@ const Login = (props) => {
   };
 
   const submitHandler = (event) => {
-    event.preventDefault(); // withCredentials: true
+    event.preventDefault();
     axios
       .post(
         "http://localhost:8080/login",
         {
           username: enteredUsername,
           password: enteredPassword,
+        },
+        {
+          withCredentials: true,
+          headers: {
+            "Content-Type": "application/json",
+          },
         }
-        // {
-        //   withCredentials: 'include',
-        //   headers: {
-        //     "Content-Type": "application/json",
-        //   },
-        // }
       )
       .then((res) => {
-        console.log(res.headers["set-cookie"]);
-
-        props.onLogin(res.data.user, res.data.role, res.data.password);
+        props.onLogin(res.data.username, res.data.user_role, res.data.password);
       })
       .catch((err) => console.log(err));
   };
@@ -83,7 +81,7 @@ const Login = (props) => {
             >
               <br />
               <label className="control" htmlFor="password">
-                Password{" "}
+                Password
               </label>
               <input
                 className="control"
@@ -100,7 +98,6 @@ const Login = (props) => {
               </Button>
             </div>
             <p>
-              {" "}
               Don't have an account? <br />
               <span className="line">
                 <a href="/signup">Sign up</a>

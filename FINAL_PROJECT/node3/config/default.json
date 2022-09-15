@@ -20,9 +20,9 @@
   },
 
   "sessionData": {
-    "secret": "borisKing"
+    "secret": "borisKing",
+    "key": "airlockSession"
   },
-
 
   "ports": {
     "listening": 8080

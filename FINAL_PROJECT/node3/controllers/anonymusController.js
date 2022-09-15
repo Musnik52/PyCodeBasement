@@ -2,10 +2,11 @@ const connectedKnex = require("../knex-connector");
 const { logger } = require("../logger");
 const { sendMsg } = require("../producer");
 const { recieveMsg } = require("../consumer");
+const jwt = require("jsonwebtoken");
 const uuid = require("uuid");
 const User = require("../models/User");
-const jwt = require("jsonwebtoken");
-const bcrypt = require("bcrypt");
+const config = require("config");
+const sessionData = config.get("sessionData");
 
 // handle errors
 const handleErrors = (err) => {
@@ -38,9 +39,9 @@ const handleErrors = (err) => {
 };
 
 // create json web token
-const maxAge = 3 * 24 * 60 * 60;
-const createToken = (id) => {
-  return jwt.sign({ id }, "secret key", {
+const maxAge = 24 * 60 * 60;
+const createToken = (id, username, user_role, password) => {
+  return jwt.sign({ id, username, user_role, password }, sessionData.secret, {
     expiresIn: maxAge,
   });
 };
@@ -49,21 +50,44 @@ const Login = async (req, res) => {
   const { username, password } = req.body;
   try {
     const user = await User.login(username, password);
-    const token = createToken(user._id);
-    res.cookie("jwt", token, { httpOnly: true, maxAge: maxAge * 1000 });
-    res
-      .status(200)
-      .json({ user: user.username, role: user.user_role, password: password });
+    const token = createToken(
+      user._id,
+      user.username,
+      user.user_role,
+      password
+    );
+    res.cookie("jwt_TOKEN", token, { httpOnly: true, maxAge: maxAge });
+    await jwt.verify(token, sessionData.secret, (err, decodedToken) => {
+      console.log(req.cookies.jwt_TOKEN);
+      console.log(decodedToken);
+      res.status(200).json(decodedToken);
+    });
   } catch (err) {
     const errors = handleErrors(err);
     res.status(400).json({ errors });
   }
 };
 
-//   const logout = (req, res) => {
-//     res.cookie("jwt", "", { maxAge: 1 });
-//     res.redirect("/");
-//   };
+const LoginCheck = (req, res) => {
+  if (req.cookies.jwt) {
+    console.log(req.cookies.jwt);
+    jwt.verify(req.cookies.jwt, sessionData.secret, (err, decodedToken) => {
+      res.status(200).json({ LoggedIn: true, user: decodedToken });
+    });
+  } else {
+    res.status(200).json({ LoggedIn: false });
+  }
+};
+
+const Logout = (req, res) => {
+  try {
+    res.cookie("jwt_TOKEN", "", { maxAge: 1 });
+    console.log(req);
+  } catch (err) {
+    res.status(400).json({ err });
+  }
+  res.status(200).json({ LoggedIn: false });
+};
 
 const addCustomer = async (req, res) => {
   const qResName = `customer ${uuid.v4()}`;
@@ -188,7 +212,9 @@ const getAllCountries = async (req, res) => {
 };
 
 module.exports = {
+  Logout,
   Login,
+  LoginCheck,
   addCustomer,
   getAllFlights,
   getFlightById,

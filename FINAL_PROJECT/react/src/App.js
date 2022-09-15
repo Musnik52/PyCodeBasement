@@ -1,5 +1,6 @@
 import "./App.css";
-import React, { useState } from "react";
+import axios from "axios";
+import React, { useEffect, useState } from "react";
 import airlock_img from "./Assets/airlock1.png";
 import customer_bg from "./Assets/abs_bg.jpg";
 import airline_bg from "./Assets/abs_bg.jpg";
@@ -23,6 +24,21 @@ function App() {
   const [pwd, setPwd] = useState("");
   const [userType, setUserType] = useState("");
 
+  // useEffect(() => {
+  //   axios.get(`http://localhost:8080/login`,{},
+  //   {
+  //     withCredentials: true,
+  //     headers: {
+  //       "Content-Type": "application/json",
+  //     },
+  //   }).then((res) => {
+  //     setIsLoggedIn(res.data.LoggedIn);
+  //     setLoggedUser(res.data.user.username);
+  //     setPwd(res.data.user.password);
+  //     setUserType(res.data.user.user_role);
+  //   });
+  // }, []);
+
   const loginHandler = (username, role, password) => {
     setLoggedUser(username);
     setPwd(password);
@@ -31,7 +47,20 @@ function App() {
   };
 
   const logoutHandler = () => {
-    setIsLoggedIn(false);
+    axios
+      .get(
+        "http://localhost:8080/logout",
+        {},
+        {
+          withCredentials: true,
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      )
+      .then((res) => {
+        setIsLoggedIn(false);
+      });
   };
 
   return (
