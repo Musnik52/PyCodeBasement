@@ -5,7 +5,6 @@ const sessionData = config.get("sessionData")
 
 const requireAuth = (req, res, next) => {
   const token = req.cookies.jwt_TOKEN;
-
   // check json web token exists & is verified
   if (token) {
     jwt.verify(token, sessionData.secret, (err, decodedToken) => {
@@ -35,6 +34,7 @@ const checkUser = (req, res, next) => {
       } else {
         let user = await User.findById(decodedToken.id);
         res.locals.user = user; 
+        console.log(res.locals.user)
         next();
       }
     });

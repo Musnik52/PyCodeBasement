@@ -39,10 +39,10 @@ const handleErrors = (err) => {
 };
 
 // create json web token
-const maxAge = 24 * 60 * 60;
+const maxAge = 24 * 60 * 60 * 1000;
 const createToken = (id, username, user_role, password) => {
   return jwt.sign({ id, username, user_role, password }, sessionData.secret, {
-    expiresIn: maxAge,
+    expiresIn: `${maxAge}s`,
   });
 };
 
@@ -56,10 +56,8 @@ const Login = async (req, res) => {
       user.user_role,
       password
     );
-    res.cookie("jwt_TOKEN", token, { httpOnly: true, maxAge: maxAge });
+    res.cookie("jwt_TOKEN", token, { httpOnly: true, expiresIn: maxAge });
     await jwt.verify(token, sessionData.secret, (err, decodedToken) => {
-      console.log(req.cookies.jwt_TOKEN);
-      console.log(decodedToken);
       res.status(200).json(decodedToken);
     });
   } catch (err) {
@@ -70,7 +68,6 @@ const Login = async (req, res) => {
 
 const LoginCheck = (req, res) => {
   if (req.cookies.jwt) {
-    console.log(req.cookies.jwt);
     jwt.verify(req.cookies.jwt, sessionData.secret, (err, decodedToken) => {
       res.status(200).json({ LoggedIn: true, user: decodedToken });
     });
@@ -81,8 +78,7 @@ const LoginCheck = (req, res) => {
 
 const Logout = (req, res) => {
   try {
-    res.cookie("jwt_TOKEN", "", { maxAge: 1 });
-    console.log(req);
+    res.clearCookie({ name: "jwt_TOKEN" });
   } catch (err) {
     res.status(400).json({ err });
   }
@@ -204,6 +200,78 @@ const getFlightByCountries = async (req, res) => {
   res.status(200).json({ flight });
 };
 
+const getFlightByDeparture = async (req, res) => {
+  const departure = req.body.departure;
+  const nowTime = new Date();
+  const dTime = new Date(
+    nowTime.getFullYear(),
+    nowTime.getMonth(),
+    nowTime.getDate(),
+    nowTime.getHours() + Number(departure),
+    nowTime.getMinutes(),
+    nowTime.getSeconds()
+  );
+  const flights = await connectedKnex("flights")
+    .select(
+      "flights.id",
+      "airline_companies.name as airline",
+      "c1.name as origin_country",
+      "c2.name as destination_country",
+      "flights.departure_time",
+      "flights.landing_time",
+      "flights.remaining_tickets"
+    )
+    .orderBy("flights.id", "asc")
+    .where("flights.departure_time", "<", dTime)
+    .where("flights.departure_time", ">", nowTime)
+    .join("countries as c1", function () {
+      this.on("flights.origin_country_id", "=", "c1.id");
+    })
+    .join("countries as c2", function () {
+      this.on("flights.destination_country_id", "=", "c2.id");
+    })
+    .join("airline_companies", function () {
+      this.on("flights.airline_company_id", "=", "airline_companies.id");
+    });
+  res.status(200).json({ flights });
+};
+
+const getFlightByLanding = async (req, res) => {
+  const landing = req.body.landing;
+  const nowTime = new Date();
+  const lTime = new Date(
+    nowTime.getFullYear(),
+    nowTime.getMonth(),
+    nowTime.getDate(),
+    nowTime.getHours() + Number(landing),
+    nowTime.getMinutes(),
+    nowTime.getSeconds()
+  );
+  const flights = await connectedKnex("flights")
+    .select(
+      "flights.id",
+      "airline_companies.name as airline",
+      "c1.name as origin_country",
+      "c2.name as destination_country",
+      "flights.departure_time",
+      "flights.landing_time",
+      "flights.remaining_tickets"
+    )
+    .orderBy("flights.id", "asc")
+    .where("flights.landing_time", "<", lTime)
+    .where("flights.landing_time", ">", nowTime)
+    .join("countries as c1", function () {
+      this.on("flights.origin_country_id", "=", "c1.id");
+    })
+    .join("countries as c2", function () {
+      this.on("flights.destination_country_id", "=", "c2.id");
+    })
+    .join("airline_companies", function () {
+      this.on("flights.airline_company_id", "=", "airline_companies.id");
+    });
+  res.status(200).json({ flights });
+};
+
 const getAllCountries = async (req, res) => {
   const countries = await connectedKnex("countries")
     .select("id", "name")
@@ -220,4 +288,6 @@ module.exports = {
   getFlightById,
   getAllCountries,
   getFlightByCountries,
+  getFlightByDeparture,
+  getFlightByLanding,
 };

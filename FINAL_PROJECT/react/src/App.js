@@ -58,7 +58,7 @@ function App() {
           },
         }
       )
-      .then((res) => {
+      .then(() => {
         setIsLoggedIn(false);
       });
   };
