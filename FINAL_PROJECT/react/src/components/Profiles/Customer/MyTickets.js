@@ -30,8 +30,6 @@ const MyTickets = (props) => {
   const submitHandler = (event) => {
     event.preventDefault();
     const ticketData = {
-      username: props.username,
-      password: props.pwd,
       ticketId: removeTicketId,
     };
     axios

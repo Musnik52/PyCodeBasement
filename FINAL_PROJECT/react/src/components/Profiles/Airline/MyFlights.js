@@ -104,7 +104,6 @@ const MyFlights = (props) => {
             <RemoveForm
               myFlights={myFlights}
               username={props.username}
-              pwd={props.pwd}
               onSubmit={submitRemoveHandler}
             />
           )}
@@ -128,7 +127,6 @@ const MyFlights = (props) => {
               </select>
               <FlightForm
                 username={props.username}
-                pwd={props.pwd}
                 onSubmit={submitUpdateHandler}
               />
             </div>

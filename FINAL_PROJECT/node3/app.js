@@ -17,16 +17,14 @@ const app = express();
 
 // middleware
 app.use(cors({ origin: "http://localhost:3000", credentials: true }));
-app.use(express.static("public"));
 app.use(express.json());
 app.use(cookieParser());
 app.use(express.urlencoded({ extended: true }));
 
 app.use(anonymusRoutes);
-app.use("/admins", adminRoutes, requireAuth);
-app.use("/airlines", airlineRoutes, requireAuth);
-app.use("/customers", customerRoutes, requireAuth);
-
+app.use("/admins", requireAuth, adminRoutes);
+app.use("/airlines", requireAuth, airlineRoutes);
+app.use("/customers", requireAuth, customerRoutes);
 
 // Mongodb connection
 mongoose
@@ -41,5 +39,3 @@ mongoose
 
 // routes
 app.get("*", checkUser);
-app.get("/", (req, res) => res.status(200).render("index"));
-

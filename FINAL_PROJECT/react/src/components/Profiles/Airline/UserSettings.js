@@ -37,8 +37,6 @@ const UserSettings = (props) => {
     event.preventDefault();
 
     const updateData = {
-      username: props.username,
-      password: props.pwd,
       id: enteredAirlineId,
       name: enteredName,
       countryId: enteredCountryId,

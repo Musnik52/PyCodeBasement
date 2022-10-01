@@ -31,6 +31,7 @@ const Login = (props) => {
 
   const submitHandler = (event) => {
     event.preventDefault();
+    axios.defaults.withCredentials = true;
     axios
       .post(
         "http://localhost:8080/login",
@@ -39,7 +40,6 @@ const Login = (props) => {
           password: enteredPassword,
         },
         {
-          withCredentials: true,
           headers: {
             "Content-Type": "application/json",
           },

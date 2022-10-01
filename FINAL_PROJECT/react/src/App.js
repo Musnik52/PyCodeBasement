@@ -21,44 +21,42 @@ import AdminProfile from "./components/Profiles/Admin/AdminProfile";
 function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [loggedUser, setLoggedUser] = useState("");
-  const [pwd, setPwd] = useState("");
   const [userType, setUserType] = useState("");
 
-  // useEffect(() => {
-  //   axios.get(`http://localhost:8080/login`,{},
-  //   {
-  //     withCredentials: true,
-  //     headers: {
-  //       "Content-Type": "application/json",
-  //     },
-  //   }).then((res) => {
-  //     setIsLoggedIn(res.data.LoggedIn);
-  //     setLoggedUser(res.data.user.username);
-  //     setPwd(res.data.user.password);
-  //     setUserType(res.data.user.user_role);
-  //   });
-  // }, []);
+  useEffect(() => {
+    axios.defaults.withCredentials = true;
+    axios.get(`http://localhost:8080/login`,{},
+    {
+      headers: {
+        "Content-Type": "application/json",
+      },
+    }).then((res) => {
+      setIsLoggedIn(res.data.LoggedIn);
+      setLoggedUser(res.data.user.username);
+      setUserType(res.data.user.user_role);
+    });
+  }, []);
 
-  const loginHandler = (username, role, password) => {
+  const loginHandler = (username, role) => {
     setLoggedUser(username);
-    setPwd(password);
     setIsLoggedIn(true);
     setUserType(role);
   };
 
   const logoutHandler = () => {
+    axios.defaults.withCredentials = true;
     axios
       .get(
         "http://localhost:8080/logout",
         {},
         {
-          withCredentials: true,
           headers: {
             "Content-Type": "application/json",
           },
         }
       )
-      .then(() => {
+      .then((res) => {
+        console.log(res.data)
         setIsLoggedIn(false);
       });
   };
@@ -86,7 +84,6 @@ function App() {
                   onLogout={logoutHandler}
                   img={customer_bg}
                   login_name={loggedUser}
-                  pwd={pwd}
                 />
               )}
               {isLoggedIn && userType === "airline" && (
@@ -94,7 +91,6 @@ function App() {
                   onLogout={logoutHandler}
                   img={airline_bg}
                   login_name={loggedUser}
-                  pwd={pwd}
                 />
               )}
               {isLoggedIn && userType === "admin" && (
@@ -102,7 +98,6 @@ function App() {
                   onLogout={logoutHandler}
                   img={admin_bg}
                   login_name={loggedUser}
-                  pwd={pwd}
                 />
               )}
             </Route>

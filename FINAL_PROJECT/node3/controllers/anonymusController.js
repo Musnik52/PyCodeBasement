@@ -56,10 +56,10 @@ const Login = async (req, res) => {
       user.user_role,
       password
     );
-    res.cookie("jwt_TOKEN", token, { httpOnly: true, expiresIn: maxAge });
-    await jwt.verify(token, sessionData.secret, (err, decodedToken) => {
-      res.status(200).json(decodedToken);
-    });
+    res.cookie("jwt_TOKEN", token, { httpOnly: true, maxAge });
+    res
+      .status(200)
+      .json({ username: user.username, user_role: user.user_role });
   } catch (err) {
     const errors = handleErrors(err);
     res.status(400).json({ errors });
@@ -67,10 +67,14 @@ const Login = async (req, res) => {
 };
 
 const LoginCheck = (req, res) => {
-  if (req.cookies.jwt) {
-    jwt.verify(req.cookies.jwt, sessionData.secret, (err, decodedToken) => {
-      res.status(200).json({ LoggedIn: true, user: decodedToken });
-    });
+  if (req.cookies.jwt_TOKEN) {
+    jwt.verify(
+      req.cookies.jwt_TOKEN,
+      sessionData.secret,
+      (err, decodedToken) => {
+        res.status(200).json({ LoggedIn: true, user: decodedToken });
+      }
+    );
   } else {
     res.status(200).json({ LoggedIn: false });
   }
@@ -78,7 +82,9 @@ const LoginCheck = (req, res) => {
 
 const Logout = (req, res) => {
   try {
-    res.clearCookie({ name: "jwt_TOKEN" });
+    res
+      .status(200)
+      .cookie("jwt_TOKEN", "", { httpOnly: true, maxAge: 0, overwrite: true });
   } catch (err) {
     res.status(400).json({ err });
   }

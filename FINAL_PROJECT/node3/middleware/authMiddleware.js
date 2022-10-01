@@ -13,8 +13,6 @@ const requireAuth = (req, res, next) => {
         res.status(403).json({error: err.message});
       } else {
         // we may here- check the user role ...
-        console.log("######")
-        console.log(decodedToken);
         next();
       }
     });
@@ -34,6 +32,7 @@ const checkUser = (req, res, next) => {
       } else {
         let user = await User.findById(decodedToken.id);
         res.locals.user = user; 
+        console.log("######")
         console.log(res.locals.user)
         next();
       }

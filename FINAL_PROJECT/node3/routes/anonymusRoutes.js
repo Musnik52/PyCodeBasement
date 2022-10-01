@@ -3,7 +3,7 @@ const router = Router();
 const {
   Logout,
   Login,
-  // LoginCheck,
+  LoginCheck,
   addCustomer,
   getAllFlights,
   getFlightById,
@@ -19,7 +19,7 @@ router.route("/flights/:origin/:destination").get(getFlightByCountries);
 router.route("/flights/:id").get(getFlightById);
 router.route("/countries").get(getAllCountries);
 router.route("/flights").get(getAllFlights);
-router.route("/login").post(Login); //.get(LoginCheck);
+router.route("/login").post(Login).get(LoginCheck);
 router.route("/logout").get(Logout);
 router.route("/").post(addCustomer);
 
